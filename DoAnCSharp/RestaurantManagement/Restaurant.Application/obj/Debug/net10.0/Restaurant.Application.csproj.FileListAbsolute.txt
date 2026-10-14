@@ -1,0 +1,16 @@
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\bin\Debug\net10.0\Restaurant.Application.deps.json
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\bin\Debug\net10.0\Restaurant.Application.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\bin\Debug\net10.0\Restaurant.Application.pdb
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\bin\Debug\net10.0\Restaurant.Domain.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\bin\Debug\net10.0\Restaurant.Domain.pdb
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\Restaurant.Application.csproj.AssemblyReference.cache
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\Restaurant.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\Restaurant.Application.AssemblyInfoInputs.cache
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\Restaurant.Application.AssemblyInfo.cs
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\Restaurant.Application.csproj.CoreCompileInputs.cache
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\Restaurant.Application.sourcelink.json
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\Restaura.8ED4ADA1.Up2Date
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\Restaurant.Application.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\refint\Restaurant.Application.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\Restaurant.Application.pdb
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Application\obj\Debug\net10.0\ref\Restaurant.Application.dll

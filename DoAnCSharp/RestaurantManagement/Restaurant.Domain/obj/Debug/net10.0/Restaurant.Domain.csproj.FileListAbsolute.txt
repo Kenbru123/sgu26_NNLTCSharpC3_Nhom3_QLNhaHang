@@ -1,0 +1,13 @@
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\bin\Debug\net10.0\Restaurant.Domain.deps.json
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\bin\Debug\net10.0\Restaurant.Domain.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\bin\Debug\net10.0\Restaurant.Domain.pdb
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\Restaurant.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\Restaurant.Domain.AssemblyInfoInputs.cache
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\Restaurant.Domain.AssemblyInfo.cs
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\Restaurant.Domain.csproj.CoreCompileInputs.cache
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\Restaurant.Domain.sourcelink.json
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\Restaurant.Domain.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\refint\Restaurant.Domain.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\Restaurant.Domain.pdb
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\ref\Restaurant.Domain.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Domain\obj\Debug\net10.0\Restaura.0B6E2018.Up2Date

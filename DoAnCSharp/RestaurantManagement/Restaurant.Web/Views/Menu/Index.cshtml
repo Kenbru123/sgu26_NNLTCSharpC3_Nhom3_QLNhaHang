@@ -1,0 +1,41 @@
+﻿@model List<Restaurant.Application.DTOs.MonAnDto>
+
+@{
+    ViewData["Title"] = "Thực đơn";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Thực đơn nhà hàng</h2>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@item.TenMon</h5>
+
+                        <p class="card-text">
+                            @item.MoTa
+                        </p>
+
+                        <p class="fw-bold">
+                            @item.DonGia.ToString("N0") đ
+                        </p>
+
+                        @if (item.TrangThai)
+                        {
+                            <span class="badge bg-success">Đang bán</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Ngừng bán</span>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
