@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9C400BF8-D654-45B7-B977-103DD9878591}|Restaurant.Admin\\Restaurant.Admin.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.admin\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9C400BF8-D654-45B7-B977-103DD9878591}|Restaurant.Admin\\Restaurant.Admin.csproj|solutionrelative:restaurant.admin\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F9E80D86-5F2D-ABDE-5C0C-B8AA694DD7A9}|Restaurant.Admin\\Restaurant.Admin.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.admin\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F9E80D86-5F2D-ABDE-5C0C-B8AA694DD7A9}|Restaurant.Admin\\Restaurant.Admin.csproj|solutionrelative:restaurant.admin\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9C400BF8-D654-45B7-B977-103DD9878591}|Restaurant.Admin\\Restaurant.Admin.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.admin\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{9C400BF8-D654-45B7-B977-103DD9878591}|Restaurant.Admin\\Restaurant.Admin.csproj|D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\restaurant.admin\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{9C400BF8-D654-45B7-B977-103DD9878591}|Restaurant.Admin\\Restaurant.Admin.csproj|solutionrelative:restaurant.admin\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9C400BF8-D654-45B7-B977-103DD9878591}|Restaurant.Admin\\Restaurant.Admin.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.admin\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9C400BF8-D654-45B7-B977-103DD9878591}|Restaurant.Admin\\Restaurant.Admin.csproj|solutionrelative:restaurant.admin\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F9E80D86-5F2D-ABDE-5C0C-B8AA694DD7A9}|Restaurant.Admin\\Restaurant.Admin.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.admin\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F9E80D86-5F2D-ABDE-5C0C-B8AA694DD7A9}|Restaurant.Admin\\Restaurant.Admin.csproj|solutionrelative:restaurant.admin\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{62FB804D-1C68-49C5-97E6-E7C6D5A8B7A5}|Restaurant.Web\\Restaurant.Web.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{62FB804D-1C68-49C5-97E6-E7C6D5A8B7A5}|Restaurant.Web\\Restaurant.Web.csproj|solutionrelative:restaurant.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FFB53ECB-F199-30F5-4DAE-F6DD36821617}|Restaurant.Web\\Restaurant.Web.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FFB53ECB-F199-30F5-4DAE-F6DD36821617}|Restaurant.Web\\Restaurant.Web.csproj|solutionrelative:restaurant.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -36,7 +36,7 @@
               "RelativeDocumentMoniker": "Restaurant.Admin\\Program.cs",
               "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Admin\\Program.cs",
               "RelativeToolTip": "Restaurant.Admin\\Program.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAiwA8AAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAiwBAAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-14T12:35:41.851Z",
               "EditorCaption": ""
@@ -63,8 +63,7 @@
               "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Admin\\Form1.cs [Design]",
               "RelativeToolTip": "Restaurant.Admin\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-14T12:30:14.032Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-10-14T12:30:14.032Z"
             },
             {
               "$type": "Document",
@@ -76,8 +75,7 @@
               "RelativeToolTip": "Restaurant.Web\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-14T12:23:31.887Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-14T12:23:31.887Z"
             }
           ]
         }
