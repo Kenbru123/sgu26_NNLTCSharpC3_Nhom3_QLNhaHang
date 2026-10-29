@@ -26,6 +26,9 @@ namespace Restaurant.Infrastructure.Configurations
 
             builder.Property(x => x.MoTa)
                 .HasMaxLength(500);
+
+            builder.Property(x => x.TrangThai)
+                .HasDefaultValue(true);
         }
     }
 }

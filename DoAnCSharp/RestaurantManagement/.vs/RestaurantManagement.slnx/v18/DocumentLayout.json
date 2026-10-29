@@ -3,68 +3,20 @@
   "WorkspaceRootPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.infrastructure\\data\\restaurantdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|solutionrelative:restaurant.infrastructure\\data\\restaurantdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.infrastructure\\migrations\\20261029161542_moronghethong.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|solutionrelative:restaurant.infrastructure\\migrations\\20261029161542_moronghethong.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\danhmucmon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\danhmucmon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\vaitro.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\vaitro.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\taikhoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\taikhoan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\phieuxuatkho.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\phieuxuatkho.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\phieunhapkho.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\phieunhapkho.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\nhanvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\nhanvien.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\nguyenlieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\nguyenlieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\khuvuc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\khuvuc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\khachhang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\khachhang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\giohang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\giohang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\donhang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\donhang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.domain\\entities\\datban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{859433DB-E50A-88EF-5AA7-86C6EF6F8921}|Restaurant.Domain\\Restaurant.Domain.csproj|solutionrelative:restaurant.domain\\entities\\datban.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.infrastructure\\configurations\\danhmucmonconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|solutionrelative:restaurant.infrastructure\\configurations\\danhmucmonconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FFB53ECB-F199-30F5-4DAE-F6DD36821617}|Restaurant.Web\\Restaurant.Web.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FFB53ECB-F199-30F5-4DAE-F6DD36821617}|Restaurant.Web\\Restaurant.Web.csproj|solutionrelative:restaurant.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -79,188 +31,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "RestaurantDbContext.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Data\\RestaurantDbContext.cs",
-              "RelativeDocumentMoniker": "Restaurant.Infrastructure\\Data\\RestaurantDbContext.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Data\\RestaurantDbContext.cs",
-              "RelativeToolTip": "Restaurant.Infrastructure\\Data\\RestaurantDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAbAAAAAAAAAA==",
+              "Title": "20261029161542_MoRongHeThong.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Migrations\\20261029161542_MoRongHeThong.cs",
+              "RelativeDocumentMoniker": "Restaurant.Infrastructure\\Migrations\\20261029161542_MoRongHeThong.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Migrations\\20261029161542_MoRongHeThong.cs",
+              "RelativeToolTip": "Restaurant.Infrastructure\\Migrations\\20261029161542_MoRongHeThong.cs",
+              "ViewState": "AgIAAI4CAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:55:07.101Z",
+              "WhenOpened": "2026-10-29T16:15:42.386Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "DanhMucMon.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\DanhMucMon.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\DanhMucMon.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\DanhMucMon.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\DanhMucMon.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
+              "Title": "DanhMucMonConfiguration.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Configurations\\DanhMucMonConfiguration.cs",
+              "RelativeDocumentMoniker": "Restaurant.Infrastructure\\Configurations\\DanhMucMonConfiguration.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Configurations\\DanhMucMonConfiguration.cs",
+              "RelativeToolTip": "Restaurant.Infrastructure\\Configurations\\DanhMucMonConfiguration.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAowBwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:51:55.563Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "VaiTro.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\VaiTro.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\VaiTro.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\VaiTro.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\VaiTro.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:50:21.242Z",
+              "WhenOpened": "2026-10-29T16:14:33.028Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "TaiKhoan.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\TaiKhoan.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\TaiKhoan.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\TaiKhoan.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\TaiKhoan.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:49:58.094Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PhieuXuatKho.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\PhieuXuatKho.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\PhieuXuatKho.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\PhieuXuatKho.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\PhieuXuatKho.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:49:26.218Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "PhieuNhapKho.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\PhieuNhapKho.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\PhieuNhapKho.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\PhieuNhapKho.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\PhieuNhapKho.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:48:58.008Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "NhanVien.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\NhanVien.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\NhanVien.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\NhanVien.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\NhanVien.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:48:07.455Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "NguyenLieu.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\NguyenLieu.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\NguyenLieu.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\NguyenLieu.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\NguyenLieu.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:47:20.406Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "KhuVuc.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\KhuVuc.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\KhuVuc.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\KhuVuc.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\KhuVuc.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:46:43.827Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "KhachHang.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\KhachHang.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\KhachHang.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\KhachHang.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\KhachHang.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:45:38.923Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "HoaDon.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\HoaDon.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\HoaDon.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\HoaDon.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\HoaDon.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:44:56.15Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "GioHang.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\GioHang.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\GioHang.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\GioHang.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\GioHang.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:44:14.697Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "DonHang.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\DonHang.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\DonHang.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\DonHang.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\DonHang.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAwwBkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:43:36.261Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "DatBan.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\DatBan.cs",
-              "RelativeDocumentMoniker": "Restaurant.Domain\\Entities\\DatBan.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Entities\\DatBan.cs",
-              "RelativeToolTip": "Restaurant.Domain\\Entities\\DatBan.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T00:42:53.069Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\appsettings.json",
               "RelativeDocumentMoniker": "Restaurant.API\\appsettings.json",
@@ -273,7 +69,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Program.cs",
               "RelativeDocumentMoniker": "Restaurant.Web\\Program.cs",
@@ -281,7 +77,8 @@
               "RelativeToolTip": "Restaurant.Web\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-14T12:23:31.887Z"
+              "WhenOpened": "2026-10-14T12:23:31.887Z",
+              "EditorCaption": ""
             }
           ]
         }
