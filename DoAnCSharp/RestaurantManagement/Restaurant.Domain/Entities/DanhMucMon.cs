@@ -11,6 +11,7 @@ namespace Restaurant.Domain.Entities
         public string TenDanhMuc { get; set; } = string.Empty;
 
         public string? MoTa { get; set; }
+        public bool TrangThai { get; set; } = true;
 
         public ICollection<MonAn> MonAns { get; set; }
             = new List<MonAn>();
