@@ -3235,23 +3235,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\daide\\.nuget\\packages\\": {},
+    "C:\\Users\\ACER\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Restaurant.API.csproj",
+      "projectUniqueName": "D:\\github2\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Restaurant.API.csproj",
       "projectName": "Restaurant.API",
-      "projectPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Restaurant.API.csproj",
-      "packagesPath": "C:\\Users\\daide\\.nuget\\packages\\",
-      "outputPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\obj\\",
+      "projectPath": "D:\\github2\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Restaurant.API.csproj",
+      "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+      "outputPath": "D:\\github2\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\daide\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3267,11 +3267,11 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj": {
-              "projectPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj"
+            "D:\\github2\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj": {
+              "projectPath": "D:\\github2\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj"
             },
-            "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj": {
-              "projectPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj"
+            "D:\\github2\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj": {
+              "projectPath": "D:\\github2\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj"
             }
           }
         }
@@ -3323,7 +3323,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.401/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.403/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
