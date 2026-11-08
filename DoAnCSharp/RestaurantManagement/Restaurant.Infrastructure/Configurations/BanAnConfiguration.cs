@@ -20,7 +20,7 @@ public sealed class BanAnConfiguration : IEntityTypeConfiguration<BanAn>
         builder.Property(e => e.TrangThaiHoatDong)
             .HasDefaultValue(true);
         builder.HasIndex(e => new { e.MaKhuVuc, e.TenBan }).IsUnique();
-        builder.HasOne<KhuVuc>()
+        builder.HasOne(e => e.KhuVuc)
             .WithMany()
             .HasForeignKey(e => e.MaKhuVuc)
             .OnDelete(DeleteBehavior.NoAction);

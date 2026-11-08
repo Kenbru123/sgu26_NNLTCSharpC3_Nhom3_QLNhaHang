@@ -21,3 +21,26 @@ D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant
 D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.pdb
 D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.genruntimeconfig.cache
 D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\ref\Restaurant.Admin.dll
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\bin\Debug\net10.0-windows\Restaurant.Admin.exe
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\bin\Debug\net10.0-windows\Restaurant.Admin.deps.json
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\bin\Debug\net10.0-windows\Restaurant.Admin.runtimeconfig.json
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\bin\Debug\net10.0-windows\Restaurant.Admin.dll
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\bin\Debug\net10.0-windows\Restaurant.Admin.pdb
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\bin\Debug\net10.0-windows\Restaurant.Application.dll
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\bin\Debug\net10.0-windows\Restaurant.Domain.dll
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\bin\Debug\net10.0-windows\Restaurant.Application.pdb
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\bin\Debug\net10.0-windows\Restaurant.Domain.pdb
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.csproj.AssemblyReference.cache
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.Form1.resources
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.csproj.GenerateResource.cache
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.AssemblyInfoInputs.cache
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.AssemblyInfo.cs
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.csproj.CoreCompileInputs.cache
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.sourcelink.json
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaura.65179937.Up2Date
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.dll
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\refint\Restaurant.Admin.dll
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.pdb
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\Restaurant.Admin.genruntimeconfig.cache
+C:\Users\hauth\OneDrive\Tài liệu\GitHub\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.Admin\obj\Debug\net10.0-windows\ref\Restaurant.Admin.dll

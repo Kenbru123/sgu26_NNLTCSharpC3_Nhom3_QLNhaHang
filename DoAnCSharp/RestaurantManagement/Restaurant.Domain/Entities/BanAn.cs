@@ -11,5 +11,6 @@ namespace Restaurant.Domain.Entities
         public string TenBan { get; set; } = string.Empty;
         public int SoCho { get; set; }
         public bool TrangThaiHoatDong { get; set; } = true;
+        public KhuVuc KhuVuc { get; set; } = null!;
     }
 }

@@ -1,6 +1,105 @@
-@Restaurant.API_HostAddress = http://localhost:5297
+@Restaurant.API_HostAddress = https://localhost:7053
+@token = paste_access_token_here
 
-GET {{Restaurant.API_HostAddress}}/weatherforecast/
+### Login as a manager or employee; copy accessToken from the response into @token
+POST {{Restaurant.API_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "tenDangNhap": "your-username",
+  "matKhau": "your-password"
+}
+
+### List areas (manager or employee)
+GET {{Restaurant.API_HostAddress}}/api/khu-vuc
 Accept: application/json
+Authorization: Bearer {{token}}
 
-###
+### Get an area (manager or employee; replace 1 with an existing ID)
+GET {{Restaurant.API_HostAddress}}/api/khu-vuc/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Create an area (manager only)
+POST {{Restaurant.API_HostAddress}}/api/khu-vuc
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "tenKhuVuc": "Khu vực sân vườn",
+  "moTa": "Không gian ngoài trời"
+}
+
+### Update an area (manager only; replace 1 with an existing ID)
+PUT {{Restaurant.API_HostAddress}}/api/khu-vuc/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "tenKhuVuc": "Khu vực tầng trệt",
+  "moTa": "Gần quầy lễ tân"
+}
+
+### Delete an area (manager only; replace 1 with an existing ID)
+DELETE {{Restaurant.API_HostAddress}}/api/khu-vuc/1
+Authorization: Bearer {{token}}
+
+### Verify missing area returns 404
+GET {{Restaurant.API_HostAddress}}/api/khu-vuc/999999
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List tables, optionally filter by area, status, or table name/code
+GET {{Restaurant.API_HostAddress}}/api/ban-an
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List tables in an existing area
+GET {{Restaurant.API_HostAddress}}/api/ban-an?maKhuVuc=1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Search tables by name or code
+GET {{Restaurant.API_HostAddress}}/api/ban-an?search=1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Get a table (replace 1 with an existing ID)
+GET {{Restaurant.API_HostAddress}}/api/ban-an/1
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Create a table (MaKhuVuc must identify an existing area)
+POST {{Restaurant.API_HostAddress}}/api/ban-an
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "maKhuVuc": 1,
+  "tenBan": "Bàn 01",
+  "soCho": 4
+}
+
+### Update a table (replace 1 and MaKhuVuc with existing IDs)
+PUT {{Restaurant.API_HostAddress}}/api/ban-an/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "maKhuVuc": 1,
+  "tenBan": "Bàn 01",
+  "soCho": 6
+}
+
+### Change table active status (replace 1 with an existing ID)
+PATCH {{Restaurant.API_HostAddress}}/api/ban-an/1/trang-thai
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "trangThaiHoatDong": false
+}
+
+### Delete a table without reservations or orders (replace 1 with an existing ID)
+DELETE {{Restaurant.API_HostAddress}}/api/ban-an/1
+Authorization: Bearer {{token}}
