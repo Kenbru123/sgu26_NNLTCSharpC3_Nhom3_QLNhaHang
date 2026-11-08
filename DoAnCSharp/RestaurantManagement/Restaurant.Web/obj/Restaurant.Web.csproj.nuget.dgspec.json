@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Restaurant.Web.csproj": {}
+    "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Restaurant.Web.csproj": {}
   },
   "projects": {
-    "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj": {
+    "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj",
+        "projectUniqueName": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj",
         "projectName": "Restaurant.Application",
-        "projectPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj",
-        "packagesPath": "C:\\Users\\daide\\.nuget\\packages\\",
-        "outputPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\obj\\",
+        "projectPath": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj",
+        "packagesPath": "C:\\Users\\hauth\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\daide\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hauth\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -33,8 +33,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj": {
-                "projectPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj"
+              "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj": {
+                "projectPath": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj"
               }
             }
           }
@@ -349,20 +349,20 @@
         }
       }
     },
-    "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj": {
+    "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj",
         "projectName": "Restaurant.Domain",
-        "projectPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj",
-        "packagesPath": "C:\\Users\\daide\\.nuget\\packages\\",
-        "outputPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\obj\\",
+        "projectPath": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\Restaurant.Domain.csproj",
+        "packagesPath": "C:\\Users\\hauth\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\daide\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hauth\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -690,20 +690,20 @@
         }
       }
     },
-    "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Restaurant.Web.csproj": {
+    "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Restaurant.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Restaurant.Web.csproj",
+        "projectUniqueName": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Restaurant.Web.csproj",
         "projectName": "Restaurant.Web",
-        "projectPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Restaurant.Web.csproj",
-        "packagesPath": "C:\\Users\\daide\\.nuget\\packages\\",
-        "outputPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\obj\\",
+        "projectPath": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Restaurant.Web.csproj",
+        "packagesPath": "C:\\Users\\hauth\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\daide\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hauth\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -719,8 +719,8 @@
             "framework": "net10.0",
             "targetAlias": "net10.0",
             "projectReferences": {
-              "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj": {
-                "projectPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj"
+              "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj": {
+                "projectPath": "C:\\Users\\hauth\\OneDrive\\Tài liệu\\GitHub\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Restaurant.Application.csproj"
               }
             }
           }
