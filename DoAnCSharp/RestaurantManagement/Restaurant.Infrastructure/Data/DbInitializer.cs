@@ -38,11 +38,25 @@ public static class DbInitializer
                 "AdminSeed:Password phải có ít nhất 6 ký tự.");
         }
 
-        // Không tạo trùng tài khoản nếu username đã tồn tại.
-        if (await dbContext.TaiKhoans.AnyAsync(
+        // Chỉ reset mật khẩu tài khoản hiện có khi được bật rõ ràng bằng User Secret.
+        var existingAccount = await dbContext.TaiKhoans
+            .SingleOrDefaultAsync(
                 account => account.TenDangNhap == userName,
-                cancellationToken))
+                cancellationToken);
+
+        if (existingAccount is not null)
         {
+            var shouldResetPassword = bool.TryParse(
+                seedSettings["ResetPassword"],
+                out var resetPassword) && resetPassword;
+
+            if (shouldResetPassword)
+            {
+                existingAccount.MatKhauHash = PasswordHasher.Hash(password);
+                existingAccount.TrangThai = true;
+                await dbContext.SaveChangesAsync(cancellationToken);
+            }
+
             return;
         }
 
