@@ -3,8 +3,88 @@
   "WorkspaceRootPath": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.infrastructure\\migrations\\20261029161542_moronghethong.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|solutionrelative:restaurant.infrastructure\\migrations\\20261029161542_moronghethong.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\auth\\authresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\auth\\authresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\auth\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\auth\\loginrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\auth\\authresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\auth\\authresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\account\\accountresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\account\\accountresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\account\\createemployeeaccountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\account\\createemployeeaccountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\account\\employeeaccountresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\account\\employeeaccountresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\account\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\account\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.infrastructure\\restaurant.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|solutionrelative:restaurant.infrastructure\\restaurant.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\auth\\registerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\auth\\registerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.infrastructure\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|solutionrelative:restaurant.infrastructure\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\account\\updaterolerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\account\\updaterolerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\dtos\\account\\updateaccountstatusrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\dtos\\account\\updateaccountstatusrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.infrastructure\\services\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|solutionrelative:restaurant.infrastructure\\services\\accountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\controllers\\foodscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\controllers\\foodscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\controllers\\accountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.infrastructure\\data\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|solutionrelative:restaurant.infrastructure\\data\\dbinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{089507BA-9DFA-B64E-EB42-E76ED366A09A}|Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.infrastructure\\configurations\\danhmucmonconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -15,8 +95,12 @@
       "RelativeMoniker": "D:0:0:{FFB53ECB-F199-30F5-4DAE-F6DD36821617}|Restaurant.Web\\Restaurant.Web.csproj|solutionrelative:restaurant.web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.api\\restaurant.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{AA3DDF22-A035-EE6B-F610-64E3744F26A6}|Restaurant.API\\Restaurant.API.csproj|solutionrelative:restaurant.api\\restaurant.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|d:\\sgu26_nnltcsharpc3_nhom3_qlnhahang\\doancsharp\\restaurantmanagement\\restaurant.application\\interfaces\\iaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F50C6AE-8711-990C-1076-426CB27AC6A8}|Restaurant.Application\\Restaurant.Application.csproj|solutionrelative:restaurant.application\\interfaces\\iaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,50 +110,323 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 23,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "20261029161542_MoRongHeThong.cs",
-              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Migrations\\20261029161542_MoRongHeThong.cs",
-              "RelativeDocumentMoniker": "Restaurant.Infrastructure\\Migrations\\20261029161542_MoRongHeThong.cs",
-              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Migrations\\20261029161542_MoRongHeThong.cs",
-              "RelativeToolTip": "Restaurant.Infrastructure\\Migrations\\20261029161542_MoRongHeThong.cs",
-              "ViewState": "AgIAAI4CAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-29T16:15:42.386Z",
+              "DocumentIndex": 1,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "Restaurant.API\\appsettings.Development.json",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\appsettings.Development.json",
+              "RelativeToolTip": "Restaurant.API\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-11-08T12:10:15.054Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 19,
+              "Title": "DbInitializer.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Data\\DbInitializer.cs",
+              "RelativeDocumentMoniker": "Restaurant.Infrastructure\\Data\\DbInitializer.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Data\\DbInitializer.cs",
+              "RelativeToolTip": "Restaurant.Infrastructure\\Data\\DbInitializer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAF0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:09:53.349Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "AccountsController.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Controllers\\AccountsController.cs",
+              "RelativeDocumentMoniker": "Restaurant.API\\Controllers\\AccountsController.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Controllers\\AccountsController.cs",
+              "RelativeToolTip": "Restaurant.API\\Controllers\\AccountsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:03:35.356Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "FoodsController.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Controllers\\FoodsController.cs",
+              "RelativeDocumentMoniker": "Restaurant.API\\Controllers\\FoodsController.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Controllers\\FoodsController.cs",
+              "RelativeToolTip": "Restaurant.API\\Controllers\\FoodsController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:03:20.596Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "AccountService.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Services\\AccountService.cs",
+              "RelativeDocumentMoniker": "Restaurant.Infrastructure\\Services\\AccountService.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Services\\AccountService.cs",
+              "RelativeToolTip": "Restaurant.Infrastructure\\Services\\AccountService.cs",
+              "ViewState": "AgIAAG0AAAAAAAAAAAAjwPoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:02:58.974Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "UpdateAccountStatusRequest.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\UpdateAccountStatusRequest.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Account\\UpdateAccountStatusRequest.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\UpdateAccountStatusRequest.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Account\\UpdateAccountStatusRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:02:32.886Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CreateEmployeeAccountRequest.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\CreateEmployeeAccountRequest.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Account\\CreateEmployeeAccountRequest.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\CreateEmployeeAccountRequest.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Account\\CreateEmployeeAccountRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:02:32.801Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "EmployeeAccountResponse.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\EmployeeAccountResponse.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Account\\EmployeeAccountResponse.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\EmployeeAccountResponse.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Account\\EmployeeAccountResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:02:32.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ChangePasswordRequest.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\ChangePasswordRequest.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Account\\ChangePasswordRequest.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\ChangePasswordRequest.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Account\\ChangePasswordRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:02:32.626Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "IAccountService.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Interfaces\\IAccountService.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\Interfaces\\IAccountService.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Interfaces\\IAccountService.cs",
+              "RelativeToolTip": "Restaurant.Application\\Interfaces\\IAccountService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:02:32.536Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "UpdateRoleRequest.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\UpdateRoleRequest.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Account\\UpdateRoleRequest.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\UpdateRoleRequest.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Account\\UpdateRoleRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:02:32.418Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AccountResult.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\AccountResult.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Account\\AccountResult.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Account\\AccountResult.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Account\\AccountResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T12:02:32.324Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Restaurant.API\\Controllers\\AuthController.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Restaurant.API\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAADYAAAAAAAAAAAAAADYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T11:44:33.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Program.cs",
+              "RelativeDocumentMoniker": "Restaurant.API\\Program.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Program.cs",
+              "RelativeToolTip": "Restaurant.API\\Program.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAnwAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T11:44:13.801Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Restaurant.Infrastructure",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj",
+              "RelativeDocumentMoniker": "Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj",
+              "RelativeToolTip": "Restaurant.Infrastructure\\Restaurant.Infrastructure.csproj",
+              "ViewState": "AgIAAAkAAAAAAAAAAIAwwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-11-08T11:44:13.749Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Restaurant.API",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Restaurant.API.csproj",
+              "RelativeDocumentMoniker": "Restaurant.API\\Restaurant.API.csproj",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\Restaurant.API.csproj",
+              "RelativeToolTip": "Restaurant.API\\Restaurant.API.csproj",
+              "ViewState": "AgIAAAkAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-11-08T11:44:13.586Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "Restaurant.Infrastructure\\Services\\AuthService.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Services\\AuthService.cs",
+              "RelativeToolTip": "Restaurant.Infrastructure\\Services\\AuthService.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAwwBUBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T11:43:52.615Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "RegisterRequest.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Auth\\RegisterRequest.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Auth\\RegisterRequest.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Auth\\RegisterRequest.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Auth\\RegisterRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T11:43:25.115Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AuthResult.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Auth\\AuthResult.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Auth\\AuthResult.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Auth\\AuthResult.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Auth\\AuthResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T11:43:25.006Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IAuthService.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Interfaces\\IAuthService.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\Interfaces\\IAuthService.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\Interfaces\\IAuthService.cs",
+              "RelativeToolTip": "Restaurant.Application\\Interfaces\\IAuthService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T11:43:24.842Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LoginRequest.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Auth\\LoginRequest.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Auth\\LoginRequest.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Auth\\LoginRequest.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Auth\\LoginRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T11:43:24.747Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AuthResponse.cs",
+              "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Auth\\AuthResponse.cs",
+              "RelativeDocumentMoniker": "Restaurant.Application\\DTOs\\Auth\\AuthResponse.cs",
+              "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Application\\DTOs\\Auth\\AuthResponse.cs",
+              "RelativeToolTip": "Restaurant.Application\\DTOs\\Auth\\AuthResponse.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAgwBMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-08T11:43:24.597Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
               "Title": "DanhMucMonConfiguration.cs",
               "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Configurations\\DanhMucMonConfiguration.cs",
               "RelativeDocumentMoniker": "Restaurant.Infrastructure\\Configurations\\DanhMucMonConfiguration.cs",
               "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Infrastructure\\Configurations\\DanhMucMonConfiguration.cs",
               "RelativeToolTip": "Restaurant.Infrastructure\\Configurations\\DanhMucMonConfiguration.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAowBwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-29T16:14:33.028Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\appsettings.json",
               "RelativeDocumentMoniker": "Restaurant.API\\appsettings.json",
               "ToolTip": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.API\\appsettings.json",
               "RelativeToolTip": "Restaurant.API\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAABQAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-10-16T09:33:44.118Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 22,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\\DoAnCSharp\\RestaurantManagement\\Restaurant.Web\\Program.cs",
               "RelativeDocumentMoniker": "Restaurant.Web\\Program.cs",
@@ -77,8 +434,7 @@
               "RelativeToolTip": "Restaurant.Web\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-14T12:23:31.887Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-14T12:23:31.887Z"
             }
           ]
         }

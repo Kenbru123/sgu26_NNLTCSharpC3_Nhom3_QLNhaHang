@@ -765,6 +765,10 @@
               "target": "Package",
               "version": "[10.0.13, )"
             },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.15.0, )"
+            },
             "System.Security.Cryptography.Pkcs": {
               "target": "Package",
               "version": "[10.0.13, )"

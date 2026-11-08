@@ -173,3 +173,5 @@ D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant
 D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.API\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.API\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.API\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.API\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\sgu26_NNLTCSharpC3_Nhom3_QLNhaHang\DoAnCSharp\RestaurantManagement\Restaurant.API\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
