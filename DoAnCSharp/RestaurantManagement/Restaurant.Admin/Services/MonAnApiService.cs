@@ -16,6 +16,7 @@ namespace Restaurant.Admin.Services
             {
                 BaseAddress = new Uri("https://localhost:7053/")
             };
+            ApiSession.ApplyAuthorization(_httpClient);
         }
 
         public async Task<List<MonAnDto>> GetAllAsync()
