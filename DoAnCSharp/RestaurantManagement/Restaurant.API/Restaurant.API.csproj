@@ -5,6 +5,7 @@
     <UserSecretsId>RestaurantManagement-API-Development</UserSecretsId>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>RestaurantManagement-Api-Local</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

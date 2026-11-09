@@ -1,67 +1,188 @@
+
+using System.Security.Claims;
+using System.Text;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Restaurant.Infrastructure.Data;
+using Restaurant.API.Authentication;
+using Restaurant.API.Commands;
 using Restaurant.Application.Interfaces;
+using Restaurant.Infrastructure.Data;
 using Restaurant.Infrastructure.Services;
+
+// Lệnh khởi tạo tài khoản Admin thủ công
+if (args.Any(argument =>
+    argument.Equals(
+        "--bootstrap-admin",
+        StringComparison.OrdinalIgnoreCase)))
+{
+    if (args.Length != 1)
+    {
+        throw new ArgumentException(
+            "--bootstrap-admin cannot be combined " +
+            "with other application arguments.");
+    }
+
+    await AdminBootstrapCommand.RunAsync();
+    return;
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Đăng ký DbContext kết nối tới SQL Server.
-builder.Services.AddDbContext<RestaurantDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+// =====================================================
+// 1. CẤU HÌNH KẾT NỐI SQL SERVER
+// =====================================================
 
-// Đăng ký các service nghiệp vụ.
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "Thiếu cấu hình ConnectionStrings:DefaultConnection.");
+}
+
+builder.Services.AddDbContext<RestaurantDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+// =====================================================
+// 2. ĐĂNG KÝ CÁC SERVICE NGHIỆP VỤ
+// =====================================================
+
+// Quản lý thực đơn
 builder.Services.AddScoped<IMonAnService, MonAnService>();
+
+// Quản lý khu vực và bàn ăn
+builder.Services.AddScoped<IKhuVucService, KhuVucService>();
+builder.Services.AddScoped<IBanAnService, BanAnService>();
+
+// Đăng ký, đăng nhập và quản lý tài khoản
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 
-// Đọc cấu hình JWT từ appsettings.json hoặc biến môi trường.
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = jwtSettings["SecretKey"]
-    ?? throw new InvalidOperationException("Thiếu cấu hình Jwt:SecretKey.");
+// =====================================================
+// 3. CẤU HÌNH JWT
+// =====================================================
 
-// Cấu hình xác thực JWT Bearer cho các API yêu cầu đăng nhập.
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+// Dùng thống nhất Jwt:SigningKey từ main.
+// Khóa thật phải nằm trong User Secrets hoặc biến môi trường.
+var jwtSigningKey = builder.Configuration["Jwt:SigningKey"];
+
+if (string.IsNullOrWhiteSpace(jwtSigningKey) ||
+    Encoding.UTF8.GetByteCount(jwtSigningKey) < 32)
+{
+    throw new InvalidOperationException(
+        "Thiếu Jwt:SigningKey hoặc khóa JWT ngắn hơn 32 bytes.");
+}
+
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+
+if (string.IsNullOrWhiteSpace(jwtIssuer) ||
+    string.IsNullOrWhiteSpace(jwtAudience))
+{
+    throw new InvalidOperationException(
+        "Thiếu cấu hình Jwt:Issuer hoặc Jwt:Audience.");
+}
+
+// Đăng ký JwtOptions để AuthController sử dụng.
+builder.Services.Configure<JwtOptions>(options =>
+{
+    options.SigningKey = jwtSigningKey;
+    options.Issuer = jwtIssuer;
+    options.Audience = jwtAudience;
+});
+
+// Chỉ đăng ký JWT Bearer MỘT LẦN.
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey)),
-            ValidateIssuer = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidateAudience = true,
-            ValidAudience = jwtSettings["Audience"],
-            ValidateLifetime = true,
-            ClockSkew = TimeSpan.FromMinutes(1)
-        };
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = jwtIssuer,
+
+                ValidateAudience = true,
+                ValidAudience = jwtAudience,
+
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(jwtSigningKey)),
+
+                ValidateLifetime = true,
+
+                NameClaimType = ClaimTypes.Name,
+                RoleClaimType = ClaimTypes.Role,
+
+                ClockSkew = TimeSpan.FromSeconds(30)
+            };
     });
 
-// Chỉ quản lý hoặc admin được truy cập API quản trị.
+// =====================================================
+// 4. PHÂN QUYỀN
+// =====================================================
+
 builder.Services.AddAuthorization(options =>
 {
+    // Chỉ quản lý hoặc Admin được truy cập
+    // các API có policy ManagementOnly.
     options.AddPolicy("ManagementOnly", policy =>
         policy.RequireRole("QuanLy", "Admin"));
 });
 
-// Add services to the container.
+// =====================================================
+// 5. GIỚI HẠN SỐ LẦN GỌI API ĐĂNG NHẬP
+// =====================================================
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode =
+        StatusCodes.Status429TooManyRequests;
+
+    options.AddPolicy("login", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            httpContext.Connection.RemoteIpAddress?.ToString()
+                ?? "unknown",
+            _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
+});
+
+// =====================================================
+// 6. CONTROLLERS VÀ OPENAPI
+// =====================================================
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Seed tài khoản Admin ban đầu nếu AdminSeed:Enabled=true.
+// =====================================================
+// 7. KHỞI TẠO ADMIN (NẾU ĐƯỢC BẬT TRONG CẤU HÌNH)
+// =====================================================
+
 await using (var scope = app.Services.CreateAsyncScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<RestaurantDbContext>();
-    await DbInitializer.SeedAdminAsync(dbContext, app.Configuration);
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<RestaurantDbContext>();
+
+    await DbInitializer.SeedAdminAsync(
+        dbContext,
+        app.Configuration);
 }
 
-// Configure the HTTP request pipeline.
+// =====================================================
+// 8. HTTP REQUEST PIPELINE
+// =====================================================
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -69,8 +190,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Xác thực token trước khi kiểm tra quyền truy cập endpoint.
+app.UseRouting();
+
+// Giới hạn request trước khi xử lý đăng nhập
+app.UseRateLimiter();
+
+// Xác thực người dùng
 app.UseAuthentication();
+
+// Kiểm tra quyền truy cập
 app.UseAuthorization();
 
 app.MapControllers();
