@@ -1,1 +1,14 @@
+# Environment secrets
 /DoAnCSharp/RestaurantManagement/.env
+
+# Visual Studio
+.vs/
+**/.vs/
+
+# Build files
+**/bin/
+**/obj/
+
+# User-specific files
+*.user
+*.suo
