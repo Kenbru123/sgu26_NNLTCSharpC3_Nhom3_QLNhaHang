@@ -1,12 +1,38 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Restaurant.Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Cho phép HttpClient đọc cookie/claims của request Web hiện tại.
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<JwtAuthorizationHandler>();
+
+// Đọc địa chỉ API từ cấu hình thay vì hard-code trong source code.
+var apiBaseUrl = builder.Configuration["Api:BaseUrl"]
+    ?? throw new InvalidOperationException("Thiếu cấu hình Api:BaseUrl.");
+
 builder.Services.AddHttpClient<IMonAnApiService, MonAnApiService>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7053/");
+    client.BaseAddress = new Uri(apiBaseUrl);
+})
+    .AddHttpMessageHandler<JwtAuthorizationHandler>();
+builder.Services.AddHttpClient<IAuthApiService, AuthApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
 });
+
+// Cookie lưu trạng thái đăng nhập ở Web; JWT vẫn do API phát hành.
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.ExpireTimeSpan = TimeSpan.FromHours(8);
+        options.SlidingExpiration = true;
+    });
 
 var app = builder.Build();
 
@@ -21,6 +47,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
