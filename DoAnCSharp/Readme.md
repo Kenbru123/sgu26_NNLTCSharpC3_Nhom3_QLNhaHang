@@ -78,9 +78,12 @@ Khi mở ứng dụng Admin, đăng nhập bằng tài khoản Quản lý vừa 
 
 - Tab **Khu vực** cho phép xem, thêm, cập nhật và xóa khu vực. Tên khu vực là duy nhất; khu vực đang có bàn không thể bị xóa.
 - Tab **Bàn ăn** cho phép thêm, xem chi tiết, cập nhật, tìm kiếm theo mã/tên, lọc theo khu vực/trạng thái, cập nhật trạng thái và xóa bàn. Khi thêm hoặc sửa bàn, phải chọn một khu vực đã tồn tại trong danh sách; nếu chưa có khu vực thì cần tạo khu vực trước. Tên bàn không được trùng trong cùng một khu vực và số chỗ phải lớn hơn 0. Không thể ngừng hoạt động bàn đang có đơn hàng/lượt đặt còn hiệu lực; bàn còn liên kết với dữ liệu đơn hàng/đặt bàn không thể bị xóa, kể cả dữ liệu lịch sử.
+- Tab **Gọi món** dành cho Quản lý và Nhân viên: tạo/xóa phiếu tại bàn, tìm món theo tên/danh mục, thêm/xóa món, xem phiếu/chi tiết, cập nhật ghi chú và số lượng, cập nhật trạng thái phiếu (`Đang phục vụ`/`Đã thanh toán`) và trạng thái chế biến món (`Chờ chế biến` → `Đang chế biến` → `Đã chế biến`). Chi tiết món hiển thị ghi chú, trạng thái chế biến, thời gian bắt đầu và hoàn thành, đơn giá đã chốt theo phiếu. Mỗi bàn chỉ có một phiếu đang phục vụ; nếu bàn đã có phiếu thì mở phiếu đó. Không thể sửa món đã chuyển chế biến; không thể xóa phiếu có món đang chế biến/đã chế biến hoặc có hóa đơn.
+- Khi thanh toán, nhân viên chọn phương thức (`Tiền mặt`, `Chuyển khoản`, `Thẻ`) và VAT (0–100%). Hệ thống tính tiền hàng/VAT, tạo hoặc cập nhật hóa đơn và đánh dấu phiếu đã thanh toán trong cùng transaction.
 
 Các API quản lý khu vực: `GET/POST /api/khu-vuc`, `GET/PUT/DELETE /api/khu-vuc/{id}`.
 Các API quản lý bàn ăn: `GET/POST /api/ban-an`, `GET/PUT/DELETE /api/ban-an/{id}`, `PATCH /api/ban-an/{id}/trang-thai`. API chỉ chấp nhận mã khu vực đã tồn tại.
+Các API gọi món (chỉ Quản lý/Nhân viên): `GET /api/goi-mon`, `GET/DELETE /api/goi-mon/{id}`, `POST /api/goi-mon`, `PUT /api/goi-mon/{id}`, `PATCH /api/goi-mon/{id}/trang-thai`, `POST /api/goi-mon/{id}/thanh-toan`, `GET /api/goi-mon/ban-an`, `GET /api/goi-mon/danh-muc`, `GET /api/goi-mon/mon-an`, `POST /api/goi-mon/{id}/mon-an`, `PUT/DELETE /api/goi-mon/{id}/mon-an/{detailId}`, `PATCH /api/goi-mon/{id}/mon-an/{detailId}/trang-thai`.
 
 ## Quản lý container
 

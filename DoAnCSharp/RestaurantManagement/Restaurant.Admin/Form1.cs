@@ -8,6 +8,7 @@ namespace Restaurant.Admin
         private readonly MonAnApiService _monAnApiService;
         private readonly KhuVucApiService _khuVucApiService;
         private readonly BanAnApiService _banAnApiService;
+        private readonly GoiMonControl _goiMonControl;
         private readonly DataGridView dgvBanAn = new();
         private readonly Panel pnlDanhSachBanAn = new();
         private readonly Label lblBanAnKhongCoKetQua = new();
@@ -33,8 +34,15 @@ namespace Restaurant.Admin
             _monAnApiService = new MonAnApiService();
             _khuVucApiService = new KhuVucApiService();
             _banAnApiService = new BanAnApiService();
+            _goiMonControl = new GoiMonControl();
             ConfigureKhuVucGrid();
             InitializeBanAnTab();
+            var tabGoiMon = new TabPage("Gọi món")
+            {
+                Padding = new Padding(8)
+            };
+            tabGoiMon.Controls.Add(_goiMonControl);
+            tabQuanLy.Controls.Add(tabGoiMon);
             btnThemKhuVuc.Enabled = ApiSession.IsManager;
         }
 
@@ -43,6 +51,7 @@ namespace Restaurant.Admin
             await LoadMonAnAsync();
             await LoadKhuVucAsync();
             await LoadBanAnAsync();
+            await _goiMonControl.LoadAsync();
         }
 
         private async void btnTaiLai_Click(object sender, EventArgs e)
