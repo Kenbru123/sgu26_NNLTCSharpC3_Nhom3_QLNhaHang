@@ -53,6 +53,7 @@ builder.Services.AddDbContext<RestaurantDbContext>(options =>
 
 // Quản lý thực đơn
 builder.Services.AddScoped<IMonAnService, MonAnService>();
+builder.Services.AddScoped<IGoiMonService, GoiMonService>();
 
 // Quản lý khu vực và bàn ăn
 builder.Services.AddScoped<IKhuVucService, KhuVucService>();
