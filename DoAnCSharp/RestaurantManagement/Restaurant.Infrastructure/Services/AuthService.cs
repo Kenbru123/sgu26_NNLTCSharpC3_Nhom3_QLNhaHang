@@ -204,7 +204,7 @@ public sealed class AuthService : IAuthService
             !passwordIsValid ||
             !account.TrangThai ||
             !account.TrangThaiLamViec ||
-            account.TenVaiTro is not ("QuanLy" or "NhanVien"))
+            account.TenVaiTro is not ("Admin" or "QuanLy" or "NhanVien"))
         {
             return null;
         }
