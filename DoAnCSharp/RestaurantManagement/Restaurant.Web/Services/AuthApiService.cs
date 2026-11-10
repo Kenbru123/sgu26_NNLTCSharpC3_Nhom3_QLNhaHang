@@ -19,7 +19,7 @@ public sealed class AuthApiService : IAuthApiService
     {
         // Gọi API đăng nhập và nhận JWT từ backend.
         using var response = await _httpClient.PostAsJsonAsync(
-            "api/auth/login",
+            "api/auth/customer/login",
             request,
             cancellationToken);
 
