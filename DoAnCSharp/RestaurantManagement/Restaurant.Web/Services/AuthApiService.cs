@@ -19,7 +19,7 @@ public sealed class AuthApiService : IAuthApiService
     {
         // Gọi API đăng nhập và nhận JWT từ backend.
         using var response = await _httpClient.PostAsJsonAsync(
-            "api/auth/login",
+            "api/auth/customer/login",
             request,
             cancellationToken);
 
@@ -34,23 +34,49 @@ public sealed class AuthApiService : IAuthApiService
         }
 
         // Đọc message lỗi do API trả về để hiển thị trên giao diện.
-        var error = await ReadErrorAsync(response, cancellationToken);
+        var error = await ReadErrorAsync(response, cancellationToken, "Đăng nhập thất bại.");
+        return AuthApiResult.Failed(error);
+    }
+
+    public async Task<AuthApiResult> RegisterAsync(
+        RegisterRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        // Gọi API đăng ký khách hàng.
+        using var response = await _httpClient.PostAsJsonAsync(
+            "api/auth/register",
+            request,
+            cancellationToken);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>(
+                cancellationToken: cancellationToken);
+
+            return authResponse is null
+                ? AuthApiResult.Failed("API không trả về thông tin đăng ký.")
+                : AuthApiResult.Success(authResponse);
+        }
+
+        // Đọc lỗi trùng username hoặc dữ liệu đăng ký không hợp lệ.
+        var error = await ReadErrorAsync(response, cancellationToken, "Đăng ký thất bại.");
         return AuthApiResult.Failed(error);
     }
 
     private static async Task<string> ReadErrorAsync(
         HttpResponseMessage response,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        string fallbackMessage)
     {
         try
         {
             var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>(
                 cancellationToken: cancellationToken);
-            return error?.Message ?? "Đăng nhập thất bại.";
+            return error?.Message ?? fallbackMessage;
         }
         catch (JsonException)
         {
-            return "Không thể kết nối đến API xác thực.";
+            return fallbackMessage;
         }
     }
 

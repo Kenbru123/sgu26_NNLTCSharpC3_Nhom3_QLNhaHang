@@ -18,6 +18,52 @@ public sealed class AccountController : Controller
     }
 
     [HttpGet]
+    public IActionResult Register()
+    {
+        // Hiển thị form đăng ký khách hàng.
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        return View(new RegisterViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(
+        RegisterViewModel model,
+        CancellationToken cancellationToken = default)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        // Gửi thông tin đăng ký đến Auth API.
+        var result = await _authApiService.RegisterAsync(
+            new RegisterRequest
+            {
+                UserName = model.UserName,
+                Password = model.Password,
+                FullName = model.FullName,
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email
+            },
+            cancellationToken);
+
+        if (!result.Succeeded)
+        {
+            ModelState.AddModelError(string.Empty, result.Error ?? "Đăng ký thất bại.");
+            return View(model);
+        }
+
+        // Đăng ký xong thì chuyển người dùng sang trang đăng nhập.
+        TempData["SuccessMessage"] = "Đăng ký thành công. Vui lòng đăng nhập.";
+        return RedirectToAction(nameof(Login));
+    }
+
+    [HttpGet]
     public IActionResult Login(string? returnUrl = null)
     {
         // Nếu đã đăng nhập thì không cần hiển thị lại trang login.
