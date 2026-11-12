@@ -11,6 +11,10 @@ public interface IAccountService
         CreateEmployeeAccountRequest request,
         CancellationToken cancellationToken = default);
 
+    Task<AccountResult> CreateAdminAccountAsync(
+        CreateAdminAccountRequest request,
+        CancellationToken cancellationToken = default);
+
     Task<AccountResult> UpdateRoleAsync(
         int accountId,
         UpdateRoleRequest request,

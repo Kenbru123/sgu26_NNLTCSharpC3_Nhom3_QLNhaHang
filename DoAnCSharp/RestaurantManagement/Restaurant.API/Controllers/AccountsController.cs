@@ -40,6 +40,20 @@ public sealed class AccountsController : ControllerBase
         return StatusCode(StatusCodes.Status201Created, result.Account);
     }
 
+    [HttpPost("admin")]
+    public async Task<IActionResult> CreateAdmin(
+        [FromBody] CreateAdminAccountRequest request,
+        CancellationToken cancellationToken)
+    {
+        var result = await _accountService.CreateAdminAccountAsync(request, cancellationToken);
+        if (!result.Succeeded)
+        {
+            return Conflict(new { message = result.Error });
+        }
+
+        return StatusCode(StatusCodes.Status201Created, result.Account);
+    }
+
     [HttpPut("{accountId:int}/role")]
     public async Task<IActionResult> UpdateRole(
         int accountId,

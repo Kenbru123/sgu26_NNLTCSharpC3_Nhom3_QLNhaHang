@@ -1,0 +1,15 @@
+@Restaurant.API_HostAddress = https://localhost:7053
+@token = paste_access_token_here
+
+### Create an Admin account (requires a manager/admin access token)
+POST {{Restaurant.API_HostAddress}}/api/accounts/admin
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "userName": "admin-moi",
+  "password": "ThayBangMatKhauManh123!",
+  "fullName": "Quan tri vien moi",
+  "phoneNumber": "0900000000",
+  "birthDate": "1990-01-01"
+}
