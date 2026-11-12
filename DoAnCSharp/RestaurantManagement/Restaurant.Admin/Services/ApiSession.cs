@@ -5,13 +5,14 @@ namespace Restaurant.Admin.Services;
 public static class ApiSession
 {
     public const string ManagerRole = "QuanLy";
+    public const string AdminRole = "Admin";
     public const string EmployeeRole = "NhanVien";
 
     public static string? AccessToken { get; private set; }
 
     public static string? Role { get; private set; }
 
-    public static bool IsManager => Role == ManagerRole;
+    public static bool IsManager => Role is ManagerRole or AdminRole;
 
     public static void Set(string accessToken, string role)
     {
