@@ -1,0 +1,32 @@
+﻿@model Restaurant.Application.DTOs.MonAnDto
+
+@{
+    ViewData["Title"] = Model.TenMon;
+}
+
+<a asp-action="Index" class="text-decoration-none">&larr; Quay lại thực đơn</a>
+<div class="row g-4 mt-2">
+    <div class="col-md-6">
+        @if (!string.IsNullOrWhiteSpace(Model.HinhAnh))
+        {
+            <img src="@Model.HinhAnh" alt="@Model.TenMon" class="img-fluid rounded-4 shadow-sm w-100" />
+        }
+        else
+        {
+            <div class="rounded-4 bg-light d-flex align-items-center justify-content-center" style="height: 320px;">
+                <span class="text-secondary">Hình ảnh món ăn</span>
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <p class="text-secondary mb-1">@Model.TenDanhMuc</p>
+        <h1>@Model.TenMon</h1>
+        <p class="text-secondary">@Model.MoTa</p>
+        <p class="fs-3 fw-bold text-success">@Model.DonGia.ToString("N0") đ</p>
+        <form asp-controller="Cart" asp-action="Add" method="post" class="d-flex gap-2">
+            <input type="hidden" name="foodId" value="@Model.MaMon" />
+            <input type="number" name="quantity" value="1" min="1" max="99" class="form-control" style="max-width: 100px;" aria-label="Số lượng" />
+            <button type="submit" class="btn btn-success">Thêm vào giỏ hàng</button>
+        </form>
+    </div>
+</div>

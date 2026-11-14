@@ -107,6 +107,29 @@ public sealed class AccountService : IAccountService
         return AccountResult.Success(MapToResponse(account, employee, role));
     }
 
+    public Task<AccountResult> CreateAdminAccountAsync(
+        CreateAdminAccountRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        if (request.Password.Length < 12)
+        {
+            return Task.FromResult(
+                AccountResult.Failed("Mật khẩu Admin phải có ít nhất 12 ký tự."));
+        }
+
+        return CreateEmployeeAccountAsync(
+            new CreateEmployeeAccountRequest
+            {
+                UserName = request.UserName,
+                Password = request.Password,
+                FullName = request.FullName,
+                PhoneNumber = request.PhoneNumber,
+                BirthDate = request.BirthDate,
+                RoleName = "Admin"
+            },
+            cancellationToken);
+    }
+
     public async Task<AccountResult> UpdateRoleAsync(
         int accountId,
         UpdateRoleRequest request,

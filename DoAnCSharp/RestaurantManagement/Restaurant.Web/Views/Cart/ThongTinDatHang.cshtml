@@ -1,0 +1,58 @@
+﻿@model Restaurant.Web.Models.CheckoutViewModel
+
+@{
+    ViewData["Title"] = "Thông tin nhận hàng";
+}
+
+<h1 class="mb-4">Xác nhận đặt món</h1>
+<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+<form asp-action="Checkout" method="post" class="row g-3">
+    <div class="col-12">
+        <label asp-for="LoaiDon" class="form-label">Cách nhận món</label>
+        <select asp-for="LoaiDon" class="form-select" id="orderType">
+            <option value="OnlineNhanTaiQuay">Nhận tại quầy</option>
+            <option value="OnlineGiaoHang">Giao hàng</option>
+        </select>
+        <span asp-validation-for="LoaiDon" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="TenNguoiNhan" class="form-label">Tên người nhận</label>
+        <input asp-for="TenNguoiNhan" class="form-control" autocomplete="name" />
+        <span asp-validation-for="TenNguoiNhan" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="SDTNguoiNhan" class="form-label">Số điện thoại</label>
+        <input asp-for="SDTNguoiNhan" class="form-control" autocomplete="tel" />
+        <span asp-validation-for="SDTNguoiNhan" class="text-danger"></span>
+    </div>
+    <div class="col-12" id="deliveryAddress">
+        <label asp-for="DiaChiGiao" class="form-label">Địa chỉ giao hàng</label>
+        <textarea asp-for="DiaChiGiao" class="form-control" rows="2" autocomplete="street-address"></textarea>
+        <span asp-validation-for="DiaChiGiao" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <label asp-for="GhiChu" class="form-label">Ghi chú (không bắt buộc)</label>
+        <textarea asp-for="GhiChu" class="form-control" rows="2"></textarea>
+        <span asp-validation-for="GhiChu" class="text-danger"></span>
+    </div>
+    <div class="col-12 d-flex gap-2">
+        <a asp-action="Index" class="btn btn-outline-secondary">Quay lại giỏ hàng</a>
+        <button type="submit" class="btn btn-success">Xác nhận đặt món</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const orderType = document.getElementById("orderType");
+        const deliveryAddress = document.getElementById("deliveryAddress");
+        const addressInput = document.getElementById("DiaChiGiao");
+        function updateAddressVisibility() {
+            const isDelivery = orderType.value === "OnlineGiaoHang";
+            deliveryAddress.hidden = !isDelivery;
+            addressInput.required = isDelivery;
+        }
+        orderType.addEventListener("change", updateAddressVisibility);
+        updateAddressVisibility();
+    </script>
+}

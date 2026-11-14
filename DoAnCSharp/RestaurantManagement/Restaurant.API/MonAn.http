@@ -1,0 +1,94 @@
+@baseUrl = https://localhost:7053
+@token = paste_manager_access_token_here
+
+### Public menu
+GET {{baseUrl}}/api/foods
+Accept: application/json
+
+### Search by food or category
+GET {{baseUrl}}/api/foods?search=pho&categoryId=1
+Accept: application/json
+
+### Public categories
+GET {{baseUrl}}/api/foods/categories
+Accept: application/json
+
+### Public food details (replace 1 with an active food ID)
+GET {{baseUrl}}/api/foods/1
+Accept: application/json
+
+### Manager: list all foods including inactive
+GET {{baseUrl}}/api/foods/admin
+Authorization: Bearer {{token}}
+
+### Manager: list categories for editing
+GET {{baseUrl}}/api/foods/admin/categories
+Authorization: Bearer {{token}}
+
+### Manager: food details (replace 1 with an existing food ID)
+GET {{baseUrl}}/api/foods/admin/1
+Authorization: Bearer {{token}}
+
+### Manager: create a food (MaDanhMuc must exist and be active)
+POST {{baseUrl}}/api/foods
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "tenMon": "Phở bò",
+  "moTa": "Phở bò truyền thống",
+  "donGia": 65000,
+  "hinhAnh": "",
+  "maDanhMuc": 1,
+  "trangThai": true
+}
+
+### Manager: update a food
+PUT {{baseUrl}}/api/foods/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "tenMon": "Phở bò đặc biệt",
+  "moTa": "Phở bò truyền thống, thêm topping",
+  "donGia": 75000,
+  "hinhAnh": "",
+  "maDanhMuc": 1,
+  "trangThai": true
+}
+
+### Manager: deactivate a food; existing order history is preserved
+DELETE {{baseUrl}}/api/foods/1
+Authorization: Bearer {{token}}
+
+### Place an online pickup order
+POST {{baseUrl}}/api/orders/online
+Content-Type: application/json
+
+{
+  "loaiDon": "OnlineNhanTaiQuay",
+  "tenNguoiNhan": "Nguyen Van A",
+  "sdtNguoiNhan": "0901234567",
+  "ghiChu": "Nhận tại quầy",
+  "monAn": [
+    { "maMon": 1, "soLuong": 2 }
+  ]
+}
+
+### Place an online delivery order
+POST {{baseUrl}}/api/orders/online
+Content-Type: application/json
+
+{
+  "loaiDon": "OnlineGiaoHang",
+  "tenNguoiNhan": "Nguyen Van A",
+  "sdtNguoiNhan": "0901234567",
+  "diaChiGiao": "123 Nguyen Trai, Quan 1",
+  "monAn": [
+    { "maMon": 1, "soLuong": 1 }
+  ]
+}
+
+### Manager: retrieve an online order
+GET {{baseUrl}}/api/orders/online/1
+Authorization: Bearer {{token}}
