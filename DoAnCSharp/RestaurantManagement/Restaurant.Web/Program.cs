@@ -9,6 +9,15 @@ builder.Services.AddControllersWithViews();
 // Cho phép HttpClient đọc cookie/claims của request Web hiện tại.
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<JwtAuthorizationHandler>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.IdleTimeout = TimeSpan.FromHours(2);
+});
+builder.Services.AddScoped<ICartService, CartService>();
 
 // Đọc địa chỉ API từ cấu hình thay vì hard-code trong source code.
 var apiBaseUrl = builder.Configuration["Api:BaseUrl"]
@@ -19,6 +28,10 @@ builder.Services.AddHttpClient<IMonAnApiService, MonAnApiService>(client =>
     client.BaseAddress = new Uri(apiBaseUrl);
 })
     .AddHttpMessageHandler<JwtAuthorizationHandler>();
+builder.Services.AddHttpClient<IOnlineOrderApiService, OnlineOrderApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+});
 builder.Services.AddHttpClient<IAuthApiService, AuthApiService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
@@ -46,6 +59,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

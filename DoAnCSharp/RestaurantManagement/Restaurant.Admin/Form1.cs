@@ -24,6 +24,17 @@ namespace Restaurant.Admin
         private readonly Button btnSuaBan = new();
         private readonly Button btnXoaBan = new();
         private readonly Button btnCapNhatTrangThaiBan = new();
+        private readonly TextBox txtMaMon = new();
+        private readonly TextBox txtTenMon = new();
+        private readonly TextBox txtMoTaMon = new();
+        private readonly TextBox txtHinhAnhMon = new();
+        private readonly NumericUpDown nudDonGiaMon = new();
+        private readonly ComboBox cmbDanhMucMon = new();
+        private readonly CheckBox chkMonDangBan = new();
+        private readonly Button btnThemMon = new();
+        private readonly Button btnSuaMon = new();
+        private readonly Button btnXoaMon = new();
+        private readonly Button btnLamMoiMon = new();
         private bool _loadingBanAn;
         private bool _loadingBanFilters;
 
@@ -35,6 +46,7 @@ namespace Restaurant.Admin
             _khuVucApiService = new KhuVucApiService();
             _banAnApiService = new BanAnApiService();
             _goiMonControl = new GoiMonControl();
+            InitializeMonAnTab();
             ConfigureKhuVucGrid();
             InitializeBanAnTab();
             var tabGoiMon = new TabPage("Gọi món")
@@ -63,9 +75,18 @@ namespace Restaurant.Admin
         {
             try
             {
-                var foods = await _monAnApiService.GetAllAsync();
+                var categoriesTask = _monAnApiService.GetCategoriesAsync();
+                var foodsTask = _monAnApiService.GetAllAsync();
+                await Task.WhenAll(categoriesTask, foodsTask);
+                var foods = await foodsTask;
+                var categories = await categoriesTask;
 
+                cmbDanhMucMon.DataSource = categories;
+                cmbDanhMucMon.DisplayMember = nameof(FoodCategoryResponse.TenDanhMuc);
+                cmbDanhMucMon.ValueMember = nameof(FoodCategoryResponse.MaDanhMuc);
                 dgvMonAn.DataSource = foods;
+                dgvMonAn.ClearSelection();
+                ResetMonAnForm();
             }
             catch (Exception ex)
             {
@@ -75,6 +96,298 @@ namespace Restaurant.Admin
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private void InitializeMonAnTab()
+        {
+            var editor = new Panel
+            {
+                Location = new Point(12, 12),
+                Size = new Size(968, 150),
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
+            };
+
+            AddFoodLabel(editor, "Mã món", 8, 8);
+            txtMaMon.Location = new Point(95, 5);
+            txtMaMon.Size = new Size(80, 27);
+            txtMaMon.ReadOnly = true;
+            editor.Controls.Add(txtMaMon);
+
+            AddFoodLabel(editor, "Tên món", 190, 8);
+            txtTenMon.Location = new Point(270, 5);
+            txtTenMon.Size = new Size(270, 27);
+            txtTenMon.MaxLength = 150;
+            editor.Controls.Add(txtTenMon);
+
+            AddFoodLabel(editor, "Đơn giá", 555, 8);
+            nudDonGiaMon.Location = new Point(625, 5);
+            nudDonGiaMon.Size = new Size(135, 27);
+            nudDonGiaMon.DecimalPlaces = 2;
+            nudDonGiaMon.Minimum = 0.01m;
+            nudDonGiaMon.Maximum = 999999999m;
+            editor.Controls.Add(nudDonGiaMon);
+
+            AddFoodLabel(editor, "Danh mục", 775, 8);
+            cmbDanhMucMon.Location = new Point(850, 5);
+            cmbDanhMucMon.Size = new Size(110, 28);
+            cmbDanhMucMon.DropDownStyle = ComboBoxStyle.DropDownList;
+            editor.Controls.Add(cmbDanhMucMon);
+
+            AddFoodLabel(editor, "Mô tả", 8, 44);
+            txtMoTaMon.Location = new Point(95, 41);
+            txtMoTaMon.Size = new Size(445, 27);
+            txtMoTaMon.MaxLength = 500;
+            editor.Controls.Add(txtMoTaMon);
+
+            AddFoodLabel(editor, "Hình ảnh (URL)", 555, 44);
+            txtHinhAnhMon.Location = new Point(655, 41);
+            txtHinhAnhMon.Size = new Size(305, 27);
+            txtHinhAnhMon.MaxLength = 500;
+            editor.Controls.Add(txtHinhAnhMon);
+
+            chkMonDangBan.Location = new Point(95, 78);
+            chkMonDangBan.AutoSize = true;
+            chkMonDangBan.Text = "Đang bán";
+            chkMonDangBan.Checked = true;
+            editor.Controls.Add(chkMonDangBan);
+
+            ConfigureFoodButton(btnThemMon, "Thêm món", 220);
+            btnThemMon.Click += btnThemMon_Click;
+            editor.Controls.Add(btnThemMon);
+            ConfigureFoodButton(btnSuaMon, "Cập nhật món", 330);
+            btnSuaMon.Click += btnSuaMon_Click;
+            editor.Controls.Add(btnSuaMon);
+            ConfigureFoodButton(btnXoaMon, "Ngừng bán", 455);
+            btnXoaMon.Click += btnXoaMon_Click;
+            editor.Controls.Add(btnXoaMon);
+            ConfigureFoodButton(btnLamMoiMon, "Làm mới", 575);
+            btnLamMoiMon.Click += (_, _) => ResetMonAnForm();
+            editor.Controls.Add(btnLamMoiMon);
+
+            dgvMonAn.Location = new Point(12, 170);
+            dgvMonAn.Size = new Size(968, 373);
+            dgvMonAn.AutoGenerateColumns = false;
+            dgvMonAn.Columns.Clear();
+            dgvMonAn.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(MonAnDto.MaMon),
+                HeaderText = "Mã món",
+                Width = 75
+            });
+            dgvMonAn.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(MonAnDto.TenMon),
+                HeaderText = "Tên món",
+                Width = 210
+            });
+            dgvMonAn.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(MonAnDto.TenDanhMuc),
+                HeaderText = "Danh mục",
+                Width = 150
+            });
+            dgvMonAn.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = nameof(MonAnDto.DonGia),
+                HeaderText = "Đơn giá",
+                Width = 120,
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Format = "N0"
+                }
+            });
+            dgvMonAn.Columns.Add(new DataGridViewCheckBoxColumn
+            {
+                DataPropertyName = nameof(MonAnDto.TrangThai),
+                HeaderText = "Đang bán",
+                Width = 100
+            });
+            dgvMonAn.SelectionChanged += dgvMonAn_SelectionChanged;
+            editor.BringToFront();
+            tabMonAn.Controls.Add(editor);
+            editor.BringToFront();
+            dgvMonAn.BringToFront();
+            editor.BringToFront();
+
+            btnSuaMon.Enabled = ApiSession.IsManager;
+            btnXoaMon.Enabled = ApiSession.IsManager;
+            btnThemMon.Enabled = ApiSession.IsManager;
+        }
+
+        private static void AddFoodLabel(Control parent, string text, int x, int y)
+        {
+            parent.Controls.Add(new Label
+            {
+                AutoSize = true,
+                Location = new Point(x, y + 4),
+                Text = text
+            });
+        }
+
+        private static void ConfigureFoodButton(Button button, string text, int x)
+        {
+            button.Location = new Point(x, 76);
+            button.Size = new Size(110, 32);
+            button.Text = text;
+        }
+
+        private void dgvMonAn_SelectionChanged(object? sender, EventArgs e)
+        {
+            if (dgvMonAn.CurrentRow?.DataBoundItem is not MonAnDto food)
+            {
+                ResetMonAnForm();
+                return;
+            }
+
+            txtMaMon.Text = food.MaMon.ToString();
+            txtTenMon.Text = food.TenMon;
+            txtMoTaMon.Text = food.MoTa ?? string.Empty;
+            txtHinhAnhMon.Text = food.HinhAnh ?? string.Empty;
+            nudDonGiaMon.Value = Math.Clamp(food.DonGia, nudDonGiaMon.Minimum, nudDonGiaMon.Maximum);
+            cmbDanhMucMon.SelectedValue = food.MaDanhMuc;
+            chkMonDangBan.Checked = food.TrangThai;
+            btnSuaMon.Enabled = ApiSession.IsManager;
+            btnXoaMon.Enabled = ApiSession.IsManager && food.TrangThai;
+        }
+
+        private void ResetMonAnForm()
+        {
+            txtMaMon.Clear();
+            txtTenMon.Clear();
+            txtMoTaMon.Clear();
+            txtHinhAnhMon.Clear();
+            nudDonGiaMon.Value = nudDonGiaMon.Minimum;
+            chkMonDangBan.Checked = true;
+            if (cmbDanhMucMon.Items.Count > 0)
+            {
+                cmbDanhMucMon.SelectedIndex = 0;
+            }
+
+            btnThemMon.Enabled = ApiSession.IsManager;
+            btnSuaMon.Enabled = false;
+            btnXoaMon.Enabled = false;
+        }
+
+        private bool ValidateMonAnInput()
+        {
+            if (string.IsNullOrWhiteSpace(txtTenMon.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên món.", "Thiếu thông tin",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenMon.Focus();
+                return false;
+            }
+
+            if (cmbDanhMucMon.SelectedValue is not int)
+            {
+                MessageBox.Show("Vui lòng chọn danh mục món ăn.", "Thiếu thông tin",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private CreateFoodRequest BuildCreateFoodRequest() =>
+            new()
+            {
+                TenMon = txtTenMon.Text.Trim(),
+                MoTa = txtMoTaMon.Text.Trim(),
+                DonGia = nudDonGiaMon.Value,
+                HinhAnh = txtHinhAnhMon.Text.Trim(),
+                MaDanhMuc = (int)cmbDanhMucMon.SelectedValue!,
+                TrangThai = chkMonDangBan.Checked
+            };
+
+        private UpdateFoodRequest BuildUpdateFoodRequest() =>
+            new()
+            {
+                TenMon = txtTenMon.Text.Trim(),
+                MoTa = txtMoTaMon.Text.Trim(),
+                DonGia = nudDonGiaMon.Value,
+                HinhAnh = txtHinhAnhMon.Text.Trim(),
+                MaDanhMuc = (int)cmbDanhMucMon.SelectedValue!,
+                TrangThai = chkMonDangBan.Checked
+            };
+
+        private async void btnThemMon_Click(object? sender, EventArgs e)
+        {
+            if (!ValidateMonAnInput())
+            {
+                return;
+            }
+
+            try
+            {
+                await _monAnApiService.CreateAsync(BuildCreateFoodRequest());
+                await LoadMonAnAsync();
+                MessageBox.Show("Đã thêm món ăn.", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                ShowMonAnError(exception);
+            }
+        }
+
+        private async void btnSuaMon_Click(object? sender, EventArgs e)
+        {
+            if (!int.TryParse(txtMaMon.Text, out var id) || !ValidateMonAnInput())
+            {
+                return;
+            }
+
+            try
+            {
+                await _monAnApiService.UpdateAsync(id, BuildUpdateFoodRequest());
+                await LoadMonAnAsync();
+                MessageBox.Show("Đã cập nhật món ăn.", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                ShowMonAnError(exception);
+            }
+        }
+
+        private async void btnXoaMon_Click(object? sender, EventArgs e)
+        {
+            if (!int.TryParse(txtMaMon.Text, out var id))
+            {
+                MessageBox.Show("Vui lòng chọn món cần ngừng bán.", "Chưa chọn món",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (MessageBox.Show(
+                    "Món sẽ được ẩn khỏi thực đơn nhưng vẫn giữ trong lịch sử đơn. Tiếp tục?",
+                    "Xác nhận ngừng bán",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) != DialogResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                await _monAnApiService.DeleteAsync(id);
+                await LoadMonAnAsync();
+                MessageBox.Show("Đã ngừng bán món ăn.", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                ShowMonAnError(exception);
+            }
+        }
+
+        private static void ShowMonAnError(Exception exception)
+        {
+            MessageBox.Show(
+                exception.Message,
+                "Không thể xử lý món ăn",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
 
         private async void btnTaiKhuVuc_Click(object sender, EventArgs e)

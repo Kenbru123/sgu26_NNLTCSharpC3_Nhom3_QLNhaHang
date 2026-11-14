@@ -51,8 +51,9 @@ builder.Services.AddDbContext<RestaurantDbContext>(options =>
 // 2. ĐĂNG KÝ CÁC SERVICE NGHIỆP VỤ
 // =====================================================
 
-// Quản lý thực đơn
-builder.Services.AddScoped<IMonAnService, MonAnService>();
+// Thực đơn và đặt món online
+builder.Services.AddScoped<IFoodService, FoodService>();
+builder.Services.AddScoped<IOnlineOrderService, OnlineOrderService>();
 builder.Services.AddScoped<IGoiMonService, GoiMonService>();
 
 // Quản lý khu vực và bàn ăn

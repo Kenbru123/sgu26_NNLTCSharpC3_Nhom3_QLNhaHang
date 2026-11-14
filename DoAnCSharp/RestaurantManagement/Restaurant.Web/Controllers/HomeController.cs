@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.Web.Services;
 using Restaurant.Web.Models;
 using System.Diagnostics;
 
@@ -6,9 +7,18 @@ namespace Restaurant.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IMonAnApiService _monAnApiService;
+
+        public HomeController(IMonAnApiService monAnApiService)
         {
-            return View();
+            _monAnApiService = monAnApiService;
+        }
+
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        {
+            var foods = await _monAnApiService.GetAllAsync(
+                cancellationToken: cancellationToken);
+            return View(foods.Take(6).ToList());
         }
 
         public IActionResult Privacy()

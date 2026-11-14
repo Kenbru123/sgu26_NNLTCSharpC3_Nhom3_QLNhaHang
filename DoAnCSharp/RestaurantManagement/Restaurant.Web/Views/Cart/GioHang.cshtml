@@ -1,0 +1,80 @@
+﻿@model Restaurant.Web.Models.CartViewModel
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+<h1 class="mb-4">Giỏ hàng</h1>
+@if (TempData["CartError"] is string error)
+{
+    <div class="alert alert-warning">@error</div>
+}
+@if (TempData["CartMessage"] is string message)
+{
+    <div class="alert alert-success">@message</div>
+}
+
+@if (Model.Items.Count == 0)
+{
+    <div class="alert alert-info">Giỏ hàng của bạn đang trống.</div>
+    <a class="btn btn-success" asp-controller="Menu" asp-action="Index">Chọn món</a>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr><th>Món ăn</th><th>Đơn giá</th><th>Số lượng</th><th>Thành tiền</th><th></th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            @if (item.Food is null)
+                            {
+                                <span class="text-danger">Món #@item.FoodId (đã ngừng bán)</span>
+                            }
+                            else
+                            {
+                                <a asp-controller="Menu" asp-action="Details" asp-route-id="@item.FoodId">@item.Food.TenMon</a>
+                            }
+                        </td>
+                        <td>@(item.Food?.DonGia.ToString("N0") ?? "-") đ</td>
+                        <td>
+                            @if (item.Food is not null)
+                            {
+                                <form asp-action="Update" method="post" class="d-flex gap-2">
+                                    <input type="hidden" name="foodId" value="@item.FoodId" />
+                                    <input type="number" name="quantity" value="@item.Quantity" min="1" max="99" class="form-control" style="max-width: 90px;" aria-label="Số lượng" />
+                                    <button class="btn btn-outline-secondary btn-sm" type="submit">Cập nhật</button>
+                                </form>
+                            }
+                            else
+                            {
+                                @item.Quantity
+                            }
+                        </td>
+                        <td>@item.LineTotal.ToString("N0") đ</td>
+                        <td>
+                            <form asp-action="Remove" method="post">
+                                <input type="hidden" name="foodId" value="@item.FoodId" />
+                                <button class="btn btn-outline-danger btn-sm" type="submit">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr><th colspan="3" class="text-end">Tạm tính</th><th colspan="2">@Model.Total.ToString("N0") đ</th></tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="d-flex justify-content-between">
+        <a class="btn btn-outline-secondary" asp-controller="Menu" asp-action="Index">Tiếp tục chọn món</a>
+        @if (Model.Items.All(item => item.Food is not null))
+        {
+            <a class="btn btn-success" asp-action="Checkout">Tiến hành đặt hàng</a>
+        }
+    </div>
+}

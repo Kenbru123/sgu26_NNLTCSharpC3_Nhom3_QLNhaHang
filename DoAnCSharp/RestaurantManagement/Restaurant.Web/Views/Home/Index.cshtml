@@ -1,8 +1,43 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IReadOnlyList<Restaurant.Application.DTOs.MonAnDto>
+
+@{
+    ViewData["Title"] = "Trang chủ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<section class="p-5 mb-5 rounded-4 text-white" style="background: linear-gradient(120deg, #173b2b, #477353);">
+    <div class="row align-items-center">
+        <div class="col-lg-8">
+            <p class="text-uppercase fw-semibold mb-2">Nhà hàng của bạn</p>
+            <h1 class="display-4 fw-bold">Món ngon, đặt thật dễ.</h1>
+            <p class="lead">Khám phá thực đơn, đặt giao tận nơi hoặc chọn nhận món tại quầy.</p>
+            <a class="btn btn-warning btn-lg mt-2" asp-controller="Menu" asp-action="Index">Khám phá thực đơn</a>
+        </div>
+    </div>
+</section>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Món được yêu thích</h2>
+    <a asp-controller="Menu" asp-action="Index">Xem toàn bộ thực đơn</a>
+</div>
+<div class="row g-4">
+    @foreach (var food in Model)
+    {
+        <div class="col-sm-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                @if (!string.IsNullOrWhiteSpace(food.HinhAnh))
+                {
+                    <img src="@food.HinhAnh" class="card-img-top" alt="@food.TenMon" style="height: 190px; object-fit: cover;" />
+                }
+                <div class="card-body d-flex flex-column">
+                    <div class="text-secondary small">@food.TenDanhMuc</div>
+                    <h5 class="card-title mt-1">@food.TenMon</h5>
+                    <p class="card-text text-secondary flex-grow-1">@food.MoTa</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <strong>@food.DonGia.ToString("N0") đ</strong>
+                        <a class="btn btn-outline-success" asp-controller="Menu" asp-action="Details" asp-route-id="@food.MaMon">Chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
