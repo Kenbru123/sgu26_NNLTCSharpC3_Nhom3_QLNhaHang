@@ -60,8 +60,8 @@ public sealed record UpdateFoodRequest
 
 /// <summary>Món ăn và số lượng khách muốn đặt.</summary>
 public sealed record OnlineOrderItemRequest(
-    [property: Range(1, int.MaxValue)] int MaMon,
-    [property: Range(1, 99)] int SoLuong);
+    [param: Range(1, int.MaxValue)] int MaMon,
+    [param: Range(1, 99)] int SoLuong);
 
 /// <summary>Thông tin khách hàng gửi khi đặt món online.</summary>
 public sealed record CreateOnlineOrderRequest
