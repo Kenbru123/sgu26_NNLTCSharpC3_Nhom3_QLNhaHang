@@ -38,17 +38,28 @@ public sealed class KhoApiService
     public Task<List<PhieuXuatKhoDto>> GetIssueReceiptsAsync() =>
         GetAsync<List<PhieuXuatKhoDto>>("api/kho/xuat");
 
+    public Task<PhieuNhapKhoDto?> UpdatePurchaseReceiptStatusAsync(int receiptId, string status) =>
+        SendAsync<PhieuNhapKhoDto?>(HttpMethod.Patch, $"api/kho/nhap/{receiptId}/trang-thai", status);
+
+    public Task<PhieuXuatKhoDto?> UpdateIssueReceiptStatusAsync(int receiptId, string status) =>
+        SendAsync<PhieuXuatKhoDto?>(HttpMethod.Patch, $"api/kho/xuat/{receiptId}/trang-thai", status);
+
     private async Task<T> GetAsync<T>(string path)
-        where T : class
+        where T : class?
     {
         using var response = await _httpClient.GetAsync(path);
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            return default!;
+        }
+
         await EnsureSuccessAsync(response);
         return await response.Content.ReadFromJsonAsync<T>()
             ?? throw new InvalidOperationException("API không trả về dữ liệu như mong đợi.");
     }
 
     private async Task<T> SendAsync<T>(HttpMethod method, string path, object? request = null)
-        where T : class
+        where T : class?
     {
         using var message = new HttpRequestMessage(method, path);
         if (request is not null)

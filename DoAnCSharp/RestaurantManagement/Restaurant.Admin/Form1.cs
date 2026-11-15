@@ -39,7 +39,27 @@ namespace Restaurant.Admin
         private readonly Button btnLamMoiMon = new();
         private readonly DataGridView dgvKhoData = new();
         private readonly DataGridView dgvKhoLowStock = new();
+        private readonly DataGridView dgvKhoPhieu = new();
         private readonly DataGridView dgvThanhToan = new();
+        private readonly TextBox txtKhoMaNguyenLieuNhap = new();
+        private readonly NumericUpDown nudKhoSoLuongNhap = new();
+        private readonly NumericUpDown nudKhoDonGiaNhap = new();
+        private readonly TextBox txtKhoGhiChuNhap = new();
+        private readonly Button btnKhoNhapNhanh = new();
+        private readonly TextBox txtKhoMaNguyenLieuXuat = new();
+        private readonly NumericUpDown nudKhoSoLuongXuat = new();
+        private readonly ComboBox cmbKhoLoaiXuat = new();
+        private readonly NumericUpDown nudKhoMaChiTietDonHang = new();
+        private readonly NumericUpDown nudKhoMaNhanVienXuat = new();
+        private readonly TextBox txtKhoLyDoXuat = new();
+        private readonly TextBox txtKhoGhiChuXuat = new();
+        private readonly Button btnKhoXuatNhanh = new();
+        private readonly ComboBox cmbTrangThaiGiao = new();
+        private readonly Button btnCapNhatTrangThaiGiao = new();
+        private readonly Button btnKhoXacNhanNhap = new();
+        private readonly Button btnKhoHuyNhap = new();
+        private readonly Button btnKhoXacNhanXuat = new();
+        private readonly Button btnKhoHuyXuat = new();
         private bool _loadingBanAn;
         private bool _loadingBanFilters;
 
@@ -115,6 +135,8 @@ namespace Restaurant.Admin
             {
                 var ingredients = await _khoApiService.GetIngredientsAsync();
                 var lowStock = await _khoApiService.GetLowStockIngredientsAsync();
+                var purchaseReceipts = await _khoApiService.GetPurchaseReceiptsAsync();
+                var issueReceipts = await _khoApiService.GetIssueReceiptsAsync();
 
                 if (dgvKhoData is not null)
                 {
@@ -126,6 +148,39 @@ namespace Restaurant.Admin
                 {
                     dgvKhoLowStock.DataSource = lowStock;
                     dgvKhoLowStock.ClearSelection();
+                }
+
+                if (dgvKhoPhieu is not null)
+                {
+                    var rows = new List<object>();
+                    foreach (var receipt in purchaseReceipts)
+                    {
+                        rows.Add(new
+                        {
+                            MaPhieu = receipt.MaPhieuNhap,
+                            Loai = "Nhập kho",
+                            TrangThai = receipt.TrangThai,
+                            ThoiGian = receipt.ThoiGianNhap,
+                            GhiChu = receipt.GhiChu ?? string.Empty
+                        });
+                    }
+
+                    foreach (var receipt in issueReceipts)
+                    {
+                        rows.Add(new
+                        {
+                            MaPhieu = receipt.MaPhieuXuat,
+                            Loai = "Xuất kho",
+                            TrangThai = receipt.TrangThai,
+                            ThoiGian = receipt.ThoiGianXuat,
+                            GhiChu = receipt.GhiChu ?? string.Empty
+                        });
+                    }
+
+                    dgvKhoPhieu.DataSource = rows
+                        .OrderByDescending(item => (DateTime)item.GetType().GetProperty("ThoiGian")!.GetValue(item)!)
+                        .ToList();
+                    dgvKhoPhieu.ClearSelection();
                 }
             }
             catch (Exception ex)
@@ -205,6 +260,16 @@ namespace Restaurant.Admin
             dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MucTonToiThieu), HeaderText = "Tối thiểu", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
             dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TonKho), HeaderText = "Tồn kho", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
             dgvKhoData.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TrangThai), HeaderText = "Hoạt động", Width = 100 });
+            dgvKhoData.SelectionChanged += (_, _) =>
+            {
+                if (dgvKhoData.CurrentRow?.DataBoundItem is not NguyenLieuDto ingredient)
+                {
+                    return;
+                }
+
+                txtKhoMaNguyenLieuNhap.Text = ingredient.MaNguyenLieu.ToString();
+                txtKhoMaNguyenLieuXuat.Text = ingredient.MaNguyenLieu.ToString();
+            };
             panel.Controls.Add(dgvKhoData);
 
             var lblTonThap = new Label
@@ -226,6 +291,177 @@ namespace Restaurant.Admin
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MucTonToiThieu), HeaderText = "Tối thiểu", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TonKho), HeaderText = "Tồn kho", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
             panel.Controls.Add(dgvKhoLowStock);
+
+            var grpNhapNhanh = new GroupBox
+            {
+                Text = "Nhập kho nhanh",
+                Location = new Point(12, 540),
+                Size = new Size(450, 120),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+            panel.Controls.Add(grpNhapNhanh);
+
+            var lblKhoMaNhap = new Label { Text = "Mã NL", AutoSize = true, Location = new Point(12, 28) };
+            txtKhoMaNguyenLieuNhap.Location = new Point(90, 24);
+            txtKhoMaNguyenLieuNhap.Size = new Size(80, 26);
+            grpNhapNhanh.Controls.Add(lblKhoMaNhap);
+            grpNhapNhanh.Controls.Add(txtKhoMaNguyenLieuNhap);
+
+            var lblKhoSoLuongNhap = new Label { Text = "Số lượng", AutoSize = true, Location = new Point(180, 28) };
+            nudKhoSoLuongNhap.Location = new Point(260, 24);
+            nudKhoSoLuongNhap.Size = new Size(80, 26);
+            nudKhoSoLuongNhap.DecimalPlaces = 2;
+            nudKhoSoLuongNhap.Minimum = 1;
+            nudKhoSoLuongNhap.Maximum = 999999;
+            nudKhoSoLuongNhap.Value = 1;
+            grpNhapNhanh.Controls.Add(lblKhoSoLuongNhap);
+            grpNhapNhanh.Controls.Add(nudKhoSoLuongNhap);
+
+            var lblKhoDonGiaNhap = new Label { Text = "Đơn giá", AutoSize = true, Location = new Point(12, 64) };
+            nudKhoDonGiaNhap.Location = new Point(90, 60);
+            nudKhoDonGiaNhap.Size = new Size(120, 26);
+            nudKhoDonGiaNhap.DecimalPlaces = 2;
+            nudKhoDonGiaNhap.Minimum = 0;
+            nudKhoDonGiaNhap.Maximum = 999999999;
+            nudKhoDonGiaNhap.Value = 0;
+            grpNhapNhanh.Controls.Add(lblKhoDonGiaNhap);
+            grpNhapNhanh.Controls.Add(nudKhoDonGiaNhap);
+
+            var lblKhoGhiChuNhap = new Label { Text = "Ghi chú", AutoSize = true, Location = new Point(220, 64) };
+            txtKhoGhiChuNhap.Location = new Point(285, 60);
+            txtKhoGhiChuNhap.Size = new Size(150, 26);
+            grpNhapNhanh.Controls.Add(lblKhoGhiChuNhap);
+            grpNhapNhanh.Controls.Add(txtKhoGhiChuNhap);
+
+            var btnKhoRefresh = new Button
+            {
+                Text = "Làm mới",
+                Size = new Size(90, 32),
+                Location = new Point(305, 88)
+            };
+            btnKhoRefresh.Click += async (_, _) => await LoadKhoAsync();
+            grpNhapNhanh.Controls.Add(btnKhoRefresh);
+
+            btnKhoNhapNhanh.Text = "Tạo phiếu nhập";
+            btnKhoNhapNhanh.Size = new Size(130, 32);
+            btnKhoNhapNhanh.Location = new Point(305, 48);
+            btnKhoNhapNhanh.Click += async (_, _) => await CreateQuickPurchaseReceiptAsync();
+            grpNhapNhanh.Controls.Add(btnKhoNhapNhanh);
+
+            var grpXuatNhanh = new GroupBox
+            {
+                Text = "Xuất kho nhanh",
+                Location = new Point(474, 540),
+                Size = new Size(468, 120),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+            panel.Controls.Add(grpXuatNhanh);
+
+            var lblKhoMaXuat = new Label { Text = "Mã NL", AutoSize = true, Location = new Point(12, 28) };
+            txtKhoMaNguyenLieuXuat.Location = new Point(90, 24);
+            txtKhoMaNguyenLieuXuat.Size = new Size(70, 26);
+            grpXuatNhanh.Controls.Add(lblKhoMaXuat);
+            grpXuatNhanh.Controls.Add(txtKhoMaNguyenLieuXuat);
+
+            var lblKhoSoLuongXuat = new Label { Text = "Số lượng", AutoSize = true, Location = new Point(170, 28) };
+            nudKhoSoLuongXuat.Location = new Point(250, 24);
+            nudKhoSoLuongXuat.Size = new Size(80, 26);
+            nudKhoSoLuongXuat.DecimalPlaces = 2;
+            nudKhoSoLuongXuat.Minimum = 1;
+            nudKhoSoLuongXuat.Maximum = 999999;
+            nudKhoSoLuongXuat.Value = 1;
+            grpXuatNhanh.Controls.Add(lblKhoSoLuongXuat);
+            grpXuatNhanh.Controls.Add(nudKhoSoLuongXuat);
+
+            var lblKhoLoaiXuat = new Label { Text = "Loại", AutoSize = true, Location = new Point(340, 28) };
+            cmbKhoLoaiXuat.Location = new Point(385, 24);
+            cmbKhoLoaiXuat.Size = new Size(70, 26);
+            cmbKhoLoaiXuat.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbKhoLoaiXuat.Items.Add("CheBien");
+            cmbKhoLoaiXuat.Items.Add("ThuCong");
+            cmbKhoLoaiXuat.SelectedIndex = 0;
+            grpXuatNhanh.Controls.Add(lblKhoLoaiXuat);
+            grpXuatNhanh.Controls.Add(cmbKhoLoaiXuat);
+
+            var lblKhoMaDonHang = new Label { Text = "Mã ĐH", AutoSize = true, Location = new Point(12, 64) };
+            nudKhoMaChiTietDonHang.Location = new Point(90, 60);
+            nudKhoMaChiTietDonHang.Size = new Size(70, 26);
+            nudKhoMaChiTietDonHang.Minimum = 0;
+            nudKhoMaChiTietDonHang.Maximum = 999999;
+            nudKhoMaChiTietDonHang.Value = 0;
+            grpXuatNhanh.Controls.Add(lblKhoMaDonHang);
+            grpXuatNhanh.Controls.Add(nudKhoMaChiTietDonHang);
+
+            var lblKhoMaNvXuat = new Label { Text = "Mã NV", AutoSize = true, Location = new Point(170, 64) };
+            nudKhoMaNhanVienXuat.Location = new Point(250, 60);
+            nudKhoMaNhanVienXuat.Size = new Size(70, 26);
+            nudKhoMaNhanVienXuat.Minimum = 0;
+            nudKhoMaNhanVienXuat.Maximum = 999999;
+            nudKhoMaNhanVienXuat.Value = 0;
+            grpXuatNhanh.Controls.Add(lblKhoMaNvXuat);
+            grpXuatNhanh.Controls.Add(nudKhoMaNhanVienXuat);
+
+            var lblKhoLyDoXuat = new Label { Text = "Lý do", AutoSize = true, Location = new Point(330, 64) };
+            txtKhoLyDoXuat.Location = new Point(385, 60);
+            txtKhoLyDoXuat.Size = new Size(70, 26);
+            grpXuatNhanh.Controls.Add(lblKhoLyDoXuat);
+            grpXuatNhanh.Controls.Add(txtKhoLyDoXuat);
+
+            var lblKhoGhiChuXuat = new Label { Text = "Ghi chú", AutoSize = true, Location = new Point(12, 96) };
+            txtKhoGhiChuXuat.Location = new Point(90, 92);
+            txtKhoGhiChuXuat.Size = new Size(220, 26);
+            grpXuatNhanh.Controls.Add(lblKhoGhiChuXuat);
+            grpXuatNhanh.Controls.Add(txtKhoGhiChuXuat);
+
+            btnKhoXuatNhanh.Text = "Tạo phiếu xuất";
+            btnKhoXuatNhanh.Size = new Size(130, 32);
+            btnKhoXuatNhanh.Location = new Point(320, 88);
+            btnKhoXuatNhanh.Click += async (_, _) => await CreateQuickIssueReceiptAsync();
+            grpXuatNhanh.Controls.Add(btnKhoXuatNhanh);
+
+            var lblPhieuKho = new Label
+            {
+                Text = "Phiếu nhập/xuất kho gần nhất",
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Location = new Point(12, 680)
+            };
+            panel.Controls.Add(lblPhieuKho);
+
+            dgvKhoPhieu.Location = new Point(12, 680);
+            dgvKhoPhieu.Size = new Size(930, 150);
+            dgvKhoPhieu.ReadOnly = true;
+            dgvKhoPhieu.AutoGenerateColumns = false;
+            dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MaPhieu", HeaderText = "Mã phiếu", Width = 90 });
+            dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Loai", HeaderText = "Loại", Width = 120 });
+            dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TrangThai", HeaderText = "Trạng thái", Width = 130 });
+            dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ThoiGian", HeaderText = "Thời gian", Width = 180, DefaultCellStyle = new DataGridViewCellStyle { Format = "g" } });
+            dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "GhiChu", HeaderText = "Ghi chú", Width = 320 });
+            panel.Controls.Add(dgvKhoPhieu);
+
+            btnKhoXacNhanNhap.Text = "Xác nhận nhập";
+            btnKhoXacNhanNhap.Size = new Size(130, 32);
+            btnKhoXacNhanNhap.Location = new Point(12, 750);
+            btnKhoXacNhanNhap.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: true, confirmed: true);
+            panel.Controls.Add(btnKhoXacNhanNhap);
+
+            btnKhoHuyNhap.Text = "Hủy nhập";
+            btnKhoHuyNhap.Size = new Size(120, 32);
+            btnKhoHuyNhap.Location = new Point(150, 750);
+            btnKhoHuyNhap.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: true, confirmed: false);
+            panel.Controls.Add(btnKhoHuyNhap);
+
+            btnKhoXacNhanXuat.Text = "Xác nhận xuất";
+            btnKhoXacNhanXuat.Size = new Size(130, 32);
+            btnKhoXacNhanXuat.Location = new Point(282, 750);
+            btnKhoXacNhanXuat.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: false, confirmed: true);
+            panel.Controls.Add(btnKhoXacNhanXuat);
+
+            btnKhoHuyXuat.Text = "Hủy xuất";
+            btnKhoHuyXuat.Size = new Size(120, 32);
+            btnKhoHuyXuat.Location = new Point(420, 750);
+            btnKhoHuyXuat.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: false, confirmed: false);
+            panel.Controls.Add(btnKhoHuyXuat);
 
             page.Controls.Add(panel);
             tabQuanLy.Controls.Add(page);
@@ -262,6 +498,28 @@ namespace Restaurant.Admin
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "HoaDon", HeaderText = "Hóa đơn", Width = 130 });
             panel.Controls.Add(dgvThanhToan);
 
+            var lblTrangThaiGiao = new Label
+            {
+                Text = "Trạng thái giao hàng",
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Location = new Point(12, 530)
+            };
+            panel.Controls.Add(lblTrangThaiGiao);
+
+            cmbTrangThaiGiao.Location = new Point(160, 526);
+            cmbTrangThaiGiao.Size = new Size(180, 32);
+            cmbTrangThaiGiao.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTrangThaiGiao.Items.AddRange(new object[] { "ChoLayHang", "DangGiao", "DaGiao", "DaNhan", "HoanTat" });
+            cmbTrangThaiGiao.SelectedIndex = 0;
+            panel.Controls.Add(cmbTrangThaiGiao);
+
+            btnCapNhatTrangThaiGiao.Text = "Cập nhật giao hàng";
+            btnCapNhatTrangThaiGiao.Size = new Size(170, 32);
+            btnCapNhatTrangThaiGiao.Location = new Point(360, 526);
+            btnCapNhatTrangThaiGiao.Click += async (_, _) => await UpdateSelectedOrderDeliveryStatusAsync();
+            panel.Controls.Add(btnCapNhatTrangThaiGiao);
+
             var btnReload = new Button
             {
                 Text = "Tải lại",
@@ -273,6 +531,176 @@ namespace Restaurant.Admin
 
             page.Controls.Add(panel);
             tabQuanLy.Controls.Add(page);
+        }
+
+        private async Task CreateQuickPurchaseReceiptAsync()
+        {
+            if (!int.TryParse(txtKhoMaNguyenLieuNhap.Text.Trim(), out var materialId) || materialId <= 0)
+            {
+                MessageBox.Show("Vui lòng nhập mã nguyên liệu hợp lệ.", "Thiếu thông tin",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (nudKhoDonGiaNhap.Value < 0)
+            {
+                MessageBox.Show("Đơn giá nhập không hợp lệ.", "Thiếu thông tin",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                var request = new CreatePhieuNhapRequest
+                {
+                    ChiTiet = new[]
+                    {
+                        new NguyenLieuItemRequest(materialId, nudKhoSoLuongNhap.Value, nudKhoDonGiaNhap.Value)
+                    },
+                    GhiChu = string.IsNullOrWhiteSpace(txtKhoGhiChuNhap.Text)
+                        ? null
+                        : txtKhoGhiChuNhap.Text.Trim()
+                };
+
+                await _khoApiService.CreatePurchaseReceiptAsync(request);
+                await LoadKhoAsync();
+                MessageBox.Show("Đã tạo phiếu nhập kho thành công.", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Không thể tạo phiếu nhập kho",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task CreateQuickIssueReceiptAsync()
+        {
+            if (!int.TryParse(txtKhoMaNguyenLieuXuat.Text.Trim(), out var materialId) || materialId <= 0)
+            {
+                MessageBox.Show("Vui lòng nhập mã nguyên liệu hợp lệ.", "Thiếu thông tin",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var type = cmbKhoLoaiXuat.SelectedItem?.ToString();
+            if (string.IsNullOrWhiteSpace(type) || type is not ("CheBien" or "ThuCong"))
+            {
+                MessageBox.Show("Vui lòng chọn loại xuất kho hợp lệ.", "Thiếu thông tin",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (type == "CheBien" && nudKhoMaChiTietDonHang.Value <= 0)
+            {
+                MessageBox.Show("Xuất chế biến phải điền mã chi tiết đơn hàng.", "Thiếu thông tin",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (type == "ThuCong" && nudKhoMaNhanVienXuat.Value <= 0)
+            {
+                MessageBox.Show("Xuất thủ công phải điền mã nhân viên thực hiện.", "Thiếu thông tin",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                var request = new CreatePhieuXuatRequest
+                {
+                    LoaiXuat = type,
+                    ChiTiet = new[]
+                    {
+                        new NguyenLieuItemRequest(materialId, nudKhoSoLuongXuat.Value, 0m)
+                    },
+                    MaChiTietDonHang = type == "CheBien" ? (int)nudKhoMaChiTietDonHang.Value : null,
+                    MaNhanVien = type == "ThuCong" ? (int)nudKhoMaNhanVienXuat.Value : null,
+                    LyDo = string.IsNullOrWhiteSpace(txtKhoLyDoXuat.Text)
+                        ? null
+                        : txtKhoLyDoXuat.Text.Trim(),
+                    GhiChu = string.IsNullOrWhiteSpace(txtKhoGhiChuXuat.Text)
+                        ? null
+                        : txtKhoGhiChuXuat.Text.Trim()
+                };
+
+                await _khoApiService.CreateIssueReceiptAsync(request);
+                await LoadKhoAsync();
+                MessageBox.Show("Đã tạo phiếu xuất kho thành công.", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Không thể tạo phiếu xuất kho",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task UpdateSelectedWarehouseReceiptAsync(bool isPurchase, bool confirmed)
+        {
+            if (dgvKhoPhieu.CurrentRow is null || dgvKhoPhieu.CurrentRow.DataBoundItem is null)
+            {
+                MessageBox.Show("Vui lòng chọn một phiếu kho để cập nhật.", "Chưa chọn phiếu",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var item = dgvKhoPhieu.CurrentRow.DataBoundItem;
+            var id = (int)item.GetType().GetProperty("MaPhieu")!.GetValue(item)!;
+            var status = confirmed ? "XacNhan" : "Huy";
+
+            try
+            {
+                if (isPurchase)
+                {
+                    await _khoApiService.UpdatePurchaseReceiptStatusAsync(id, status);
+                }
+                else
+                {
+                    await _khoApiService.UpdateIssueReceiptStatusAsync(id, status);
+                }
+
+                await LoadKhoAsync();
+                MessageBox.Show("Đã cập nhật trạng thái phiếu kho.", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Không thể cập nhật phiếu kho",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task UpdateSelectedOrderDeliveryStatusAsync()
+        {
+            if (dgvThanhToan.CurrentRow is null)
+            {
+                MessageBox.Show("Vui lòng chọn đơn hàng cần cập nhật trạng thái giao.", "Chưa chọn đơn",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var orderId = Convert.ToInt32(dgvThanhToan.CurrentRow.Cells["MaDonHang"].Value);
+            var status = cmbTrangThaiGiao.SelectedItem?.ToString();
+            if (string.IsNullOrWhiteSpace(status))
+            {
+                MessageBox.Show("Vui lòng chọn trạng thái giao hàng.", "Thiếu thông tin",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _thanhToanApiService.UpdateDeliveryStatusAsync(orderId, status);
+                await LoadPaymentAsync();
+                MessageBox.Show($"Đã cập nhật trạng thái giao hàng thành {status}.", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Không thể cập nhật giao hàng",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void InitializeMonAnTab()
