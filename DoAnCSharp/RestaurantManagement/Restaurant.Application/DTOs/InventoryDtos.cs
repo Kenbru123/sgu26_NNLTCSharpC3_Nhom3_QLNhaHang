@@ -50,6 +50,8 @@ public sealed record CreatePhieuNhapRequest
 
     [StringLength(500)]
     public string? GhiChu { get; init; }
+
+    public int? MaNhanVien { get; init; }
 }
 
 public sealed record CreatePhieuXuatRequest

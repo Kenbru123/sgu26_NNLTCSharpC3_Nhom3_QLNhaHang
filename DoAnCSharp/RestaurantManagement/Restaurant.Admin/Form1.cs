@@ -1,5 +1,6 @@
 using Restaurant.Admin.Services;
 using Restaurant.Application.DTOs;
+using Restaurant.Application.DTOs.Account;
 
 namespace Restaurant.Admin
 {
@@ -9,6 +10,7 @@ namespace Restaurant.Admin
         private readonly KhuVucApiService _khuVucApiService;
         private readonly BanAnApiService _banAnApiService;
         private readonly KhoApiService _khoApiService;
+        private readonly AccountApiService _accountApiService;
         private readonly ThanhToanApiService _thanhToanApiService;
         private readonly GoiMonControl _goiMonControl;
         private readonly CheBienControl _cheBienControl;
@@ -68,6 +70,13 @@ namespace Restaurant.Admin
         private readonly Button btnKhoHuyNhap = new();
         private readonly Button btnKhoXacNhanXuat = new();
         private readonly Button btnKhoHuyXuat = new();
+        private readonly DataGridView dgvTaiKhoanNhanVien = new();
+        private readonly TextBox txtTaiKhoanUsername = new();
+        private readonly TextBox txtTaiKhoanPassword = new();
+        private readonly TextBox txtTaiKhoanHoTen = new();
+        private readonly TextBox txtTaiKhoanSoDienThoai = new();
+        private readonly DateTimePicker dtpTaiKhoanNgaySinh = new();
+        private readonly Button btnTaiKhoanThem = new();
         private bool _loadingBanAn;
         private bool _loadingBanFilters;
 
@@ -79,6 +88,7 @@ namespace Restaurant.Admin
             _khuVucApiService = new KhuVucApiService();
             _banAnApiService = new BanAnApiService();
             _khoApiService = new KhoApiService();
+            _accountApiService = new AccountApiService();
             _thanhToanApiService = new ThanhToanApiService();
             _goiMonControl = new GoiMonControl();
             _cheBienControl = new CheBienControl();
@@ -100,6 +110,7 @@ namespace Restaurant.Admin
             tabCheBien.Controls.Add(_cheBienControl);
             tabQuanLy.Controls.Add(tabCheBien);
             btnThemKhuVuc.Enabled = ApiSession.IsManager;
+            InitializeAccountTab();
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -111,6 +122,10 @@ namespace Restaurant.Admin
             await LoadPaymentAsync();
             await _goiMonControl.LoadAsync();
             await _cheBienControl.LoadAsync();
+            if (ApiSession.IsManager)
+            {
+                await LoadEmployeeAccountsAsync();
+            }
         }
 
         private async void btnTaiLai_Click(object sender, EventArgs e)
@@ -561,6 +576,114 @@ namespace Restaurant.Admin
 
             page.Controls.Add(panel);
             tabQuanLy.Controls.Add(page);
+        }
+
+        private void InitializeAccountTab()
+        {
+            if (!ApiSession.IsManager)
+            {
+                return;
+            }
+
+            var page = new TabPage("Tài khoản nhân viên") { Padding = new Padding(12) };
+            var panel = new Panel { Dock = DockStyle.Fill };
+            var editor = new GroupBox
+            {
+                Text = "Tạo tài khoản nhân viên",
+                Dock = DockStyle.Top,
+                Height = 125,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+
+            AddAccountField(editor, "Tên đăng nhập", txtTaiKhoanUsername, 12, 28, 150);
+            AddAccountField(editor, "Mật khẩu", txtTaiKhoanPassword, 185, 28, 150);
+            txtTaiKhoanPassword.UseSystemPasswordChar = true;
+            AddAccountField(editor, "Họ tên", txtTaiKhoanHoTen, 358, 28, 190);
+            AddAccountField(editor, "Số điện thoại", txtTaiKhoanSoDienThoai, 556, 28, 130);
+            editor.Controls.Add(new Label { Text = "Ngày sinh", AutoSize = true, Location = new Point(12, 72) });
+            dtpTaiKhoanNgaySinh.Location = new Point(85, 68);
+            dtpTaiKhoanNgaySinh.Size = new Size(150, 26);
+            dtpTaiKhoanNgaySinh.Format = DateTimePickerFormat.Short;
+            dtpTaiKhoanNgaySinh.ShowCheckBox = true;
+            editor.Controls.Add(dtpTaiKhoanNgaySinh);
+            btnTaiKhoanThem.Text = "Tạo tài khoản";
+            btnTaiKhoanThem.Size = new Size(140, 32);
+            btnTaiKhoanThem.Location = new Point(255, 66);
+            btnTaiKhoanThem.Click += async (_, _) => await CreateEmployeeAccountAsync();
+            editor.Controls.Add(btnTaiKhoanThem);
+            editor.Controls.Add(new Label { Text = "Phân quyền mặc định: Nhân viên", AutoSize = true, Location = new Point(410, 74) });
+            panel.Controls.Add(editor);
+
+            dgvTaiKhoanNhanVien.Dock = DockStyle.Fill;
+            dgvTaiKhoanNhanVien.ReadOnly = true;
+            dgvTaiKhoanNhanVien.AutoGenerateColumns = false;
+            dgvTaiKhoanNhanVien.AllowUserToAddRows = false;
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.EmployeeId), HeaderText = "Mã NV", Width = 70 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.UserName), HeaderText = "Tài khoản", Width = 150 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.FullName), HeaderText = "Họ tên", Width = 180 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.RoleName), HeaderText = "Vai trò", Width = 110 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.IsActive), HeaderText = "Hoạt động", Width = 90 });
+            panel.Controls.Add(dgvTaiKhoanNhanVien);
+            dgvTaiKhoanNhanVien.BringToFront();
+            page.Controls.Add(panel);
+            tabQuanLy.Controls.Add(page);
+        }
+
+        private static void AddAccountField(Control parent, string labelText, TextBox textBox, int x, int y, int width)
+        {
+            parent.Controls.Add(new Label { Text = labelText, AutoSize = true, Location = new Point(x, y + 4) });
+            textBox.Location = new Point(x + 78, y);
+            textBox.Size = new Size(width, 26);
+            parent.Controls.Add(textBox);
+        }
+
+        private async Task LoadEmployeeAccountsAsync()
+        {
+            try
+            {
+                dgvTaiKhoanNhanVien.DataSource = await _accountApiService.GetEmployeesAsync();
+                dgvTaiKhoanNhanVien.ClearSelection();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể tải tài khoản nhân viên", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task CreateEmployeeAccountAsync()
+        {
+            if (string.IsNullOrWhiteSpace(txtTaiKhoanUsername.Text) ||
+                string.IsNullOrWhiteSpace(txtTaiKhoanPassword.Text) ||
+                string.IsNullOrWhiteSpace(txtTaiKhoanHoTen.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên đăng nhập, mật khẩu và họ tên.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _accountApiService.CreateEmployeeAsync(new CreateEmployeeAccountRequest
+                {
+                    UserName = txtTaiKhoanUsername.Text.Trim(),
+                    Password = txtTaiKhoanPassword.Text,
+                    FullName = txtTaiKhoanHoTen.Text.Trim(),
+                    PhoneNumber = string.IsNullOrWhiteSpace(txtTaiKhoanSoDienThoai.Text) ? null : txtTaiKhoanSoDienThoai.Text.Trim(),
+                    BirthDate = dtpTaiKhoanNgaySinh.Checked ? DateOnly.FromDateTime(dtpTaiKhoanNgaySinh.Value) : null,
+                    RoleName = ApiSession.EmployeeRole
+                });
+
+                txtTaiKhoanUsername.Clear();
+                txtTaiKhoanPassword.Clear();
+                txtTaiKhoanHoTen.Clear();
+                txtTaiKhoanSoDienThoai.Clear();
+                dtpTaiKhoanNgaySinh.Checked = false;
+                await LoadEmployeeAccountsAsync();
+                MessageBox.Show("Đã tạo tài khoản nhân viên và liên kết hồ sơ nhân viên.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể tạo tài khoản nhân viên", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void InitializePaymentTab()
