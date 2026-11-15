@@ -14,10 +14,20 @@ public static class ApiSession
 
     public static bool IsManager => Role is ManagerRole or AdminRole;
 
+    public static bool IsLogoutRequested { get; private set; }
+
     public static void Set(string accessToken, string role)
     {
         AccessToken = accessToken;
         Role = role;
+        IsLogoutRequested = false;
+    }
+
+    public static void Clear()
+    {
+        AccessToken = null;
+        Role = null;
+        IsLogoutRequested = true;
     }
 
     public static void ApplyAuthorization(HttpClient client)

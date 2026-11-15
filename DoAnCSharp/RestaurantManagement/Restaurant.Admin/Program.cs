@@ -1,3 +1,5 @@
+using Restaurant.Admin.Services;
+
 namespace Restaurant.Admin
 {
     internal static class Program
@@ -11,10 +13,20 @@ namespace Restaurant.Admin
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            using var loginForm = new LoginForm();
-            if (loginForm.ShowDialog() == DialogResult.OK)
+            while (true)
             {
-                System.Windows.Forms.Application.Run(new Form1());
+                using var loginForm = new LoginForm();
+                if (loginForm.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                using var mainForm = new Form1();
+                System.Windows.Forms.Application.Run(mainForm);
+                if (!ApiSession.IsLogoutRequested)
+                {
+                    return;
+                }
             }
         }
     }

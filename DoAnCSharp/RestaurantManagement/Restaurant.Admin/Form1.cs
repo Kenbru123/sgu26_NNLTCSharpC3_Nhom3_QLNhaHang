@@ -70,6 +70,7 @@ namespace Restaurant.Admin
         private readonly Button btnKhoHuyNhap = new();
         private readonly Button btnKhoXacNhanXuat = new();
         private readonly Button btnKhoHuyXuat = new();
+        private readonly Button btnDangXuat = new();
         private readonly DataGridView dgvTaiKhoanNhanVien = new();
         private readonly TextBox txtTaiKhoanUsername = new();
         private readonly TextBox txtTaiKhoanPassword = new();
@@ -83,6 +84,17 @@ namespace Restaurant.Admin
         public Form1()
         {
             InitializeComponent();
+
+            btnDangXuat.Text = "Đăng xuất";
+            btnDangXuat.Size = new Size(110, 30);
+            btnDangXuat.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnDangXuat.Location = new Point(ClientSize.Width - btnDangXuat.Width - 12, 6);
+            btnDangXuat.Click += btnDangXuat_Click;
+            Controls.Add(btnDangXuat);
+            tabQuanLy.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabQuanLy.Location = new Point(0, 40);
+            tabQuanLy.Height = ClientSize.Height - 40;
+            btnDangXuat.BringToFront();
 
             _monAnApiService = new MonAnApiService();
             _khuVucApiService = new KhuVucApiService();
@@ -111,6 +123,22 @@ namespace Restaurant.Admin
             tabQuanLy.Controls.Add(tabCheBien);
             btnThemKhuVuc.Enabled = ApiSession.IsManager;
             InitializeAccountTab();
+        }
+
+        private void btnDangXuat_Click(object? sender, EventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Bạn có chắc muốn đăng xuất không?",
+                "Đăng xuất",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            ApiSession.Clear();
+            Close();
         }
 
         private async void Form1_Load(object sender, EventArgs e)
