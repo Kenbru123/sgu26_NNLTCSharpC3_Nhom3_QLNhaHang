@@ -185,6 +185,7 @@ public sealed class AuthService : IAuthService
             select new
             {
                 taiKhoan.MaTaiKhoan,
+                taiKhoan.MaNhanVien,
                 taiKhoan.TenDangNhap,
                 taiKhoan.MatKhauHash,
                 taiKhoan.TrangThai,
@@ -216,7 +217,8 @@ public sealed class AuthService : IAuthService
         return new AuthenticatedUserDto(
             account.MaTaiKhoan,
             account.TenDangNhap,
-            account.TenVaiTro);
+            account.TenVaiTro,
+            account.MaNhanVien!.Value);
     }
 
     // Hỗ trợ hai định dạng mật khẩu hiện có

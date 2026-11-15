@@ -122,7 +122,11 @@ public sealed class AuthController : ControllerBase
 
             new Claim(
                 ClaimTypes.Role,
-                user.VaiTro)
+                user.VaiTro),
+
+            new Claim(
+                "employeeId",
+                user.MaNhanVien.ToString())
         };
 
         var signingKey = new SymmetricSecurityKey(

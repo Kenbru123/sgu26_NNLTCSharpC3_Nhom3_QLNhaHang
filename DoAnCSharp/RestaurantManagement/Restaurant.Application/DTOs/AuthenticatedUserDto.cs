@@ -4,4 +4,5 @@ namespace Restaurant.Application.DTOs;
 public sealed record AuthenticatedUserDto(
     int MaTaiKhoan,
     string TenDangNhap,
-    string VaiTro);
+    string VaiTro,
+    int MaNhanVien);

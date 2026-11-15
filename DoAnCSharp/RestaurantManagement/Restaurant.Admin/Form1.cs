@@ -866,6 +866,18 @@ namespace Restaurant.Admin
 
             var item = dgvKhoPhieu.CurrentRow.DataBoundItem;
             var id = (int)item.GetType().GetProperty("MaPhieu")!.GetValue(item)!;
+            var receiptType = item.GetType().GetProperty("Loai")?.GetValue(item)?.ToString();
+            var expectedType = isPurchase ? "Nhập kho" : "Xuất kho";
+            if (!string.Equals(receiptType, expectedType, StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show(
+                    $"Bạn đang chọn {receiptType ?? "phiếu không xác định"}. Hãy chọn phiếu {expectedType} để thực hiện thao tác này.",
+                    "Sai loại phiếu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
             var status = confirmed ? "XacNhan" : "Huy";
 
             try
