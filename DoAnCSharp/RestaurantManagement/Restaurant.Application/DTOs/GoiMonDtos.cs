@@ -59,7 +59,9 @@ public sealed record ThemMonVaoPhieuRequest(
 
 public sealed record CapNhatSoLuongMonRequest(int SoLuong);
 
-public sealed record CapNhatTrangThaiPhieuRequest(string TrangThaiDon);
+public sealed record CapNhatTrangThaiPhieuRequest(
+    string TrangThaiDon,
+    string? TrangThaiGiao = null);
 
 public sealed record ThanhToanPhieuRequest(
     string PhuongThucThanhToan,
