@@ -8,6 +8,8 @@ namespace Restaurant.Admin
         private readonly MonAnApiService _monAnApiService;
         private readonly KhuVucApiService _khuVucApiService;
         private readonly BanAnApiService _banAnApiService;
+        private readonly KhoApiService _khoApiService;
+        private readonly ThanhToanApiService _thanhToanApiService;
         private readonly GoiMonControl _goiMonControl;
         private readonly DataGridView dgvBanAn = new();
         private readonly Panel pnlDanhSachBanAn = new();
@@ -35,6 +37,9 @@ namespace Restaurant.Admin
         private readonly Button btnSuaMon = new();
         private readonly Button btnXoaMon = new();
         private readonly Button btnLamMoiMon = new();
+        private readonly DataGridView dgvKhoData = new();
+        private readonly DataGridView dgvKhoLowStock = new();
+        private readonly DataGridView dgvThanhToan = new();
         private bool _loadingBanAn;
         private bool _loadingBanFilters;
 
@@ -45,8 +50,12 @@ namespace Restaurant.Admin
             _monAnApiService = new MonAnApiService();
             _khuVucApiService = new KhuVucApiService();
             _banAnApiService = new BanAnApiService();
+            _khoApiService = new KhoApiService();
+            _thanhToanApiService = new ThanhToanApiService();
             _goiMonControl = new GoiMonControl();
             InitializeMonAnTab();
+            InitializeKhoTab();
+            InitializePaymentTab();
             ConfigureKhuVucGrid();
             InitializeBanAnTab();
             var tabGoiMon = new TabPage("Gọi món")
@@ -63,6 +72,8 @@ namespace Restaurant.Admin
             await LoadMonAnAsync();
             await LoadKhuVucAsync();
             await LoadBanAnAsync();
+            await LoadKhoAsync();
+            await LoadPaymentAsync();
             await _goiMonControl.LoadAsync();
         }
 
@@ -96,6 +107,172 @@ namespace Restaurant.Admin
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private async Task LoadKhoAsync()
+        {
+            try
+            {
+                var ingredients = await _khoApiService.GetIngredientsAsync();
+                var lowStock = await _khoApiService.GetLowStockIngredientsAsync();
+
+                if (dgvKhoData is not null)
+                {
+                    dgvKhoData.DataSource = ingredients;
+                    dgvKhoData.ClearSelection();
+                }
+
+                if (dgvKhoLowStock is not null)
+                {
+                    dgvKhoLowStock.DataSource = lowStock;
+                    dgvKhoLowStock.ClearSelection();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Không thể tải dữ liệu kho.\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task LoadPaymentAsync()
+        {
+            try
+            {
+                if (dgvThanhToan is null)
+                {
+                    return;
+                }
+
+                var orders = await new GoiMonApiService().GetOrdersAsync();
+                var rows = new List<object>();
+                foreach (var order in orders)
+                {
+                    var invoice = await _thanhToanApiService.GetInvoiceAsync(order.MaDonHang);
+                    rows.Add(new
+                    {
+                        order.MaDonHang,
+                        order.MaBan,
+                        order.TenBan,
+                        order.TrangThaiDon,
+                        order.SoMon,
+                        order.TongTien,
+                        HoaDon = invoice is null ? "Chưa có" : invoice.TrangThaiThanhToan
+                    });
+                }
+
+                dgvThanhToan.DataSource = rows;
+                dgvThanhToan.ClearSelection();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Không thể tải dữ liệu thanh toán.\n" + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void InitializeKhoTab()
+        {
+            var page = new TabPage("Kho");
+            var panel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(12)
+            };
+
+            var lblKho = new Label
+            {
+                Text = "Tồn kho nguyên liệu",
+                AutoSize = true,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Location = new Point(12, 12)
+            };
+            panel.Controls.Add(lblKho);
+
+            dgvKhoData.Location = new Point(12, 44);
+            dgvKhoData.Size = new Size(930, 230);
+            dgvKhoData.ReadOnly = true;
+            dgvKhoData.AutoGenerateColumns = false;
+            dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MaNguyenLieu), HeaderText = "Mã", Width = 60 });
+            dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TenNguyenLieu), HeaderText = "Tên nguyên liệu", Width = 220 });
+            dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.DonViTinh), HeaderText = "ĐVT", Width = 80 });
+            dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MucTonToiThieu), HeaderText = "Tối thiểu", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
+            dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TonKho), HeaderText = "Tồn kho", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
+            dgvKhoData.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TrangThai), HeaderText = "Hoạt động", Width = 100 });
+            panel.Controls.Add(dgvKhoData);
+
+            var lblTonThap = new Label
+            {
+                Text = "Nguyên liệu dưới mức tối thiểu",
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Location = new Point(12, 292)
+            };
+            panel.Controls.Add(lblTonThap);
+
+            dgvKhoLowStock.Location = new Point(12, 320);
+            dgvKhoLowStock.Size = new Size(930, 200);
+            dgvKhoLowStock.ReadOnly = true;
+            dgvKhoLowStock.AutoGenerateColumns = false;
+            dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MaNguyenLieu), HeaderText = "Mã", Width = 60 });
+            dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TenNguyenLieu), HeaderText = "Tên nguyên liệu", Width = 220 });
+            dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.DonViTinh), HeaderText = "ĐVT", Width = 80 });
+            dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MucTonToiThieu), HeaderText = "Tối thiểu", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
+            dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TonKho), HeaderText = "Tồn kho", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
+            panel.Controls.Add(dgvKhoLowStock);
+
+            page.Controls.Add(panel);
+            tabQuanLy.Controls.Add(page);
+        }
+
+        private void InitializePaymentTab()
+        {
+            var page = new TabPage("Thanh toán");
+            var panel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(12)
+            };
+
+            var lblTitle = new Label
+            {
+                Text = "Tình trạng hóa đơn và trạng thái thanh toán",
+                AutoSize = true,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                Location = new Point(12, 12)
+            };
+            panel.Controls.Add(lblTitle);
+
+            dgvThanhToan.Location = new Point(12, 44);
+            dgvThanhToan.Size = new Size(930, 470);
+            dgvThanhToan.ReadOnly = true;
+            dgvThanhToan.AutoGenerateColumns = false;
+            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MaDonHang", HeaderText = "Mã đơn", Width = 80 });
+            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MaBan", HeaderText = "Mã bàn", Width = 80 });
+            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TenBan", HeaderText = "Tên bàn", Width = 150 });
+            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TrangThaiDon", HeaderText = "Trạng thái đơn", Width = 160 });
+            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "SoMon", HeaderText = "Số món", Width = 80 });
+            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TongTien", HeaderText = "Tổng tiền", Width = 120, DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" } });
+            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "HoaDon", HeaderText = "Hóa đơn", Width = 130 });
+            panel.Controls.Add(dgvThanhToan);
+
+            var btnReload = new Button
+            {
+                Text = "Tải lại",
+                Size = new Size(120, 32),
+                Location = new Point(822, 530)
+            };
+            btnReload.Click += async (_, _) => await LoadPaymentAsync();
+            panel.Controls.Add(btnReload);
+
+            page.Controls.Add(panel);
+            tabQuanLy.Controls.Add(page);
         }
 
         private void InitializeMonAnTab()
