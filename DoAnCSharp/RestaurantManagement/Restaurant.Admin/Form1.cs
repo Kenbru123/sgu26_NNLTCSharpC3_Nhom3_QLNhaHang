@@ -33,14 +33,21 @@ namespace Restaurant.Admin
         private readonly TextBox txtHinhAnhMon = new();
         private readonly NumericUpDown nudDonGiaMon = new();
         private readonly ComboBox cmbDanhMucMon = new();
+        private readonly TextBox txtTenDanhMuc = new();
+        private readonly TextBox txtMoTaDanhMuc = new();
         private readonly CheckBox chkMonDangBan = new();
         private readonly Button btnThemMon = new();
         private readonly Button btnSuaMon = new();
         private readonly Button btnXoaMon = new();
         private readonly Button btnLamMoiMon = new();
+        private readonly Button btnThemDanhMuc = new();
         private readonly DataGridView dgvKhoData = new();
         private readonly DataGridView dgvKhoLowStock = new();
         private readonly DataGridView dgvKhoPhieu = new();
+        private readonly TextBox txtKhoTenNguyenLieu = new();
+        private readonly TextBox txtKhoDonViTinh = new();
+        private readonly NumericUpDown nudKhoMucTonToiThieu = new();
+        private readonly Button btnKhoThemNguyenLieu = new();
         private readonly DataGridView dgvThanhToan = new();
         private readonly TextBox txtKhoMaNguyenLieuNhap = new();
         private readonly NumericUpDown nudKhoSoLuongNhap = new();
@@ -202,6 +209,38 @@ namespace Restaurant.Admin
             }
         }
 
+        private async Task CreateIngredientAsync()
+        {
+            var name = txtKhoTenNguyenLieu.Text.Trim();
+            var unit = txtKhoDonViTinh.Text.Trim();
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(unit))
+            {
+                MessageBox.Show("Vui lòng nhập tên nguyên liệu và đơn vị tính.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _khoApiService.CreateIngredientAsync(new CreateNguyenLieuRequest
+                {
+                    TenNguyenLieu = name,
+                    DonViTinh = unit,
+                    MucTonToiThieu = nudKhoMucTonToiThieu.Value,
+                    TrangThai = true
+                });
+
+                txtKhoTenNguyenLieu.Clear();
+                txtKhoDonViTinh.Clear();
+                nudKhoMucTonToiThieu.Value = 0;
+                await LoadKhoAsync();
+                MessageBox.Show("Đã thêm nguyên liệu.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể thêm nguyên liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private async Task LoadPaymentAsync()
         {
             try
@@ -250,6 +289,54 @@ namespace Restaurant.Admin
                 Padding = new Padding(12)
             };
 
+            var khoTabs = new TabControl
+            {
+                Dock = DockStyle.Fill
+            };
+            var overviewPage = new TabPage("Tổng quan tồn kho")
+            {
+                Padding = new Padding(12)
+            };
+            var movementPage = new TabPage("Nhập / xuất kho")
+            {
+                Padding = new Padding(12)
+            };
+            khoTabs.TabPages.Add(overviewPage);
+            khoTabs.TabPages.Add(movementPage);
+            panel.Controls.Add(khoTabs);
+
+            var grpThemNguyenLieu = new GroupBox
+            {
+                Text = "Thêm nguyên liệu",
+                Location = new Point(12, 12),
+                Size = new Size(930, 78),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+            overviewPage.Controls.Add(grpThemNguyenLieu);
+
+            grpThemNguyenLieu.Controls.Add(new Label { Text = "Tên nguyên liệu", AutoSize = true, Location = new Point(12, 30) });
+            txtKhoTenNguyenLieu.Location = new Point(115, 26);
+            txtKhoTenNguyenLieu.Size = new Size(220, 26);
+            grpThemNguyenLieu.Controls.Add(txtKhoTenNguyenLieu);
+
+            grpThemNguyenLieu.Controls.Add(new Label { Text = "ĐVT", AutoSize = true, Location = new Point(355, 30) });
+            txtKhoDonViTinh.Location = new Point(395, 26);
+            txtKhoDonViTinh.Size = new Size(90, 26);
+            grpThemNguyenLieu.Controls.Add(txtKhoDonViTinh);
+
+            grpThemNguyenLieu.Controls.Add(new Label { Text = "Tồn tối thiểu", AutoSize = true, Location = new Point(505, 30) });
+            nudKhoMucTonToiThieu.Location = new Point(595, 26);
+            nudKhoMucTonToiThieu.Size = new Size(100, 26);
+            nudKhoMucTonToiThieu.DecimalPlaces = 2;
+            nudKhoMucTonToiThieu.Maximum = 999999999;
+            grpThemNguyenLieu.Controls.Add(nudKhoMucTonToiThieu);
+
+            btnKhoThemNguyenLieu.Text = "Thêm nguyên liệu";
+            btnKhoThemNguyenLieu.Size = new Size(145, 32);
+            btnKhoThemNguyenLieu.Location = new Point(720, 24);
+            btnKhoThemNguyenLieu.Click += async (_, _) => await CreateIngredientAsync();
+            grpThemNguyenLieu.Controls.Add(btnKhoThemNguyenLieu);
+
             var lblKho = new Label
             {
                 Text = "Tồn kho nguyên liệu",
@@ -257,10 +344,10 @@ namespace Restaurant.Admin
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
                 Location = new Point(12, 12)
             };
-            panel.Controls.Add(lblKho);
+            overviewPage.Controls.Add(lblKho);
 
-            dgvKhoData.Location = new Point(12, 44);
-            dgvKhoData.Size = new Size(930, 230);
+            dgvKhoData.Location = new Point(12, 102);
+            dgvKhoData.Size = new Size(930, 190);
             dgvKhoData.ReadOnly = true;
             dgvKhoData.AutoGenerateColumns = false;
             dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MaNguyenLieu), HeaderText = "Mã", Width = 60 });
@@ -279,19 +366,19 @@ namespace Restaurant.Admin
                 txtKhoMaNguyenLieuNhap.Text = ingredient.MaNguyenLieu.ToString();
                 txtKhoMaNguyenLieuXuat.Text = ingredient.MaNguyenLieu.ToString();
             };
-            panel.Controls.Add(dgvKhoData);
+            overviewPage.Controls.Add(dgvKhoData);
 
             var lblTonThap = new Label
             {
                 Text = "Nguyên liệu dưới mức tối thiểu",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                Location = new Point(12, 292)
+                Location = new Point(12, 310)
             };
-            panel.Controls.Add(lblTonThap);
+            overviewPage.Controls.Add(lblTonThap);
 
-            dgvKhoLowStock.Location = new Point(12, 320);
-            dgvKhoLowStock.Size = new Size(930, 200);
+            dgvKhoLowStock.Location = new Point(12, 338);
+            dgvKhoLowStock.Size = new Size(930, 175);
             dgvKhoLowStock.ReadOnly = true;
             dgvKhoLowStock.AutoGenerateColumns = false;
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MaNguyenLieu), HeaderText = "Mã", Width = 60 });
@@ -299,16 +386,16 @@ namespace Restaurant.Admin
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.DonViTinh), HeaderText = "ĐVT", Width = 80 });
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MucTonToiThieu), HeaderText = "Tối thiểu", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TonKho), HeaderText = "Tồn kho", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
-            panel.Controls.Add(dgvKhoLowStock);
+            overviewPage.Controls.Add(dgvKhoLowStock);
 
             var grpNhapNhanh = new GroupBox
             {
                 Text = "Nhập kho nhanh",
-                Location = new Point(12, 540),
+                Location = new Point(12, 12),
                 Size = new Size(450, 120),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
-            panel.Controls.Add(grpNhapNhanh);
+            movementPage.Controls.Add(grpNhapNhanh);
 
             var lblKhoMaNhap = new Label { Text = "Mã NL", AutoSize = true, Location = new Point(12, 28) };
             txtKhoMaNguyenLieuNhap.Location = new Point(90, 24);
@@ -360,11 +447,11 @@ namespace Restaurant.Admin
             var grpXuatNhanh = new GroupBox
             {
                 Text = "Xuất kho nhanh",
-                Location = new Point(474, 540),
+                Location = new Point(474, 12),
                 Size = new Size(468, 120),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
-            panel.Controls.Add(grpXuatNhanh);
+            movementPage.Controls.Add(grpXuatNhanh);
 
             var lblKhoMaXuat = new Label { Text = "Mã NL", AutoSize = true, Location = new Point(12, 28) };
             txtKhoMaNguyenLieuXuat.Location = new Point(90, 24);
@@ -433,11 +520,11 @@ namespace Restaurant.Admin
                 Text = "Phiếu nhập/xuất kho gần nhất",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                Location = new Point(12, 680)
+                Location = new Point(12, 155)
             };
-            panel.Controls.Add(lblPhieuKho);
+            movementPage.Controls.Add(lblPhieuKho);
 
-            dgvKhoPhieu.Location = new Point(12, 680);
+            dgvKhoPhieu.Location = new Point(12, 183);
             dgvKhoPhieu.Size = new Size(930, 150);
             dgvKhoPhieu.ReadOnly = true;
             dgvKhoPhieu.AutoGenerateColumns = false;
@@ -446,31 +533,31 @@ namespace Restaurant.Admin
             dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TrangThai", HeaderText = "Trạng thái", Width = 130 });
             dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ThoiGian", HeaderText = "Thời gian", Width = 180, DefaultCellStyle = new DataGridViewCellStyle { Format = "g" } });
             dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "GhiChu", HeaderText = "Ghi chú", Width = 320 });
-            panel.Controls.Add(dgvKhoPhieu);
+            movementPage.Controls.Add(dgvKhoPhieu);
 
             btnKhoXacNhanNhap.Text = "Xác nhận nhập";
             btnKhoXacNhanNhap.Size = new Size(130, 32);
-            btnKhoXacNhanNhap.Location = new Point(12, 750);
+            btnKhoXacNhanNhap.Location = new Point(12, 345);
             btnKhoXacNhanNhap.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: true, confirmed: true);
-            panel.Controls.Add(btnKhoXacNhanNhap);
+            movementPage.Controls.Add(btnKhoXacNhanNhap);
 
             btnKhoHuyNhap.Text = "Hủy nhập";
             btnKhoHuyNhap.Size = new Size(120, 32);
-            btnKhoHuyNhap.Location = new Point(150, 750);
+            btnKhoHuyNhap.Location = new Point(150, 345);
             btnKhoHuyNhap.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: true, confirmed: false);
-            panel.Controls.Add(btnKhoHuyNhap);
+            movementPage.Controls.Add(btnKhoHuyNhap);
 
             btnKhoXacNhanXuat.Text = "Xác nhận xuất";
             btnKhoXacNhanXuat.Size = new Size(130, 32);
-            btnKhoXacNhanXuat.Location = new Point(282, 750);
+            btnKhoXacNhanXuat.Location = new Point(282, 345);
             btnKhoXacNhanXuat.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: false, confirmed: true);
-            panel.Controls.Add(btnKhoXacNhanXuat);
+            movementPage.Controls.Add(btnKhoXacNhanXuat);
 
             btnKhoHuyXuat.Text = "Hủy xuất";
             btnKhoHuyXuat.Size = new Size(120, 32);
-            btnKhoHuyXuat.Location = new Point(420, 750);
+            btnKhoHuyXuat.Location = new Point(420, 345);
             btnKhoHuyXuat.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: false, confirmed: false);
-            panel.Controls.Add(btnKhoHuyXuat);
+            movementPage.Controls.Add(btnKhoHuyXuat);
 
             page.Controls.Add(panel);
             tabQuanLy.Controls.Add(page);
@@ -498,7 +585,7 @@ namespace Restaurant.Admin
             dgvThanhToan.Size = new Size(930, 470);
             dgvThanhToan.ReadOnly = true;
             dgvThanhToan.AutoGenerateColumns = false;
-            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MaDonHang", HeaderText = "Mã đơn", Width = 80 });
+            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { Name = "MaDonHang", DataPropertyName = "MaDonHang", HeaderText = "Mã đơn", Width = 80 });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MaBan", HeaderText = "Mã bàn", Width = 80 });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TenBan", HeaderText = "Tên bàn", Width = 150 });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TrangThaiDon", HeaderText = "Trạng thái đơn", Width = 160 });
@@ -765,6 +852,25 @@ namespace Restaurant.Admin
             chkMonDangBan.Checked = true;
             editor.Controls.Add(chkMonDangBan);
 
+            AddFoodLabel(editor, "Danh mục mới", 8, 112);
+            txtTenDanhMuc.Location = new Point(105, 109);
+            txtTenDanhMuc.Size = new Size(190, 27);
+            txtTenDanhMuc.MaxLength = 100;
+            editor.Controls.Add(txtTenDanhMuc);
+
+            AddFoodLabel(editor, "Mô tả danh mục", 310, 112);
+            txtMoTaDanhMuc.Location = new Point(415, 109);
+            txtMoTaDanhMuc.Size = new Size(300, 27);
+            txtMoTaDanhMuc.MaxLength = 500;
+            editor.Controls.Add(txtMoTaDanhMuc);
+
+            btnThemDanhMuc.Location = new Point(735, 107);
+            btnThemDanhMuc.Size = new Size(125, 32);
+            btnThemDanhMuc.Text = "Thêm danh mục";
+            btnThemDanhMuc.Click += async (_, _) => await btnThemDanhMuc_Click();
+            btnThemDanhMuc.Enabled = ApiSession.IsManager;
+            editor.Controls.Add(btnThemDanhMuc);
+
             ConfigureFoodButton(btnThemMon, "Thêm món", 220);
             btnThemMon.Click += btnThemMon_Click;
             editor.Controls.Add(btnThemMon);
@@ -826,6 +932,48 @@ namespace Restaurant.Admin
             btnSuaMon.Enabled = ApiSession.IsManager;
             btnXoaMon.Enabled = ApiSession.IsManager;
             btnThemMon.Enabled = ApiSession.IsManager;
+        }
+
+        private async Task btnThemDanhMuc_Click()
+        {
+            var name = txtTenDanhMuc.Text.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show(
+                    "Vui lòng nhập tên danh mục.",
+                    "Thiếu thông tin",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _monAnApiService.CreateCategoryAsync(new CreateFoodCategoryRequest
+                {
+                    TenDanhMuc = name,
+                    MoTa = string.IsNullOrWhiteSpace(txtMoTaDanhMuc.Text)
+                        ? null
+                        : txtMoTaDanhMuc.Text.Trim()
+                });
+
+                txtTenDanhMuc.Clear();
+                txtMoTaDanhMuc.Clear();
+                await LoadMonAnAsync();
+                MessageBox.Show(
+                    "Đã thêm danh mục.",
+                    "Thành công",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(
+                    exception.Message,
+                    "Không thể thêm danh mục",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private static void AddFoodLabel(Control parent, string text, int x, int y)

@@ -16,6 +16,16 @@ public sealed record FoodResponse(
 /// <summary>Thông tin danh mục món ăn đang được sử dụng.</summary>
 public sealed record FoodCategoryResponse(int MaDanhMuc, string TenDanhMuc);
 
+/// <summary>Dữ liệu tạo danh mục món ăn mới.</summary>
+public sealed record CreateFoodCategoryRequest
+{
+    [Required, StringLength(100, MinimumLength = 1)]
+    public required string TenDanhMuc { get; init; }
+
+    [StringLength(500)]
+    public string? MoTa { get; init; }
+}
+
 /// <summary>Dữ liệu tạo món ăn mới.</summary>
 public sealed record CreateFoodRequest
 {

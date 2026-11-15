@@ -183,6 +183,12 @@ public sealed class PaymentService : IPaymentService
             return null;
         }
 
+        if (order.LoaiDon != "OnlineGiaoHang")
+        {
+            throw new ArgumentException(
+                "Chỉ đơn hàng giao tận nơi mới có thể cập nhật trạng thái giao hàng.");
+        }
+
         order.TrangThaiGiao = normalized;
         if (normalized is "DaNhan" or "HoanTat")
         {
