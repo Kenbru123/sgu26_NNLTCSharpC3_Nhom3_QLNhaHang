@@ -18,6 +18,9 @@ public interface IGoiMonService
     Task<IReadOnlyList<GoiMonPhieuDto>> GetOrdersAsync(
         CancellationToken cancellationToken);
 
+    Task<IReadOnlyList<GoiMonCheBienDto>> GetKitchenQueueAsync(
+        CancellationToken cancellationToken);
+
     Task<GoiMonPhieuChiTietDto?> GetOrderByIdAsync(
         int id,
         CancellationToken cancellationToken);

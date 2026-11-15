@@ -51,6 +51,9 @@ public sealed class GoiMonApiService
     public Task<List<GoiMonPhieuDto>> GetOrdersAsync() =>
         GetAsync<List<GoiMonPhieuDto>>("api/goi-mon");
 
+    public Task<List<GoiMonCheBienDto>> GetKitchenQueueAsync() =>
+        GetAsync<List<GoiMonCheBienDto>>("api/goi-mon/che-bien");
+
     public Task<GoiMonPhieuChiTietDto> GetOrderAsync(int id) =>
         GetAsync<GoiMonPhieuChiTietDto>($"api/goi-mon/{id}");
 

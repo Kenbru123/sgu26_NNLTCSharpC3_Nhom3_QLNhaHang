@@ -103,3 +103,26 @@ Authorization: Bearer {{token}}
 ### Delete a table without reservations or orders (replace 1 with an existing ID)
 DELETE {{Restaurant.API_HostAddress}}/api/ban-an/1
 Authorization: Bearer {{token}}
+
+### List dishes waiting for or currently in kitchen preparation
+GET {{Restaurant.API_HostAddress}}/api/goi-mon/che-bien
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Accept a dish and start preparation (replace IDs with an existing queued dish)
+PATCH {{Restaurant.API_HostAddress}}/api/goi-mon/1/mon-an/1/trang-thai
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "trangThaiCheBien": "DangCheBien"
+}
+
+### Mark a dish as completed (replace IDs with an existing dish in preparation)
+PATCH {{Restaurant.API_HostAddress}}/api/goi-mon/1/mon-an/1/trang-thai
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "trangThaiCheBien": "HoanThanh"
+}

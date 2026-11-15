@@ -43,6 +43,19 @@ public sealed record GoiMonChiTietDto(
     DateTime? ThoiGianBatDau,
     DateTime? ThoiGianHoanThanh);
 
+/// <summary>Thông tin một món đang chờ hoặc đang được bếp chế biến.</summary>
+public sealed record GoiMonCheBienDto(
+    int MaDonHang,
+    int MaChiTietDonHang,
+    string TenBan,
+    DateTime ThoiGianTao,
+    string TenMon,
+    int SoLuong,
+    string? GhiChuMon,
+    string TrangThaiCheBien,
+    DateTime? ThoiGianBatDau,
+    DateTime? ThoiGianHoanThanh);
+
 public sealed record GoiMonPhieuChiTietDto(
     GoiMonPhieuDto Phieu,
     IReadOnlyList<GoiMonChiTietDto> MonAn,
