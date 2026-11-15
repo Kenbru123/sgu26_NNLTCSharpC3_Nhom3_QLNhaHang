@@ -140,6 +140,38 @@ public sealed class GoiMonService : IGoiMonService
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<GoiMonCheBienDto>> GetKitchenQueueAsync(
+        CancellationToken cancellationToken)
+    {
+        return await (
+            from detail in _context.ChiTietDonHangs.AsNoTracking()
+            join order in _context.DonHangs.AsNoTracking()
+                on detail.MaDonHang equals order.MaDonHang
+            join table in _context.BanAns.AsNoTracking()
+                on order.MaBan equals table.MaBan
+            join food in _context.MonAns.AsNoTracking()
+                on detail.MaMon equals food.MaMon
+            where order.LoaiDon == "TaiBan" &&
+                  order.TrangThaiDon != "HoanThanh" &&
+                  order.TrangThaiDon != "DaThanhToan" &&
+                  order.TrangThaiDon != "DaHuy" &&
+                  (detail.TrangThaiCheBien == "ChoCheBien" ||
+                   detail.TrangThaiCheBien == "DangCheBien")
+            orderby order.ThoiGianTao, order.MaDonHang, detail.MaChiTietDonHang
+            select new GoiMonCheBienDto(
+                order.MaDonHang,
+                detail.MaChiTietDonHang,
+                table.TenBan,
+                order.ThoiGianTao,
+                food.TenMon,
+                detail.SoLuong,
+                detail.GhiChuMon,
+                detail.TrangThaiCheBien,
+                detail.ThoiGianBatDau,
+                detail.ThoiGianHoanThanh))
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<GoiMonPhieuChiTietDto?> GetOrderByIdAsync(
         int id,
         CancellationToken cancellationToken)

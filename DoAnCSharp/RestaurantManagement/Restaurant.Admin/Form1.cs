@@ -11,6 +11,7 @@ namespace Restaurant.Admin
         private readonly KhoApiService _khoApiService;
         private readonly ThanhToanApiService _thanhToanApiService;
         private readonly GoiMonControl _goiMonControl;
+        private readonly CheBienControl _cheBienControl;
         private readonly DataGridView dgvBanAn = new();
         private readonly Panel pnlDanhSachBanAn = new();
         private readonly Label lblBanAnKhongCoKetQua = new();
@@ -73,6 +74,7 @@ namespace Restaurant.Admin
             _khoApiService = new KhoApiService();
             _thanhToanApiService = new ThanhToanApiService();
             _goiMonControl = new GoiMonControl();
+            _cheBienControl = new CheBienControl();
             InitializeMonAnTab();
             InitializeKhoTab();
             InitializePaymentTab();
@@ -84,6 +86,12 @@ namespace Restaurant.Admin
             };
             tabGoiMon.Controls.Add(_goiMonControl);
             tabQuanLy.Controls.Add(tabGoiMon);
+            var tabCheBien = new TabPage("Quản lý chế biến")
+            {
+                Padding = new Padding(8)
+            };
+            tabCheBien.Controls.Add(_cheBienControl);
+            tabQuanLy.Controls.Add(tabCheBien);
             btnThemKhuVuc.Enabled = ApiSession.IsManager;
         }
 
@@ -95,6 +103,7 @@ namespace Restaurant.Admin
             await LoadKhoAsync();
             await LoadPaymentAsync();
             await _goiMonControl.LoadAsync();
+            await _cheBienControl.LoadAsync();
         }
 
         private async void btnTaiLai_Click(object sender, EventArgs e)

@@ -53,6 +53,13 @@ public sealed class GoiMonController : ControllerBase
         return Ok(await _goiMonService.GetOrdersAsync(cancellationToken));
     }
 
+    [HttpGet("che-bien")]
+    public async Task<ActionResult<IReadOnlyList<GoiMonCheBienDto>>> GetKitchenQueue(
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _goiMonService.GetKitchenQueueAsync(cancellationToken));
+    }
+
     [HttpGet("{id:int}")]
     public async Task<ActionResult<GoiMonPhieuChiTietDto>> GetOrderById(
         int id,
