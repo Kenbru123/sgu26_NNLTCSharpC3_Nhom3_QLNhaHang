@@ -63,6 +63,8 @@ builder.Services.AddScoped<IBanAnService, BanAnService>();
 // Đăng ký, đăng nhập và quản lý tài khoản
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 // =====================================================
 // 3. CẤU HÌNH JWT

@@ -85,6 +85,16 @@ Các API quản lý khu vực: `GET/POST /api/khu-vuc`, `GET/PUT/DELETE /api/khu
 Các API quản lý bàn ăn: `GET/POST /api/ban-an`, `GET/PUT/DELETE /api/ban-an/{id}`, `PATCH /api/ban-an/{id}/trang-thai`. API chỉ chấp nhận mã khu vực đã tồn tại.
 Các API gọi món (chỉ Quản lý/Nhân viên): `GET /api/goi-mon`, `GET/DELETE /api/goi-mon/{id}`, `POST /api/goi-mon`, `PUT /api/goi-mon/{id}`, `PATCH /api/goi-mon/{id}/trang-thai`, `POST /api/goi-mon/{id}/thanh-toan`, `GET /api/goi-mon/ban-an`, `GET /api/goi-mon/danh-muc`, `GET /api/goi-mon/mon-an`, `POST /api/goi-mon/{id}/mon-an`, `PUT/DELETE /api/goi-mon/{id}/mon-an/{detailId}`, `PATCH /api/goi-mon/{id}/mon-an/{detailId}/trang-thai`.
 
+## NV4 - Kho, thanh toán và trạng thái giao hàng
+
+Hệ thống hỗ trợ luồng quản lý nguyên liệu và thanh toán theo yêu cầu nghiệp vụ:
+
+- Nhân viên nhập nguyên liệu vào kho thông qua `POST /api/kho/nhap` và xác nhận trạng thái `Nhap`/`XacNhan`/`Huy` bằng `PATCH /api/kho/nhap/{id}/trang-thai`.
+- Quản lý xuất nguyên liệu cho chế biến hoặc phát sinh nội bộ qua `POST /api/kho/xuat`, đồng thời kiểm tra kiểm soát tồn kho trước khi xuất.
+- Hệ thống tự động tính tồn kho theo tổng phiếu nhập đã xác nhận trừ tổng phiếu xuất đã xác nhận, và cảnh báo nguyên liệu dưới mức tối thiểu qua `GET /api/kho/nguyen-lieu/ton-thap`.
+- Đơn hàng có thể lập hóa đơn và thanh toán qua `POST /api/thanh-toan/don-hang/{id}`; `PATCH /api/thanh-toan/don-hang/{id}/trang-thai-giao` cập nhật trạng thái giao hàng (`ChoLayHang`, `DangGiao`, `DaGiao`, `DaNhan`, `HoanTat`).
+- Các API kho: `GET /api/kho/nguyen-lieu`, `GET /api/kho/nguyen-lieu/{id}`, `POST /api/kho/nguyen-lieu`, `PUT /api/kho/nguyen-lieu/{id}`, `GET /api/kho/nhap`, `GET /api/kho/xuat`, `POST /api/kho/nhap`, `POST /api/kho/xuat`.
+
 ## Quản lý container
 
 ```powershell

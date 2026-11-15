@@ -366,7 +366,7 @@ public sealed class GoiMonService : IGoiMonService
         CapNhatTrangThaiPhieuRequest request,
         CancellationToken cancellationToken)
     {
-        if (request.TrangThaiDon != "DangPhucVu")
+        if (request.TrangThaiDon is not ("DangPhucVu" or "DaThanhToan"))
         {
             throw new ArgumentException(
                 "Trạng thái phiếu hợp lệ là Đang phục vụ hoặc Đã thanh toán.");
@@ -385,7 +385,33 @@ public sealed class GoiMonService : IGoiMonService
         }
 
         EnsureOrderOpen(order);
-        order.TrangThaiDon = "DangPhucVu";
+        order.TrangThaiDon = request.TrangThaiDon;
+
+        if (request.TrangThaiGiao is not null)
+        {
+            var validStatuses = new[]
+            {
+                "ChoLayHang",
+                "DangGiao",
+                "DaGiao",
+                "DaNhan",
+                "HoanTat"
+            };
+
+            var normalized = request.TrangThaiGiao.Trim();
+            if (!validStatuses.Contains(normalized))
+            {
+                throw new ArgumentException(
+                    "Trạng thái giao hàng không hợp lệ.");
+            }
+
+            order.TrangThaiGiao = normalized;
+            if (normalized is "DaNhan" or "HoanTat")
+            {
+                order.TrangThaiDon = "HoanTat";
+            }
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
 
         return (await GetOrderByIdAsync(id, cancellationToken)
