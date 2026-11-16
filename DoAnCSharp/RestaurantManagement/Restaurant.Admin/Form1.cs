@@ -180,6 +180,7 @@ namespace Restaurant.Admin
             dgvDonOnline.ReadOnly = true;
             dgvDonOnline.AutoGenerateColumns = false;
             dgvDonOnline.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDonOnline.SelectionChanged += (_, _) => UpdateOnlineOrderActionState();
             dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.MaDonHang), HeaderText = "Mã đơn", Width = 70 });
             dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.LoaiDon), HeaderText = "Loại nhận", Width = 140 });
             dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TenNguoiNhan), HeaderText = "Người nhận", Width = 160 });
@@ -199,6 +200,16 @@ namespace Restaurant.Admin
                 cmbTrangThaiGiao.SelectedItem?.ToString() is not { Length: > 0 } status)
             {
                 MessageBox.Show("Vui lòng chọn đơn giao hàng và trạng thái.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (order.LoaiDon != "OnlineGiaoHang")
+            {
+                MessageBox.Show(
+                    "Chỉ đơn giao tận nơi mới có trạng thái giao hàng.",
+                    "Không áp dụng",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
@@ -261,6 +272,7 @@ namespace Restaurant.Admin
             {
                 dgvDonOnline.DataSource = await _onlineOrderApiService.GetAllAsync();
                 dgvDonOnline.ClearSelection();
+                UpdateOnlineOrderActionState();
             }
             catch (Exception exception)
             {
@@ -268,6 +280,16 @@ namespace Restaurant.Admin
             }
         }
 
+        private void UpdateOnlineOrderActionState()
+        {
+            var order = dgvDonOnline.CurrentRow?.DataBoundItem as OnlineOrderResponse;
+            var canProcess = order?.TrangThaiDon == "ChoXacNhan";
+            var canUpdateDelivery = order?.LoaiDon == "OnlineGiaoHang";
+            btnXacNhanDonOnline.Enabled = canProcess;
+            btnHuyDonOnline.Enabled = canProcess;
+            cmbTrangThaiGiao.Enabled = canUpdateDelivery;
+            btnCapNhatTrangThaiGiao.Enabled = canUpdateDelivery;
+        }
         private void btnDangXuat_Click(object? sender, EventArgs e)
         {
             var result = MessageBox.Show(

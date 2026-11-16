@@ -698,7 +698,7 @@ public sealed class GoiMonService : IGoiMonService
         int detailId,
         CancellationToken cancellationToken)
     {
-        var order = await FindKitchenOrderAsync(id, cancellationToken);
+        var order = await FindOrderAsync(id, cancellationToken);
         EnsureOrderOpen(order);
 
         var detail = await _context.ChiTietDonHangs
@@ -731,7 +731,7 @@ public sealed class GoiMonService : IGoiMonService
                 "Trạng thái món hợp lệ là Đang chế biến hoặc Đã chế biến.");
         }
 
-        var order = await FindOrderAsync(id, cancellationToken);
+        var order = await FindKitchenOrderAsync(id, cancellationToken);
         EnsureOrderOpen(order);
 
         var detail = await _context.ChiTietDonHangs
@@ -765,6 +765,21 @@ public sealed class GoiMonService : IGoiMonService
         }
 
         await _context.SaveChangesAsync(cancellationToken);
+
+        var hasUnfinishedItems = await _context.ChiTietDonHangs
+            .AsNoTracking()
+            .AnyAsync(
+                candidate => candidate.MaDonHang == id &&
+                            candidate.TrangThaiCheBien != "HoanThanh" &&
+                            candidate.TrangThaiCheBien != "DaHuy",
+                cancellationToken);
+
+        if (!hasUnfinishedItems && order.TrangThaiDon != "HoanThanh")
+        {
+            order.TrangThaiDon = "HoanThanh";
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
         return await GetOrderByIdAsync(id, cancellationToken);
     }
 

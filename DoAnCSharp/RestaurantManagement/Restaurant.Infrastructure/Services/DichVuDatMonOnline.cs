@@ -86,10 +86,6 @@ public sealed class OnlineOrderService : IOnlineOrderService
         }
 
         order.TrangThaiGiao = status;
-        if (status is "DaNhan" or "HoanTat")
-        {
-            order.TrangThaiDon = "HoanTat";
-        }
 
         await _context.SaveChangesAsync(cancellationToken);
         return await GetByIdAsync(id, cancellationToken);
@@ -137,6 +133,11 @@ public sealed class OnlineOrderService : IOnlineOrderService
         if (order is null)
         {
             return null;
+        }
+
+        if (order.TrangThaiDon == status)
+        {
+            return await GetByIdAsync(id, cancellationToken);
         }
 
         if (order.TrangThaiDon != "ChoXacNhan")
