@@ -1,4 +1,4 @@
-# Restaurant Management: SQL Server Docker, API và Admin
+# Restaurant Management: SQL Server Docker, API, Website và Admin
 
 ## 1. Tạo cấu hình môi trường và khởi động SQL Server
 
@@ -66,9 +66,19 @@ dotnet run --project .\Restaurant.API\Restaurant.API.csproj --launch-profile htt
 
 API chạy tại `https://localhost:7053` và `http://localhost:5297`. Giữ cửa sổ này mở khi sử dụng ứng dụng Admin.
 
-## 3. Chạy WinForms Admin (FE)
+## 3. Chạy website (FE)
 
-Mở cửa sổ PowerShell thứ hai tại `DoAnCSharp\RestaurantManagement`:
+Giữ API đang chạy ở cửa sổ PowerShell trước đó. Mở cửa sổ PowerShell thứ hai tại `DoAnCSharp\RestaurantManagement` để chạy website:
+
+```powershell
+dotnet run --project .\Restaurant.Web\Restaurant.Web.csproj --launch-profile https
+```
+
+Mở website tại `https://localhost:7178` (hoặc `http://localhost:5240`). Website gọi API tại `https://localhost:7053`, vì vậy cần khởi động API bằng launch profile `https` trước.
+
+## 4. Chạy WinForms Admin (FE)
+
+Mở cửa sổ PowerShell thứ ba tại `DoAnCSharp\RestaurantManagement`:
 
 ```powershell
 dotnet run --project .\Restaurant.Admin\Restaurant.Admin.csproj
