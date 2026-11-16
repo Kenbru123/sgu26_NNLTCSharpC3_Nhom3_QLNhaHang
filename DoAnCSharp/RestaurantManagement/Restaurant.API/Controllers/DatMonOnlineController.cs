@@ -16,6 +16,37 @@ public sealed class OnlineOrdersController : ControllerBase
         _onlineOrderService = onlineOrderService;
     }
 
+    [HttpGet]
+    [Authorize(Policy = "ManagementOnly")]
+    [EndpointSummary("Xem danh sách đơn đặt món online")]
+    public async Task<ActionResult<IReadOnlyList<OnlineOrderResponse>>> GetAll(
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _onlineOrderService.GetAllAsync(cancellationToken));
+    }
+
+    [HttpPatch("{id:int}/trang-thai")]
+    [Authorize(Policy = "ManagementOnly")]
+    public async Task<ActionResult<OnlineOrderResponse>> UpdateStatus(
+        int id,
+        [FromBody] string status,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var order = await _onlineOrderService.UpdateStatusAsync(id, status, cancellationToken);
+            return order is null ? NotFound() : Ok(order);
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new ProblemDetails { Title = exception.Message });
+        }
+        catch (InvalidOperationException exception)
+        {
+            return Conflict(new ProblemDetails { Title = exception.Message });
+        }
+    }
+
     [HttpPost]
     [AllowAnonymous]
     [EndpointSummary("Tạo đơn đặt món online")]
