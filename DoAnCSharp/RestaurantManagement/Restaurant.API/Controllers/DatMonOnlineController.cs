@@ -132,4 +132,19 @@ public sealed class OnlineOrdersController : ControllerBase
         var order = await _onlineOrderService.GetByIdAsync(id, cancellationToken);
         return order is null ? NotFound() : Ok(order);
     }
+
+    [HttpPost("tra-cuu")]
+    [AllowAnonymous]
+    public async Task<ActionResult<IReadOnlyList<OnlineOrderResponse>>> Lookup(
+        GuestOrderLookupRequest request,
+        CancellationToken cancellationToken)
+    {
+        var orders = await _onlineOrderService.LookupAsync(
+            request.SDTNguoiNhan,
+            cancellationToken);
+
+        return orders.Count == 0
+            ? NotFound(new ProblemDetails { Title = "Không tìm thấy đơn hàng phù hợp." })
+            : Ok(orders);
+    }
 }

@@ -1,0 +1,42 @@
+@model IReadOnlyList<Restaurant.Application.DTOs.OnlineOrderResponse>
+@{
+	ViewData["Title"] = "Kết quả tra cứu đơn hàng";
+}
+
+<h1 class="mb-4">Kết quả tra cứu đơn hàng</h1>
+<p class="text-secondary">Tìm thấy @Model.Count đơn hàng.</p>
+@foreach (var order in Model)
+{
+	<section class="card shadow-sm mb-4">
+		<div class="card-header d-flex justify-content-between align-items-center">
+			<strong>Đơn #@order.MaDonHang</strong>
+			<span class="badge bg-success">@order.TrangThaiDon</span>
+		</div>
+		<div class="card-body">
+			<div class="row mb-3">
+				<div class="col-md-4"><strong>Thời gian:</strong> @order.ThoiGianTao.LocalDateTime.ToString("dd/MM/yyyy HH:mm")</div>
+				<div class="col-md-4"><strong>Hình thức:</strong> @(order.LoaiDon == "OnlineGiaoHang" ? "Giao hàng" : "Nhận tại quầy")</div>
+				<div class="col-md-4"><strong>Giao hàng:</strong> @(order.TrangThaiGiao ?? "Không áp dụng")</div>
+			</div>
+			<p><strong>Người nhận:</strong> @order.TenNguoiNhan - @order.SDTNguoiNhan</p>
+			@if (!string.IsNullOrWhiteSpace(order.DiaChiGiao))
+			{
+				<p><strong>Địa chỉ:</strong> @order.DiaChiGiao</p>
+			}
+			<table class="table table-sm">
+				<thead><tr><th>Món</th><th class="text-center">Số lượng</th><th class="text-end">Thành tiền</th></tr></thead>
+				<tbody>
+				@foreach (var item in order.MonAn)
+				{
+					<tr>
+						<td>@item.TenMon</td>
+						<td class="text-center">@item.SoLuong</td>
+						<td class="text-end">@item.ThanhTien.ToString("N0") đ</td>
+					</tr>
+				}
+				</tbody>
+			</table>
+			<div class="text-end fw-bold">Tổng tiền: @order.TongTien.ToString("N0") đ</div>
+		</div>
+	</section>
+}

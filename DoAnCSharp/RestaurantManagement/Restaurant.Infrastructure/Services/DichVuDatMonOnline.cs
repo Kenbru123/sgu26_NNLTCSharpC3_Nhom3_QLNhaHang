@@ -329,4 +329,31 @@ public sealed class OnlineOrderService : IOnlineOrderService
             items.Sum(item => item.ThanhTien) + order.PhiGiao,
             items);
     }
+
+    public async Task<IReadOnlyList<OnlineOrderResponse>> LookupAsync(
+        string phoneNumber,
+        CancellationToken cancellationToken)
+    {
+        var normalizedPhone = phoneNumber.Trim();
+        var orderIds = await _context.DonHangs
+            .AsNoTracking()
+            .Where(order =>
+                order.SDTNguoiNhan == normalizedPhone &&
+                (order.LoaiDon == "OnlineGiaoHang" || order.LoaiDon == "OnlineNhanTaiQuay"))
+            .OrderByDescending(order => order.ThoiGianTao)
+            .Select(order => order.MaDonHang)
+            .ToListAsync(cancellationToken);
+
+        var orders = new List<OnlineOrderResponse>(orderIds.Count);
+        foreach (var orderId in orderIds)
+        {
+            var order = await GetByIdAsync(orderId, cancellationToken);
+            if (order is not null)
+            {
+                orders.Add(order);
+            }
+        }
+
+        return orders;
+    }
 }

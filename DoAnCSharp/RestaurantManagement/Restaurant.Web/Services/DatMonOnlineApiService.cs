@@ -67,4 +67,21 @@ public sealed class OnlineOrderApiService : IOnlineOrderApiService
                    cancellationToken: cancellationToken)
                ?? [];
     }
+
+    public async Task<IReadOnlyList<OnlineOrderResponse>?> LookupAsync(
+        GuestOrderLookupRequest request,
+        CancellationToken cancellationToken)
+    {
+        using var response = await _httpClient.PostAsJsonAsync(
+            "api/orders/online/tra-cuu", request, cancellationToken);
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<List<OnlineOrderResponse>>(
+                   cancellationToken: cancellationToken)
+               ?? throw new InvalidOperationException("API không trả về danh sách đơn hàng.");
+    }
 }

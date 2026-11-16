@@ -73,6 +73,12 @@ public sealed record OnlineOrderItemRequest(
     [param: Range(1, int.MaxValue)] int MaMon,
     [param: Range(1, 99)] int SoLuong);
 
+public sealed record GuestOrderLookupRequest
+{
+    [Required, Phone, StringLength(20, MinimumLength = 7)]
+    public required string SDTNguoiNhan { get; init; }
+}
+
 /// <summary>Thông tin khách hàng gửi khi đặt món online.</summary>
 public sealed record CreateOnlineOrderRequest
 {

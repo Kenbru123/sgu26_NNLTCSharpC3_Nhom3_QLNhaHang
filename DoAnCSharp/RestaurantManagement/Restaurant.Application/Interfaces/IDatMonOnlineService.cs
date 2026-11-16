@@ -29,4 +29,8 @@ public interface IOnlineOrderService
     Task<OnlineOrderResponse?> GetByIdAsync(
         int id,
         CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<OnlineOrderResponse>> LookupAsync(
+        string phoneNumber,
+        CancellationToken cancellationToken);
 }

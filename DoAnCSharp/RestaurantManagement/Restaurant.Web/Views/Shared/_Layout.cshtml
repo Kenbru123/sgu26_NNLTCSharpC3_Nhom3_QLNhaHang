@@ -29,6 +29,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Cart" asp-action="Index">Giỏ hàng</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Cart" asp-action="Lookup">Tra cứu đơn</a>
+                        </li>
                         @if (User.Identity?.IsAuthenticated == true && User.FindFirst("customerId") is not null)
                         {
                             <li class="nav-item">

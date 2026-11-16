@@ -31,6 +31,35 @@ public sealed class CartController : Controller
     }
 
     [HttpGet]
+    public IActionResult Lookup()
+    {
+        return View(
+            "~/Views/Cart/TraCuuDonHang.cshtml",
+            new GuestOrderLookupRequest { SDTNguoiNhan = string.Empty });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Lookup(
+        GuestOrderLookupRequest model,
+        CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View("~/Views/Cart/TraCuuDonHang.cshtml", model);
+        }
+
+        var orders = await _orderApiService.LookupAsync(model, cancellationToken);
+        if (orders is null || orders.Count == 0)
+        {
+            ModelState.AddModelError(string.Empty, "Không tìm thấy đơn hàng phù hợp với số điện thoại.");
+            return View("~/Views/Cart/TraCuuDonHang.cshtml", model);
+        }
+
+        return View("~/Views/Cart/KetQuaTraCuuDonHang.cshtml", orders);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
         var cartItems = _cartService.GetItems();
