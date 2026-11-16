@@ -36,4 +36,17 @@ public sealed class OnlineOrderApiService
         return await response.Content.ReadFromJsonAsync<OnlineOrderResponse>()
             ?? throw new InvalidOperationException("API không trả về đơn online đã cập nhật.");
     }
+
+    public async Task<OnlineOrderResponse> UpdateDeliveryStatusAsync(int orderId, string status)
+    {
+        using var response = await _httpClient.PatchAsJsonAsync(
+            $"api/orders/online/{orderId}/trang-thai-giao", status);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException($"Không thể cập nhật giao hàng ({(int)response.StatusCode}).");
+        }
+
+        return await response.Content.ReadFromJsonAsync<OnlineOrderResponse>()
+            ?? throw new InvalidOperationException("API không trả về đơn online đã cập nhật.");
+    }
 }

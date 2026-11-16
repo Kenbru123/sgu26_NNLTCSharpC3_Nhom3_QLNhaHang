@@ -7,6 +7,15 @@ public interface IOnlineOrderService
     Task<IReadOnlyList<OnlineOrderResponse>> GetAllAsync(
         CancellationToken cancellationToken);
 
+    Task<OnlineOrderResponse?> UpdateDeliveryStatusAsync(
+        int id,
+        string status,
+        CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<OnlineOrderResponse>> GetByCustomerIdAsync(
+        int customerId,
+        CancellationToken cancellationToken);
+
     Task<OnlineOrderResponse?> UpdateStatusAsync(
         int id,
         string status,
@@ -14,6 +23,7 @@ public interface IOnlineOrderService
 
     Task<OnlineOrderResponse> CreateAsync(
         CreateOnlineOrderRequest request,
+        int? customerId,
         CancellationToken cancellationToken);
 
     Task<OnlineOrderResponse?> GetByIdAsync(

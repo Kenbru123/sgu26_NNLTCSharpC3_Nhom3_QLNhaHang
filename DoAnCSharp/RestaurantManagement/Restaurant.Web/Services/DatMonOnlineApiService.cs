@@ -56,4 +56,15 @@ public sealed class OnlineOrderApiService : IOnlineOrderApiService
                ?? throw new InvalidOperationException(
                    "API không trả về thông tin đơn hàng.");
     }
+
+    public async Task<IReadOnlyList<OnlineOrderResponse>> GetMyOrdersAsync(
+        CancellationToken cancellationToken)
+    {
+        using var response = await _httpClient.GetAsync(
+            "api/orders/online/cua-toi", cancellationToken);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<List<OnlineOrderResponse>>(
+                   cancellationToken: cancellationToken)
+               ?? [];
+    }
 }

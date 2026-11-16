@@ -31,7 +31,8 @@ builder.Services.AddHttpClient<IMonAnApiService, MonAnApiService>(client =>
 builder.Services.AddHttpClient<IOnlineOrderApiService, OnlineOrderApiService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
-});
+})
+    .AddHttpMessageHandler<JwtAuthorizationHandler>();
 builder.Services.AddHttpClient<IAuthApiService, AuthApiService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);

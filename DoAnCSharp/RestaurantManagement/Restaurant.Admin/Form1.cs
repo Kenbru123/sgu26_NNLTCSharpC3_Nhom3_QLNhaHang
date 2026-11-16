@@ -56,6 +56,7 @@ namespace Restaurant.Admin
         private readonly Button btnTaiLaiDonOnline = new();
         private readonly Button btnXacNhanDonOnline = new();
         private readonly Button btnHuyDonOnline = new();
+        private readonly Button btnXemChiTietDonOnline = new();
         private readonly TextBox txtKhoMaNguyenLieuNhap = new();
         private readonly NumericUpDown nudKhoSoLuongNhap = new();
         private readonly NumericUpDown nudKhoDonGiaNhap = new();
@@ -155,6 +156,23 @@ namespace Restaurant.Admin
             btnHuyDonOnline.Location = new Point(320, 12);
             btnHuyDonOnline.Click += async (_, _) => await UpdateOnlineOrderStatusAsync("DaHuy");
             panel.Controls.Add(btnHuyDonOnline);
+            btnXemChiTietDonOnline.Text = "Xem chi tiết";
+            btnXemChiTietDonOnline.Size = new Size(120, 32);
+            btnXemChiTietDonOnline.Location = new Point(435, 12);
+            btnXemChiTietDonOnline.Click += (_, _) => ShowOnlineOrderDetails();
+            panel.Controls.Add(btnXemChiTietDonOnline);
+
+            cmbTrangThaiGiao.Location = new Point(570, 12);
+            cmbTrangThaiGiao.Size = new Size(130, 32);
+            cmbTrangThaiGiao.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTrangThaiGiao.Items.AddRange(new object[] { "ChoLayHang", "DangGiao", "DaGiao", "DaNhan", "HoanTat" });
+            cmbTrangThaiGiao.SelectedIndex = 0;
+            panel.Controls.Add(cmbTrangThaiGiao);
+            btnCapNhatTrangThaiGiao.Text = "Cập nhật giao hàng";
+            btnCapNhatTrangThaiGiao.Size = new Size(160, 32);
+            btnCapNhatTrangThaiGiao.Location = new Point(710, 12);
+            btnCapNhatTrangThaiGiao.Click += async (_, _) => await UpdateSelectedOnlineDeliveryStatusAsync();
+            panel.Controls.Add(btnCapNhatTrangThaiGiao);
 
             dgvDonOnline.Location = new Point(12, 55);
             dgvDonOnline.Size = new Size(930, 500);
@@ -167,11 +185,54 @@ namespace Restaurant.Admin
             dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TenNguoiNhan), HeaderText = "Người nhận", Width = 160 });
             dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.SDTNguoiNhan), HeaderText = "Số điện thoại", Width = 120 });
             dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TrangThaiDon), HeaderText = "Trạng thái", Width = 120 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TrangThaiGiao), HeaderText = "Giao hàng", Width = 120 });
             dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TongTien), HeaderText = "Tổng tiền", Width = 120, DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" } });
             dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.ThoiGianTao), HeaderText = "Thời gian", Width = 160, DefaultCellStyle = new DataGridViewCellStyle { Format = "g" } });
             panel.Controls.Add(dgvDonOnline);
             page.Controls.Add(panel);
             tabQuanLy.Controls.Add(page);
+        }
+
+        private async Task UpdateSelectedOnlineDeliveryStatusAsync()
+        {
+            if (dgvDonOnline.CurrentRow?.DataBoundItem is not OnlineOrderResponse order ||
+                cmbTrangThaiGiao.SelectedItem?.ToString() is not { Length: > 0 } status)
+            {
+                MessageBox.Show("Vui lòng chọn đơn giao hàng và trạng thái.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _onlineOrderApiService.UpdateDeliveryStatusAsync(order.MaDonHang, status);
+                await LoadOnlineOrdersAsync();
+                MessageBox.Show("Đã cập nhật trạng thái giao hàng.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể cập nhật giao hàng", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ShowOnlineOrderDetails()
+        {
+            if (dgvDonOnline.CurrentRow?.DataBoundItem is not OnlineOrderResponse order)
+            {
+                MessageBox.Show("Vui lòng chọn một đơn online.", "Chưa chọn đơn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var items = string.Join(Environment.NewLine, order.MonAn.Select(item =>
+                $"- {item.TenMon} x{item.SoLuong}: {item.ThanhTien:N0} đ"));
+            MessageBox.Show(
+                $"Mã đơn: {order.MaDonHang}\n" +
+                $"Người nhận: {order.TenNguoiNhan}\n" +
+                $"Số điện thoại: {order.SDTNguoiNhan}\n" +
+                $"Địa chỉ: {order.DiaChiGiao ?? "Nhận tại quầy"}\n" +
+                $"Trạng thái đơn: {order.TrangThaiDon}\n" +
+                $"Trạng thái giao: {order.TrangThaiGiao ?? "Không áp dụng"}\n" +
+                $"Tổng tiền: {order.TongTien:N0} đ\n\nMón ăn:\n{items}",
+                "Chi tiết đơn online", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private async Task UpdateOnlineOrderStatusAsync(string status)
@@ -830,28 +891,6 @@ namespace Restaurant.Admin
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TongTien", HeaderText = "Tổng tiền", Width = 120, DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" } });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "HoaDon", HeaderText = "Hóa đơn", Width = 130 });
             panel.Controls.Add(dgvThanhToan);
-
-            var lblTrangThaiGiao = new Label
-            {
-                Text = "Trạng thái giao hàng",
-                AutoSize = true,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                Location = new Point(12, 530)
-            };
-            panel.Controls.Add(lblTrangThaiGiao);
-
-            cmbTrangThaiGiao.Location = new Point(160, 526);
-            cmbTrangThaiGiao.Size = new Size(180, 32);
-            cmbTrangThaiGiao.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbTrangThaiGiao.Items.AddRange(new object[] { "ChoLayHang", "DangGiao", "DaGiao", "DaNhan", "HoanTat" });
-            cmbTrangThaiGiao.SelectedIndex = 0;
-            panel.Controls.Add(cmbTrangThaiGiao);
-
-            btnCapNhatTrangThaiGiao.Text = "Cập nhật giao hàng";
-            btnCapNhatTrangThaiGiao.Size = new Size(170, 32);
-            btnCapNhatTrangThaiGiao.Location = new Point(360, 526);
-            btnCapNhatTrangThaiGiao.Click += async (_, _) => await UpdateSelectedOrderDeliveryStatusAsync();
-            panel.Controls.Add(btnCapNhatTrangThaiGiao);
 
             var btnReload = new Button
             {

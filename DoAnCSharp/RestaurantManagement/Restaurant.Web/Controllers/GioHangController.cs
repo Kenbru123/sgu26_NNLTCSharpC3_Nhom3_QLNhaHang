@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Restaurant.Application.DTOs;
 using Restaurant.Web.Models;
 using Restaurant.Web.Services;
@@ -19,6 +20,14 @@ public sealed class CartController : Controller
         _cartService = cartService;
         _foodApiService = foodApiService;
         _orderApiService = orderApiService;
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> History(CancellationToken cancellationToken)
+    {
+        var orders = await _orderApiService.GetMyOrdersAsync(cancellationToken);
+        return View("~/Views/Cart/LichSuDonHang.cshtml", orders);
     }
 
     [HttpGet]

@@ -92,6 +92,8 @@ public sealed record CreateOnlineOrderRequest
     [StringLength(500)]
     public string? GhiChu { get; init; }
 
+    public int? MaKhachHang { get; init; }
+
     [Required, MinLength(1), MaxLength(50)]
     public required IReadOnlyList<OnlineOrderItemRequest> MonAn { get; init; }
 }
@@ -109,6 +111,7 @@ public sealed record OnlineOrderResponse(
     int MaDonHang,
     string LoaiDon,
     string TrangThaiDon,
+    string? TrangThaiGiao,
     string TenNguoiNhan,
     string SDTNguoiNhan,
     string? DiaChiGiao,

@@ -28,6 +28,7 @@ public sealed class OnlineOrderService : IOnlineOrderService
                 item.MaDonHang,
                 item.LoaiDon,
                 item.TrangThaiDon,
+                item.TrangThaiGiao,
                 item.TenNguoiNhan,
                 item.SDTNguoiNhan,
                 item.DiaChiGiao,
@@ -55,6 +56,7 @@ public sealed class OnlineOrderService : IOnlineOrderService
                 order.MaDonHang,
                 order.LoaiDon,
                 order.TrangThaiDon,
+                order.TrangThaiGiao,
                 order.TenNguoiNhan ?? string.Empty,
                 order.SDTNguoiNhan ?? string.Empty,
                 order.DiaChiGiao,
@@ -63,6 +65,59 @@ public sealed class OnlineOrderService : IOnlineOrderService
                 responseItems.Sum(item => item.ThanhTien) + order.PhiGiao,
                 responseItems);
         }).ToList();
+    }
+
+    public async Task<OnlineOrderResponse?> UpdateDeliveryStatusAsync(
+        int id,
+        string status,
+        CancellationToken cancellationToken)
+    {
+        if (status is not ("ChoLayHang" or "DangGiao" or "DaGiao" or "DaNhan" or "HoanTat"))
+        {
+            throw new ArgumentException("Trạng thái giao hàng không hợp lệ.");
+        }
+
+        var order = await _context.DonHangs.SingleOrDefaultAsync(
+            item => item.MaDonHang == id && item.LoaiDon == "OnlineGiaoHang",
+            cancellationToken);
+        if (order is null)
+        {
+            return null;
+        }
+
+        order.TrangThaiGiao = status;
+        if (status is "DaNhan" or "HoanTat")
+        {
+            order.TrangThaiDon = "HoanTat";
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+        return await GetByIdAsync(id, cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<OnlineOrderResponse>> GetByCustomerIdAsync(
+        int customerId,
+        CancellationToken cancellationToken)
+    {
+        var orders = await _context.DonHangs
+            .AsNoTracking()
+            .Where(item => item.MaKhachHang == customerId &&
+                           (item.LoaiDon == "OnlineGiaoHang" || item.LoaiDon == "OnlineNhanTaiQuay"))
+            .OrderByDescending(item => item.ThoiGianTao)
+            .Select(item => item.MaDonHang)
+            .ToListAsync(cancellationToken);
+
+        var result = new List<OnlineOrderResponse>(orders.Count);
+        foreach (var orderId in orders)
+        {
+            var order = await GetByIdAsync(orderId, cancellationToken);
+            if (order is not null)
+            {
+                result.Add(order);
+            }
+        }
+
+        return result;
     }
 
     public async Task<OnlineOrderResponse?> UpdateStatusAsync(
@@ -96,6 +151,7 @@ public sealed class OnlineOrderService : IOnlineOrderService
 
     public async Task<OnlineOrderResponse> CreateAsync(
         CreateOnlineOrderRequest request,
+        int? customerId,
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.TenNguoiNhan) ||
@@ -160,6 +216,7 @@ public sealed class OnlineOrderService : IOnlineOrderService
         var order = new DonHang
         {
             LoaiDon = request.LoaiDon,
+            MaKhachHang = customerId,
             TenNguoiNhan = request.TenNguoiNhan.Trim(),
             SDTNguoiNhan = request.SDTNguoiNhan.Trim(),
             DiaChiGiao = request.LoaiDon == "OnlineGiaoHang"
@@ -167,6 +224,7 @@ public sealed class OnlineOrderService : IOnlineOrderService
                 : null,
             PhiGiao = 0m,
             TrangThaiDon = "ChoXacNhan",
+            TrangThaiGiao = request.LoaiDon == "OnlineGiaoHang" ? "ChoLayHang" : null,
             ThoiGianTao = DateTime.Now,
             GhiChu = string.IsNullOrWhiteSpace(request.GhiChu)
                 ? null
@@ -200,6 +258,7 @@ public sealed class OnlineOrderService : IOnlineOrderService
             order.MaDonHang,
             order.LoaiDon,
             order.TrangThaiDon,
+            order.TrangThaiGiao,
             order.TenNguoiNhan ?? string.Empty,
             order.SDTNguoiNhan ?? string.Empty,
             order.DiaChiGiao,
@@ -226,6 +285,7 @@ public sealed class OnlineOrderService : IOnlineOrderService
                 item.MaDonHang,
                 item.LoaiDon,
                 item.TrangThaiDon,
+                item.TrangThaiGiao,
                 item.TenNguoiNhan,
                 item.SDTNguoiNhan,
                 item.DiaChiGiao,
@@ -259,6 +319,7 @@ public sealed class OnlineOrderService : IOnlineOrderService
             order.MaDonHang,
             order.LoaiDon,
             order.TrangThaiDon,
+            order.TrangThaiGiao,
             order.TenNguoiNhan ?? string.Empty,
             order.SDTNguoiNhan ?? string.Empty,
             order.DiaChiGiao,

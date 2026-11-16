@@ -16,6 +16,24 @@ public sealed class OnlineOrdersController : ControllerBase
         _onlineOrderService = onlineOrderService;
     }
 
+    [HttpPatch("{id:int}/trang-thai-giao")]
+    [Authorize(Policy = "ManagementOnly")]
+    public async Task<ActionResult<OnlineOrderResponse>> UpdateDeliveryStatus(
+        int id,
+        [FromBody] string status,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var order = await _onlineOrderService.UpdateDeliveryStatusAsync(id, status, cancellationToken);
+            return order is null ? NotFound() : Ok(order);
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new ProblemDetails { Title = exception.Message });
+        }
+    }
+
     [HttpGet]
     [Authorize(Policy = "ManagementOnly")]
     [EndpointSummary("Xem danh sách đơn đặt món online")]
@@ -59,8 +77,12 @@ public sealed class OnlineOrdersController : ControllerBase
     {
         try
         {
+            var customerId = int.TryParse(User.FindFirst("customerId")?.Value, out var parsedCustomerId)
+                ? parsedCustomerId
+                : (int?)null;
             var order = await _onlineOrderService.CreateAsync(
                 request,
+                customerId,
                 cancellationToken);
             return CreatedAtAction(
                 nameof(GetById),
@@ -83,6 +105,19 @@ public sealed class OnlineOrdersController : ControllerBase
                 Detail = exception.Message
             });
         }
+    }
+
+    [HttpGet("cua-toi")]
+    [Authorize]
+    public async Task<ActionResult<IReadOnlyList<OnlineOrderResponse>>> GetMyOrders(
+        CancellationToken cancellationToken)
+    {
+        if (!int.TryParse(User.FindFirst("customerId")?.Value, out var customerId))
+        {
+            return Forbid();
+        }
+
+        return Ok(await _onlineOrderService.GetByCustomerIdAsync(customerId, cancellationToken));
     }
 
     [HttpGet("{id:int}")]
