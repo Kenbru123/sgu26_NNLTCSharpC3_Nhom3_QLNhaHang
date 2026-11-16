@@ -16,6 +16,84 @@ public sealed class OnlineOrderService : IOnlineOrderService
         _context = context;
     }
 
+    public async Task<IReadOnlyList<OnlineOrderResponse>> GetAllAsync(
+        CancellationToken cancellationToken)
+    {
+        var orders = await _context.DonHangs
+            .AsNoTracking()
+            .Where(item => item.LoaiDon == "OnlineGiaoHang" || item.LoaiDon == "OnlineNhanTaiQuay")
+            .OrderByDescending(item => item.ThoiGianTao)
+            .Select(item => new
+            {
+                item.MaDonHang,
+                item.LoaiDon,
+                item.TrangThaiDon,
+                item.TenNguoiNhan,
+                item.SDTNguoiNhan,
+                item.DiaChiGiao,
+                item.PhiGiao,
+                item.ThoiGianTao
+            })
+            .ToListAsync(cancellationToken);
+
+        var orderIds = orders.Select(item => item.MaDonHang).ToArray();
+        var items = await _context.ChiTietDonHangs
+            .AsNoTracking()
+            .Where(item => orderIds.Contains(item.MaDonHang))
+            .Join(_context.MonAns.AsNoTracking(), detail => detail.MaMon, food => food.MaMon,
+                (detail, food) => new { detail.MaDonHang, food.MaMon, food.TenMon, detail.SoLuong, detail.DonGia })
+            .ToListAsync(cancellationToken);
+
+        return orders.Select(order =>
+        {
+            var responseItems = items
+                .Where(item => item.MaDonHang == order.MaDonHang)
+                .Select(item => new OnlineOrderItemResponse(
+                    item.MaMon, item.TenMon, item.SoLuong, item.DonGia, item.SoLuong * item.DonGia))
+                .ToList();
+            return new OnlineOrderResponse(
+                order.MaDonHang,
+                order.LoaiDon,
+                order.TrangThaiDon,
+                order.TenNguoiNhan ?? string.Empty,
+                order.SDTNguoiNhan ?? string.Empty,
+                order.DiaChiGiao,
+                order.PhiGiao,
+                new DateTimeOffset(DateTime.SpecifyKind(order.ThoiGianTao, DateTimeKind.Local)),
+                responseItems.Sum(item => item.ThanhTien) + order.PhiGiao,
+                responseItems);
+        }).ToList();
+    }
+
+    public async Task<OnlineOrderResponse?> UpdateStatusAsync(
+        int id,
+        string status,
+        CancellationToken cancellationToken)
+    {
+        if (status is not ("DangPhucVu" or "DaHuy"))
+        {
+            throw new ArgumentException("Trạng thái đơn online phải là Đang phục vụ hoặc Đã hủy.");
+        }
+
+        var order = await _context.DonHangs.SingleOrDefaultAsync(
+            item => item.MaDonHang == id &&
+                    (item.LoaiDon == "OnlineGiaoHang" || item.LoaiDon == "OnlineNhanTaiQuay"),
+            cancellationToken);
+        if (order is null)
+        {
+            return null;
+        }
+
+        if (order.TrangThaiDon != "ChoXacNhan")
+        {
+            throw new InvalidOperationException("Chỉ đơn đang chờ xác nhận mới được xác nhận hoặc hủy.");
+        }
+
+        order.TrangThaiDon = status;
+        await _context.SaveChangesAsync(cancellationToken);
+        return await GetByIdAsync(id, cancellationToken);
+    }
+
     public async Task<OnlineOrderResponse> CreateAsync(
         CreateOnlineOrderRequest request,
         CancellationToken cancellationToken)

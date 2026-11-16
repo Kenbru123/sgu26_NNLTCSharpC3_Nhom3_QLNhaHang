@@ -51,6 +51,11 @@ namespace Restaurant.Admin
         private readonly NumericUpDown nudKhoMucTonToiThieu = new();
         private readonly Button btnKhoThemNguyenLieu = new();
         private readonly DataGridView dgvThanhToan = new();
+        private readonly DataGridView dgvDonOnline = new();
+        private readonly OnlineOrderApiService _onlineOrderApiService = new();
+        private readonly Button btnTaiLaiDonOnline = new();
+        private readonly Button btnXacNhanDonOnline = new();
+        private readonly Button btnHuyDonOnline = new();
         private readonly TextBox txtKhoMaNguyenLieuNhap = new();
         private readonly NumericUpDown nudKhoSoLuongNhap = new();
         private readonly NumericUpDown nudKhoDonGiaNhap = new();
@@ -107,6 +112,7 @@ namespace Restaurant.Admin
             InitializeMonAnTab();
             InitializeKhoTab();
             InitializePaymentTab();
+            InitializeOnlineOrdersTab();
             ConfigureKhuVucGrid();
             InitializeBanAnTab();
             var tabGoiMon = new TabPage("Gọi món")
@@ -123,6 +129,82 @@ namespace Restaurant.Admin
             tabQuanLy.Controls.Add(tabCheBien);
             btnThemKhuVuc.Enabled = ApiSession.IsManager;
             InitializeAccountTab();
+        }
+
+        private void InitializeOnlineOrdersTab()
+        {
+            if (!ApiSession.IsManager)
+            {
+                return;
+            }
+
+            var page = new TabPage("Đơn online") { Padding = new Padding(12) };
+            var panel = new Panel { Dock = DockStyle.Fill };
+            btnTaiLaiDonOnline.Text = "Tải lại đơn online";
+            btnTaiLaiDonOnline.Size = new Size(150, 32);
+            btnTaiLaiDonOnline.Location = new Point(12, 12);
+            btnTaiLaiDonOnline.Click += async (_, _) => await LoadOnlineOrdersAsync();
+            panel.Controls.Add(btnTaiLaiDonOnline);
+            btnXacNhanDonOnline.Text = "Xác nhận đơn";
+            btnXacNhanDonOnline.Size = new Size(130, 32);
+            btnXacNhanDonOnline.Location = new Point(175, 12);
+            btnXacNhanDonOnline.Click += async (_, _) => await UpdateOnlineOrderStatusAsync("DangPhucVu");
+            panel.Controls.Add(btnXacNhanDonOnline);
+            btnHuyDonOnline.Text = "Hủy đơn";
+            btnHuyDonOnline.Size = new Size(100, 32);
+            btnHuyDonOnline.Location = new Point(320, 12);
+            btnHuyDonOnline.Click += async (_, _) => await UpdateOnlineOrderStatusAsync("DaHuy");
+            panel.Controls.Add(btnHuyDonOnline);
+
+            dgvDonOnline.Location = new Point(12, 55);
+            dgvDonOnline.Size = new Size(930, 500);
+            dgvDonOnline.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvDonOnline.ReadOnly = true;
+            dgvDonOnline.AutoGenerateColumns = false;
+            dgvDonOnline.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.MaDonHang), HeaderText = "Mã đơn", Width = 70 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.LoaiDon), HeaderText = "Loại nhận", Width = 140 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TenNguoiNhan), HeaderText = "Người nhận", Width = 160 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.SDTNguoiNhan), HeaderText = "Số điện thoại", Width = 120 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TrangThaiDon), HeaderText = "Trạng thái", Width = 120 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TongTien), HeaderText = "Tổng tiền", Width = 120, DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" } });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.ThoiGianTao), HeaderText = "Thời gian", Width = 160, DefaultCellStyle = new DataGridViewCellStyle { Format = "g" } });
+            panel.Controls.Add(dgvDonOnline);
+            page.Controls.Add(panel);
+            tabQuanLy.Controls.Add(page);
+        }
+
+        private async Task UpdateOnlineOrderStatusAsync(string status)
+        {
+            if (dgvDonOnline.CurrentRow?.DataBoundItem is not OnlineOrderResponse order)
+            {
+                MessageBox.Show("Vui lòng chọn một đơn online.", "Chưa chọn đơn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _onlineOrderApiService.UpdateStatusAsync(order.MaDonHang, status);
+                await LoadOnlineOrdersAsync();
+                MessageBox.Show(status == "DangPhucVu" ? "Đã xác nhận đơn và chuyển sang chế biến." : "Đã hủy đơn online.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể cập nhật đơn online", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task LoadOnlineOrdersAsync()
+        {
+            try
+            {
+                dgvDonOnline.DataSource = await _onlineOrderApiService.GetAllAsync();
+                dgvDonOnline.ClearSelection();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể tải đơn online", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnDangXuat_Click(object? sender, EventArgs e)
@@ -148,6 +230,10 @@ namespace Restaurant.Admin
             await LoadBanAnAsync();
             await LoadKhoAsync();
             await LoadPaymentAsync();
+            if (ApiSession.IsManager)
+            {
+                await LoadOnlineOrdersAsync();
+            }
             await _goiMonControl.LoadAsync();
             await _cheBienControl.LoadAsync();
             if (ApiSession.IsManager)
