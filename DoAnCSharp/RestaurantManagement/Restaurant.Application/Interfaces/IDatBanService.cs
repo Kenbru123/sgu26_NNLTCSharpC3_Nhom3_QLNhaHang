@@ -12,4 +12,13 @@ public interface IDatBanService
     Task<IReadOnlyList<DatBanResponse>> GetByCustomerIdAsync(
         int customerId,
         CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<DatBanManagementResponse>> GetAllAsync(
+        string? status,
+        CancellationToken cancellationToken);
+
+    Task<DatBanManagementResponse?> UpdateStatusAsync(
+        int id,
+        string status,
+        CancellationToken cancellationToken);
 }

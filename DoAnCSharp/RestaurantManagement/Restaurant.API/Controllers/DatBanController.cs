@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.DTOs;
 using Restaurant.Application.Interfaces;
+using Restaurant.API.Authentication;
 
 namespace Restaurant.API.Controllers;
 
@@ -55,6 +56,36 @@ public sealed class DatBanController : ControllerBase
         catch (KeyNotFoundException exception)
         {
             return NotFound(new ProblemDetails { Title = exception.Message });
+        }
+        catch (InvalidOperationException exception)
+        {
+            return Conflict(new ProblemDetails { Title = exception.Message });
+        }
+    }
+
+    [HttpGet]
+    [Authorize(Roles = RestaurantRoles.ManagerOrEmployee)]
+    public async Task<ActionResult<IReadOnlyList<DatBanManagementResponse>>> GetAll(
+        [FromQuery] string? status,
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _datBanService.GetAllAsync(status, cancellationToken));
+    }
+
+    [HttpPatch("{id:int}/trang-thai")]
+    [Authorize(Roles = RestaurantRoles.ManagerOrEmployee)]
+    public async Task<ActionResult<DatBanManagementResponse>> UpdateStatus(
+        int id,
+        UpdateDatBanStatusRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var reservation = await _datBanService.UpdateStatusAsync(
+                id,
+                request.TrangThai,
+                cancellationToken);
+            return reservation is null ? NotFound() : Ok(reservation);
         }
         catch (InvalidOperationException exception)
         {

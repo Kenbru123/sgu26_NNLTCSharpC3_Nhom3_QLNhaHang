@@ -20,6 +20,11 @@ public sealed class DatBanController : Controller
     public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
         var history = await _datBanApiService.GetMyReservationsAsync(cancellationToken);
+        if (TempData.TryGetValue("DatBanSuccess", out var successMessage))
+        {
+            ViewData["SuccessMessage"] = successMessage;
+        }
+
         return View(new DatBanViewModel { LichSu = history });
     }
 
@@ -46,14 +51,9 @@ public sealed class DatBanController : Controller
                 },
                 cancellationToken);
 
-            ViewData["SuccessMessage"] =
+            TempData["DatBanSuccess"] =
                 "Đặt bàn thành công. Nhà hàng sẽ xác nhận yêu cầu của bạn sớm nhất.";
-            return View(new DatBanViewModel
-            {
-                ThoiGianDen = DateTime.Now.AddHours(1),
-                SoLuongKhach = 2,
-                LichSu = await GetHistoryAsync(cancellationToken)
-            });
+            return RedirectToAction(nameof(Index));
         }
         catch (HttpRequestException exception)
         {

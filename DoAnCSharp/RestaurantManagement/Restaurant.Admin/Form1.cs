@@ -77,6 +77,15 @@ namespace Restaurant.Admin
         private readonly Button btnKhoXacNhanXuat = new();
         private readonly Button btnKhoHuyXuat = new();
         private readonly Button btnDangXuat = new();
+        private readonly DatBanApiService _datBanApiService;
+        private readonly DataGridView dgvDatBan = new();
+        private readonly ComboBox cmbLocTrangThaiDatBan = new();
+        private readonly Button btnTaiLaiDatBan = new();
+        private readonly Button btnXacNhanDatBan = new();
+        private readonly Button btnHuyDatBan = new();
+        private readonly Button btnDaDenDatBan = new();
+        private readonly Button btnHoanTatDatBan = new();
+        private readonly Button btnKhongDenDatBan = new();
         private readonly DataGridView dgvTaiKhoanNhanVien = new();
         private readonly TextBox txtTaiKhoanUsername = new();
         private readonly TextBox txtTaiKhoanPassword = new();
@@ -108,6 +117,7 @@ namespace Restaurant.Admin
             _khoApiService = new KhoApiService();
             _accountApiService = new AccountApiService();
             _thanhToanApiService = new ThanhToanApiService();
+            _datBanApiService = new DatBanApiService();
             _goiMonControl = new GoiMonControl();
             _cheBienControl = new CheBienControl();
             InitializeMonAnTab();
@@ -116,6 +126,7 @@ namespace Restaurant.Admin
             InitializeOnlineOrdersTab();
             ConfigureKhuVucGrid();
             InitializeBanAnTab();
+            InitializeDatBanTab();
             var tabGoiMon = new TabPage("Gọi món")
             {
                 Padding = new Padding(8)
@@ -266,6 +277,231 @@ namespace Restaurant.Admin
             tabQuanLy.Controls.Add(page);
         }
 
+        private void InitializeDatBanTab()
+        {
+            var page = new TabPage("Đặt bàn")
+            {
+                Padding = new Padding(12)
+            };
+            var filters = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                Height = 48,
+                WrapContents = false,
+                AutoScroll = true,
+                Padding = new Padding(0, 4, 0, 4)
+            };
+            filters.Controls.Add(new Label
+            {
+                Text = "Trạng thái",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left,
+                Margin = new Padding(0, 8, 8, 0)
+            });
+            cmbLocTrangThaiDatBan.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbLocTrangThaiDatBan.Width = 180;
+            cmbLocTrangThaiDatBan.DataSource = new[]
+            {
+                new { Text = "Tất cả", Value = "TatCa" },
+                new { Text = "Chờ xác nhận", Value = "ChoXacNhan" },
+                new { Text = "Đã xác nhận", Value = "DaXacNhan" },
+                new { Text = "Đã đến", Value = "DaDen" },
+                new { Text = "Hoàn tất", Value = "HoanTat" },
+                new { Text = "Đã hủy", Value = "DaHuy" },
+                new { Text = "Không đến", Value = "KhongDen" }
+            };
+            cmbLocTrangThaiDatBan.DisplayMember = "Text";
+            cmbLocTrangThaiDatBan.ValueMember = "Value";
+            cmbLocTrangThaiDatBan.SelectedIndexChanged += async (_, _) =>
+                await LoadDatBanAsync();
+            filters.Controls.Add(cmbLocTrangThaiDatBan);
+
+            btnTaiLaiDatBan.Text = "Tải lại danh sách";
+            btnTaiLaiDatBan.Click += async (_, _) => await LoadDatBanAsync();
+            filters.Controls.Add(btnTaiLaiDatBan);
+
+            var actions = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                Height = 52,
+                WrapContents = false,
+                AutoScroll = true,
+                Padding = new Padding(0, 4, 0, 4)
+            };
+            btnXacNhanDatBan.Text = "Xác nhận đặt bàn";
+            btnHuyDatBan.Text = "Hủy đặt bàn";
+            btnDaDenDatBan.Text = "Khách đã đến";
+            btnHoanTatDatBan.Text = "Hoàn tất";
+            btnKhongDenDatBan.Text = "Không đến";
+            btnXacNhanDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("DaXacNhan");
+            btnHuyDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("DaHuy");
+            btnDaDenDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("DaDen");
+            btnHoanTatDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("HoanTat");
+            btnKhongDenDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("KhongDen");
+            actions.Controls.AddRange(
+            [
+                btnXacNhanDatBan,
+                btnHuyDatBan,
+                btnDaDenDatBan,
+                btnHoanTatDatBan,
+                btnKhongDenDatBan
+            ]);
+
+            dgvDatBan.Dock = DockStyle.Fill;
+            dgvDatBan.ReadOnly = true;
+            dgvDatBan.AllowUserToAddRows = false;
+            dgvDatBan.MultiSelect = false;
+            dgvDatBan.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDatBan.AutoGenerateColumns = false;
+            dgvDatBan.Columns.AddRange(
+            [
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.MaDatBan),
+                    HeaderText = "Mã đặt bàn",
+                    Width = 90
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.HoTenKhachHang),
+                    HeaderText = "Khách hàng",
+                    Width = 170
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.SoDienThoaiKhachHang),
+                    HeaderText = "Số điện thoại",
+                    Width = 130
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.TenBan),
+                    HeaderText = "Bàn",
+                    Width = 100
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.TenKhuVuc),
+                    HeaderText = "Khu vực",
+                    Width = 120
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.ThoiGianDen),
+                    HeaderText = "Thời gian đến",
+                    Width = 150,
+                    DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy HH:mm" }
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.SoLuongKhach),
+                    HeaderText = "Số khách",
+                    Width = 90
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.TrangThai),
+                    HeaderText = "Trạng thái",
+                    Width = 130
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.GhiChu),
+                    HeaderText = "Ghi chú",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                }
+            ]);
+            dgvDatBan.CellFormatting += (_, e) =>
+            {
+                if (e.RowIndex >= 0 &&
+                    dgvDatBan.Columns[e.ColumnIndex].DataPropertyName ==
+                    nameof(DatBanManagementResponse.TrangThai) &&
+                    e.Value is string status)
+                {
+                    e.Value = DatBanStatusLabel(status);
+                    e.FormattingApplied = true;
+                }
+            };
+            dgvDatBan.SelectionChanged += (_, _) => UpdateDatBanActionStates();
+
+            page.Controls.Add(dgvDatBan);
+            page.Controls.Add(actions);
+            page.Controls.Add(filters);
+            tabQuanLy.Controls.Add(page);
+        }
+
+        private async Task LoadDatBanAsync()
+        {
+            try
+            {
+                var status = cmbLocTrangThaiDatBan.SelectedValue?.ToString();
+                dgvDatBan.DataSource = await _datBanApiService.GetAllAsync(status);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(
+                    this,
+                    exception.Message,
+                    "Không thể tải danh sách đặt bàn",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                UpdateDatBanActionStates();
+            }
+        }
+
+        private async Task UpdateDatBanStatusAsync(string status)
+        {
+            if (dgvDatBan.CurrentRow?.DataBoundItem is not DatBanManagementResponse reservation)
+            {
+                MessageBox.Show(
+                    this,
+                    "Hãy chọn một yêu cầu đặt bàn.",
+                    "Chưa chọn đặt bàn",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _datBanApiService.UpdateStatusAsync(reservation.MaDatBan, status);
+                await LoadDatBanAsync();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(
+                    this,
+                    exception.Message,
+                    "Không thể cập nhật đặt bàn",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateDatBanActionStates()
+        {
+            var status = (dgvDatBan.CurrentRow?.DataBoundItem as DatBanManagementResponse)?.TrangThai;
+            btnXacNhanDatBan.Enabled = status == "ChoXacNhan";
+            btnHuyDatBan.Enabled = status is "ChoXacNhan" or "DaXacNhan";
+            btnDaDenDatBan.Enabled = status == "DaXacNhan";
+            btnHoanTatDatBan.Enabled = status == "DaDen";
+            btnKhongDenDatBan.Enabled = status == "DaDen";
+        }
+
+        private static string DatBanStatusLabel(string status) => status switch
+        {
+            "ChoXacNhan" => "Chờ xác nhận",
+            "DaXacNhan" => "Đã xác nhận",
+            "DaDen" => "Đã đến",
+            "HoanTat" => "Hoàn tất",
+            "DaHuy" => "Đã hủy",
+            "KhongDen" => "Không đến",
+            _ => status
+        };
+
         private async Task UpdateSelectedOnlineDeliveryStatusAsync()
         {
             if (dgvDonOnline.CurrentRow?.DataBoundItem is not OnlineOrderResponse order ||
@@ -383,6 +619,7 @@ namespace Restaurant.Admin
             await LoadMonAnAsync();
             await LoadKhuVucAsync();
             await LoadBanAnAsync();
+            await LoadDatBanAsync();
             await LoadKhoAsync();
             await LoadPaymentAsync();
             if (ApiSession.IsManager)

@@ -122,4 +122,101 @@ public sealed class DatBanService : IDatBanService
                 reservation.GhiChu))
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<IReadOnlyList<DatBanManagementResponse>> GetAllAsync(
+        string? status,
+        CancellationToken cancellationToken)
+    {
+        var query =
+            from reservation in _context.DatBans.AsNoTracking()
+            join customer in _context.KhachHangs
+                on reservation.MaKhachHang equals customer.MaKhachHang
+            join table in _context.BanAns
+                on reservation.MaBan equals table.MaBan into tables
+            from table in tables.DefaultIfEmpty()
+            join area in _context.KhuVucs
+                on table.MaKhuVuc equals area.MaKhuVuc into areas
+            from area in areas.DefaultIfEmpty()
+            select new { reservation, customer, table, area };
+
+        if (!string.IsNullOrWhiteSpace(status) && status != "TatCa")
+        {
+            query = query.Where(item => item.reservation.TrangThai == status);
+        }
+
+        return await query
+            .OrderBy(item => item.reservation.ThoiGianDen)
+            .Select(item => new DatBanManagementResponse(
+                item.reservation.MaDatBan,
+                item.customer.HoTen,
+                item.customer.SDT,
+                item.table == null ? null : item.table.TenBan,
+                item.area == null ? null : item.area.TenKhuVuc,
+                item.reservation.ThoiGianTao,
+                item.reservation.ThoiGianDen,
+                item.reservation.ThoiGianKetThucDuKien,
+                item.reservation.SoLuongKhach,
+                item.reservation.TrangThai,
+                item.reservation.GhiChu))
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<DatBanManagementResponse?> UpdateStatusAsync(
+        int id,
+        string status,
+        CancellationToken cancellationToken)
+    {
+        var reservation = await _context.DatBans.FirstOrDefaultAsync(
+            item => item.MaDatBan == id,
+            cancellationToken);
+        if (reservation is null)
+        {
+            return null;
+        }
+
+        if (!IsValidTransition(reservation.TrangThai, status))
+        {
+            throw new InvalidOperationException(
+                $"Không thể chuyển trạng thái từ {reservation.TrangThai} sang {status}.");
+        }
+
+        reservation.TrangThai = status;
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return await (
+            from item in _context.DatBans.AsNoTracking()
+            join customer in _context.KhachHangs
+                on item.MaKhachHang equals customer.MaKhachHang
+            join table in _context.BanAns
+                on item.MaBan equals table.MaBan into tables
+            from table in tables.DefaultIfEmpty()
+            join area in _context.KhuVucs
+                on table.MaKhuVuc equals area.MaKhuVuc into areas
+            from area in areas.DefaultIfEmpty()
+            where item.MaDatBan == id
+            select new DatBanManagementResponse(
+                item.MaDatBan,
+                customer.HoTen,
+                customer.SDT,
+                table == null ? null : table.TenBan,
+                area == null ? null : area.TenKhuVuc,
+                item.ThoiGianTao,
+                item.ThoiGianDen,
+                item.ThoiGianKetThucDuKien,
+                item.SoLuongKhach,
+                item.TrangThai,
+                item.GhiChu))
+            .SingleAsync(cancellationToken);
+    }
+
+    private static bool IsValidTransition(string current, string next)
+    {
+        return current switch
+        {
+            "ChoXacNhan" => next is "DaXacNhan" or "DaHuy",
+            "DaXacNhan" => next is "DaDen" or "DaHuy",
+            "DaDen" => next == "HoanTat",
+            _ => false
+        };
+    }
 }
