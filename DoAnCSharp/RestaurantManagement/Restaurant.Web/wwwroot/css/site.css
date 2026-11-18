@@ -21,6 +21,36 @@ body {
   margin-bottom: 60px;
 }
 
+.reservation-page {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.reservation-hero {
+  color: #fff;
+  background: linear-gradient(135deg, #147d52, #20a36e);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.reservation-card {
+  border: 0;
+  border-radius: 1rem;
+}
+
+.reservation-table th {
+  white-space: nowrap;
+}
+
+.empty-state {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  color: var(--bs-secondary-color);
+  background: #f8f9fa;
+  border-radius: .75rem;
+}
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;

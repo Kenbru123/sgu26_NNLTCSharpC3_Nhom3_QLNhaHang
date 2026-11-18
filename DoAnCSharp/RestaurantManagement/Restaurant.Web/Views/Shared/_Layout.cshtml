@@ -26,6 +26,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Menu" asp-action="Index">Thực đơn</a>
                         </li>
+                        @if (User.Identity?.IsAuthenticated == true && User.FindFirst("customerId") is not null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="DatBan" asp-action="Index">Đặt bàn</a>
+                            </li>
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Cart" asp-action="Index">Giỏ hàng</a>
                         </li>

@@ -59,6 +59,7 @@ builder.Services.AddScoped<IGoiMonService, GoiMonService>();
 // Quản lý khu vực và bàn ăn
 builder.Services.AddScoped<IKhuVucService, KhuVucService>();
 builder.Services.AddScoped<IBanAnService, BanAnService>();
+builder.Services.AddScoped<IDatBanService, DatBanService>();
 
 // Đăng ký, đăng nhập và quản lý tài khoản
 builder.Services.AddScoped<IAuthService, AuthService>();
