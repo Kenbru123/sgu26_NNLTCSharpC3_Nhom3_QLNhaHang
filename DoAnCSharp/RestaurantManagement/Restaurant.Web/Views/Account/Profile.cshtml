@@ -1,0 +1,64 @@
+@model Restaurant.Web.Models.CustomerProfileViewModel
+@{
+	ViewData["Title"] = "Tài khoản của tôi";
+}
+
+<div class="account-page">
+	<div class="mb-4">
+		<p class="text-uppercase small fw-semibold text-success mb-2">Tài khoản khách hàng</p>
+		<h1 class="display-6 fw-bold">Thông tin của tôi</h1>
+		<p class="text-muted mb-0">Quản lý thông tin dùng khi đặt món và đặt bàn.</p>
+	</div>
+
+	@if (ViewData["SuccessMessage"] is string successMessage)
+	{
+		<div class="alert alert-success">@successMessage</div>
+	}
+	<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+	<div class="row g-4">
+		<div class="col-lg-7">
+			<div class="card shadow-sm border-0 account-card">
+				<div class="card-body p-4">
+					<h2 class="h4 mb-4">Thông tin cá nhân</h2>
+					<form asp-action="UpdateProfile" method="post">
+						<div class="mb-3">
+							<label class="form-label">Tên đăng nhập</label>
+							<input value="@Model.UserName" class="form-control" readonly />
+							<div class="form-text">Tên đăng nhập không thể thay đổi.</div>
+						</div>
+						<div class="mb-3">
+							<label asp-for="HoTen" class="form-label"></label>
+							<input asp-for="HoTen" class="form-control" />
+							<span asp-validation-for="HoTen" class="text-danger"></span>
+						</div>
+						<div class="mb-3">
+							<label asp-for="SDT" class="form-label"></label>
+							<input asp-for="SDT" class="form-control" />
+							<span asp-validation-for="SDT" class="text-danger"></span>
+						</div>
+						<div class="mb-4">
+							<label asp-for="Email" class="form-label"></label>
+							<input asp-for="Email" class="form-control" />
+							<span asp-validation-for="Email" class="text-danger"></span>
+						</div>
+						<button type="submit" class="btn btn-success">Lưu thông tin</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="card shadow-sm border-0 account-card h-100">
+				<div class="card-body p-4">
+					<h2 class="h4">Bảo mật tài khoản</h2>
+					<p class="text-muted">Định kỳ thay đổi mật khẩu để bảo vệ tài khoản của bạn.</p>
+					<a asp-action="ChangePassword" class="btn btn-outline-success">Đổi mật khẩu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

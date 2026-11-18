@@ -38,6 +38,11 @@ builder.Services.AddHttpClient<IDatBanApiService, DatBanApiService>(client =>
     client.BaseAddress = new Uri(apiBaseUrl);
 })
     .AddHttpMessageHandler<JwtAuthorizationHandler>();
+builder.Services.AddHttpClient<ICustomerAccountApiService, CustomerAccountApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+})
+    .AddHttpMessageHandler<JwtAuthorizationHandler>();
 builder.Services.AddHttpClient<IAuthApiService, AuthApiService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);

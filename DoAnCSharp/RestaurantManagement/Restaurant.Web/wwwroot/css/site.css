@@ -51,6 +51,19 @@ body {
   border-radius: .75rem;
 }
 
+.account-page {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.account-password-page {
+  max-width: 620px;
+}
+
+.account-card {
+  border-radius: 1rem;
+}
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;

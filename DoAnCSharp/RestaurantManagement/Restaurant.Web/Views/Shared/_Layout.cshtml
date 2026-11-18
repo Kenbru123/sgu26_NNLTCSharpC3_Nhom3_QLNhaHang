@@ -49,9 +49,9 @@
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item d-flex align-items-center me-3">
-                                <span class="nav-link text-dark">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Profile">
                                     @User.Identity.Name (@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value)
-                                </span>
+                                </a>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post">

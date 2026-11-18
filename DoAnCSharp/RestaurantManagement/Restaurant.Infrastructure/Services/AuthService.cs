@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Restaurant.Application.DTOs;
 using Restaurant.Application.Interfaces;
 using Restaurant.Domain.Entities;
 using Restaurant.Infrastructure.Data;
@@ -162,6 +163,75 @@ public sealed class AuthService : IAuthService
 
         return AuthResult.Success(
             CreateResponse(account, role.TenVaiTro));
+    }
+
+    public Task<CustomerProfileResponse?> GetCustomerProfileAsync(
+        int customerId,
+        CancellationToken cancellationToken = default)
+    {
+        return (
+            from customer in _dbContext.KhachHangs.AsNoTracking()
+            join account in _dbContext.TaiKhoans.AsNoTracking()
+                on customer.MaKhachHang equals account.MaKhachHang
+            where customer.MaKhachHang == customerId
+            select new CustomerProfileResponse(
+                customer.MaKhachHang,
+                account.TenDangNhap,
+                customer.HoTen,
+                customer.SDT,
+                customer.Email))
+            .SingleOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<CustomerProfileResponse?> UpdateCustomerProfileAsync(
+        int customerId,
+        UpdateCustomerProfileRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var customer = await _dbContext.KhachHangs.FirstOrDefaultAsync(
+            item => item.MaKhachHang == customerId,
+            cancellationToken);
+        if (customer is null)
+        {
+            return null;
+        }
+
+        customer.HoTen = request.HoTen.Trim();
+        customer.SDT = request.SDT.Trim();
+        customer.Email = string.IsNullOrWhiteSpace(request.Email)
+            ? null
+            : request.Email.Trim();
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return await GetCustomerProfileAsync(customerId, cancellationToken);
+    }
+
+    public async Task<AccountOperationResult> ChangeCustomerPasswordAsync(
+        int customerId,
+        ChangeCustomerPasswordRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        if (request.MatKhauMoi.Length < 6)
+        {
+            return new AccountOperationResult(
+                false,
+                "Mật khẩu mới phải có ít nhất 6 ký tự.");
+        }
+
+        var account = await _dbContext.TaiKhoans.FirstOrDefaultAsync(
+            item => item.MaKhachHang == customerId,
+            cancellationToken);
+        if (account is null ||
+            !PasswordHasher.Verify(request.MatKhauHienTai, account.MatKhauHash))
+        {
+            return new AccountOperationResult(
+                false,
+                "Mật khẩu hiện tại không đúng.");
+        }
+
+        account.MatKhauHash = PasswordHasher.Hash(request.MatKhauMoi);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return new AccountOperationResult(true);
     }
 
     // 3. Xác thực nhân viên Desktop - giữ từ main

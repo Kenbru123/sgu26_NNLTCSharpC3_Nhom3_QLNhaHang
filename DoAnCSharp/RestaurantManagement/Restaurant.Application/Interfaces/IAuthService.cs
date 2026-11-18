@@ -1,6 +1,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
+using Restaurant.Application.DTOs;
 
 // DTO đăng ký và đăng nhập từ Branch của Đại
 using AuthResult = Restaurant.Application.DTOs.Auth.AuthResult;
@@ -22,6 +23,20 @@ public interface IAuthService
     // 2. Đăng nhập theo luồng xác thực của Đại
     Task<AuthResult> LoginAsync(
         CustomerLoginRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<CustomerProfileResponse?> GetCustomerProfileAsync(
+        int customerId,
+        CancellationToken cancellationToken = default);
+
+    Task<CustomerProfileResponse?> UpdateCustomerProfileAsync(
+        int customerId,
+        UpdateCustomerProfileRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task<AccountOperationResult> ChangeCustomerPasswordAsync(
+        int customerId,
+        ChangeCustomerPasswordRequest request,
         CancellationToken cancellationToken = default);
 
     // 3. Xác thực nhân viên cho Desktop
