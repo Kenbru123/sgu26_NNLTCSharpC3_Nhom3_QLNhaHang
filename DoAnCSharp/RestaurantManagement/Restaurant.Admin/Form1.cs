@@ -130,6 +130,78 @@ namespace Restaurant.Admin
             tabQuanLy.Controls.Add(tabCheBien);
             btnThemKhuVuc.Enabled = ApiSession.IsManager;
             InitializeAccountTab();
+            ConfigureReadableLayout();
+        }
+
+        private void ConfigureReadableLayout()
+        {
+            Font = new Font("Segoe UI", 10F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            FormBorderStyle = FormBorderStyle.Sizable;
+            MaximizeBox = true;
+
+            tabQuanLy.Multiline = true;
+            tabQuanLy.SizeMode = TabSizeMode.Fixed;
+            tabQuanLy.ItemSize = new Size(132, 36);
+            tabQuanLy.Padding = new Point(12, 4);
+
+            foreach (var control in GetAllControls(this))
+            {
+                control.Font = new Font("Segoe UI", 10F);
+
+                if (control is Button button)
+                {
+                    button.MinimumSize = new Size(100, 34);
+                    button.Padding = new Padding(10, 4, 10, 4);
+                    button.AutoSize = true;
+                    button.AutoSizeMode = AutoSizeMode.GrowOnly;
+                }
+                else if (control is TextBox textBox)
+                {
+                    textBox.MinimumSize = new Size(0, 30);
+                }
+                else if (control is ComboBox comboBox)
+                {
+                    comboBox.MinimumSize = new Size(0, 30);
+                }
+                else if (control is NumericUpDown numericUpDown)
+                {
+                    numericUpDown.MinimumSize = new Size(0, 30);
+                }
+                else if (control is DataGridView grid)
+                {
+                    grid.BackgroundColor = SystemColors.Window;
+                    grid.BorderStyle = BorderStyle.FixedSingle;
+                    grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+                    grid.RowTemplate.Height = 32;
+                    grid.ColumnHeadersHeight = 42;
+                    grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+                    grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                    grid.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    grid.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+                    grid.DefaultCellStyle.Padding = new Padding(4, 2, 4, 2);
+                    grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    grid.AllowUserToResizeRows = false;
+                }
+                else if (control is GroupBox groupBox)
+                {
+                    groupBox.Padding = new Padding(10, 24, 10, 10);
+                }
+            }
+        }
+
+        private static IEnumerable<Control> GetAllControls(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                yield return control;
+
+                foreach (var child in GetAllControls(control))
+                {
+                    yield return child;
+                }
+            }
         }
 
         private void InitializeOnlineOrdersTab()

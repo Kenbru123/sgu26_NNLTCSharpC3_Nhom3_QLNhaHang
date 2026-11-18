@@ -218,9 +218,9 @@ namespace Restaurant.Admin
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1000, 650);
+            ClientSize = new Size(1440, 900);
             Controls.Add(tabQuanLy);
-            MinimumSize = new Size(800, 550);
+            MinimumSize = new Size(1200, 760);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Quản lý nhà hàng";
