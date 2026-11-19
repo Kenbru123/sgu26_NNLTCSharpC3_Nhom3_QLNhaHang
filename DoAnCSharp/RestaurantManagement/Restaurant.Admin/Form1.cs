@@ -14,6 +14,7 @@ namespace Restaurant.Admin
         private readonly ThanhToanApiService _thanhToanApiService;
         private readonly GoiMonControl _goiMonControl;
         private readonly CheBienControl _cheBienControl;
+        private readonly DashboardControl _dashboardControl;
         private readonly DataGridView dgvBanAn = new();
         private readonly Panel pnlDanhSachBanAn = new();
         private readonly Label lblBanAnKhongCoKetQua = new();
@@ -126,6 +127,7 @@ namespace Restaurant.Admin
             _datBanApiService = new DatBanApiService();
             _goiMonControl = new GoiMonControl();
             _cheBienControl = new CheBienControl();
+            _dashboardControl = new DashboardControl();
             InitializeMonAnTab();
             InitializeKhoTab();
             InitializePaymentTab();
@@ -147,7 +149,19 @@ namespace Restaurant.Admin
             tabQuanLy.Controls.Add(tabCheBien);
             btnThemKhuVuc.Enabled = ApiSession.IsManager;
             InitializeAccountTab();
+            InitializeDashboardTab();
             ConfigureReadableLayout();
+        }
+
+        private void InitializeDashboardTab()
+        {
+            var page = new TabPage("Dashboard")
+            {
+                Padding = new Padding(8)
+            };
+            page.Controls.Add(_dashboardControl);
+            tabQuanLy.TabPages.Insert(0, page);
+            tabQuanLy.SelectedIndex = 0;
         }
 
         private void ConfigureReadableLayout()
@@ -640,6 +654,7 @@ namespace Restaurant.Admin
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            await _dashboardControl.LoadAsync();
             await LoadMonAnAsync();
             await LoadKhuVucAsync();
             await LoadBanAnAsync();
