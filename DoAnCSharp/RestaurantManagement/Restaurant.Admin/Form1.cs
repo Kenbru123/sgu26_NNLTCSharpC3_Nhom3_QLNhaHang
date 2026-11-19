@@ -92,6 +92,7 @@ namespace Restaurant.Admin
         private readonly TextBox txtTaiKhoanHoTen = new();
         private readonly TextBox txtTaiKhoanSoDienThoai = new();
         private readonly DateTimePicker dtpTaiKhoanNgaySinh = new();
+        private readonly ComboBox cmbTaiKhoanVaiTro = new();
         private readonly Button btnTaiKhoanThem = new();
         private bool _loadingBanAn;
         private bool _loadingBanFilters;
@@ -940,139 +941,150 @@ namespace Restaurant.Admin
             {
                 Text = "Nhập kho nhanh",
                 Location = new Point(12, 12),
-                Size = new Size(450, 120),
-                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+                Size = new Size(450, 180),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Padding = new Padding(12, 28, 12, 10)
             };
             movementPage.Controls.Add(grpNhapNhanh);
 
-            var lblKhoMaNhap = new Label { Text = "Mã NL", AutoSize = true, Location = new Point(12, 28) };
-            txtKhoMaNguyenLieuNhap.Location = new Point(90, 24);
-            txtKhoMaNguyenLieuNhap.Size = new Size(80, 26);
-            grpNhapNhanh.Controls.Add(lblKhoMaNhap);
-            grpNhapNhanh.Controls.Add(txtKhoMaNguyenLieuNhap);
+            var nhapLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 4,
+                RowCount = 3,
+                Padding = new Padding(0)
+            };
+            nhapLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 68));
+            nhapLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            nhapLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 76));
+            nhapLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            nhapLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            nhapLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            nhapLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            grpNhapNhanh.Controls.Add(nhapLayout);
 
-            var lblKhoSoLuongNhap = new Label { Text = "Số lượng", AutoSize = true, Location = new Point(180, 28) };
-            nudKhoSoLuongNhap.Location = new Point(260, 24);
-            nudKhoSoLuongNhap.Size = new Size(80, 26);
+            nhapLayout.Controls.Add(CreateWarehouseLabel("Mã NL"), 0, 0);
+            txtKhoMaNguyenLieuNhap.Dock = DockStyle.Fill;
+            nhapLayout.Controls.Add(txtKhoMaNguyenLieuNhap, 1, 0);
+            nhapLayout.Controls.Add(CreateWarehouseLabel("Số lượng"), 2, 0);
+            nudKhoSoLuongNhap.Dock = DockStyle.Fill;
             nudKhoSoLuongNhap.DecimalPlaces = 2;
             nudKhoSoLuongNhap.Minimum = 1;
             nudKhoSoLuongNhap.Maximum = 999999;
             nudKhoSoLuongNhap.Value = 1;
-            grpNhapNhanh.Controls.Add(lblKhoSoLuongNhap);
-            grpNhapNhanh.Controls.Add(nudKhoSoLuongNhap);
+            nhapLayout.Controls.Add(nudKhoSoLuongNhap, 3, 0);
 
-            var lblKhoDonGiaNhap = new Label { Text = "Đơn giá", AutoSize = true, Location = new Point(12, 64) };
-            nudKhoDonGiaNhap.Location = new Point(90, 60);
-            nudKhoDonGiaNhap.Size = new Size(120, 26);
+            nhapLayout.Controls.Add(CreateWarehouseLabel("Đơn giá"), 0, 1);
+            nudKhoDonGiaNhap.Dock = DockStyle.Fill;
             nudKhoDonGiaNhap.DecimalPlaces = 2;
             nudKhoDonGiaNhap.Minimum = 0;
             nudKhoDonGiaNhap.Maximum = 999999999;
             nudKhoDonGiaNhap.Value = 0;
-            grpNhapNhanh.Controls.Add(lblKhoDonGiaNhap);
-            grpNhapNhanh.Controls.Add(nudKhoDonGiaNhap);
-
-            var lblKhoGhiChuNhap = new Label { Text = "Ghi chú", AutoSize = true, Location = new Point(220, 64) };
-            txtKhoGhiChuNhap.Location = new Point(285, 60);
-            txtKhoGhiChuNhap.Size = new Size(150, 26);
-            grpNhapNhanh.Controls.Add(lblKhoGhiChuNhap);
-            grpNhapNhanh.Controls.Add(txtKhoGhiChuNhap);
+            nhapLayout.Controls.Add(nudKhoDonGiaNhap, 1, 1);
+            nhapLayout.Controls.Add(CreateWarehouseLabel("Ghi chú"), 2, 1);
+            txtKhoGhiChuNhap.Dock = DockStyle.Fill;
+            nhapLayout.Controls.Add(txtKhoGhiChuNhap, 3, 1);
 
             var btnKhoRefresh = new Button
             {
                 Text = "Làm mới",
-                Size = new Size(90, 32),
-                Location = new Point(305, 88)
+                AutoSize = true,
+                Anchor = AnchorStyles.Left
             };
             btnKhoRefresh.Click += async (_, _) => await LoadKhoAsync();
-            grpNhapNhanh.Controls.Add(btnKhoRefresh);
+            nhapLayout.Controls.Add(btnKhoRefresh, 2, 2);
 
             btnKhoNhapNhanh.Text = "Tạo phiếu nhập";
-            btnKhoNhapNhanh.Size = new Size(130, 32);
-            btnKhoNhapNhanh.Location = new Point(305, 48);
+            btnKhoNhapNhanh.AutoSize = true;
+            btnKhoNhapNhanh.Anchor = AnchorStyles.Left;
             btnKhoNhapNhanh.Click += async (_, _) => await CreateQuickPurchaseReceiptAsync();
-            grpNhapNhanh.Controls.Add(btnKhoNhapNhanh);
+            nhapLayout.Controls.Add(btnKhoNhapNhanh, 3, 2);
 
             var grpXuatNhanh = new GroupBox
             {
                 Text = "Xuất kho nhanh",
                 Location = new Point(474, 12),
-                Size = new Size(468, 120),
-                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+                Size = new Size(468, 180),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Padding = new Padding(12, 28, 12, 10)
             };
             movementPage.Controls.Add(grpXuatNhanh);
 
-            var lblKhoMaXuat = new Label { Text = "Mã NL", AutoSize = true, Location = new Point(12, 28) };
-            txtKhoMaNguyenLieuXuat.Location = new Point(90, 24);
-            txtKhoMaNguyenLieuXuat.Size = new Size(70, 26);
-            grpXuatNhanh.Controls.Add(lblKhoMaXuat);
-            grpXuatNhanh.Controls.Add(txtKhoMaNguyenLieuXuat);
+            var xuatLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 6,
+                RowCount = 4,
+                Padding = new Padding(0)
+            };
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 58));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 64));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 42));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34));
+            xuatLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            xuatLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            xuatLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            xuatLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            grpXuatNhanh.Controls.Add(xuatLayout);
 
-            var lblKhoSoLuongXuat = new Label { Text = "Số lượng", AutoSize = true, Location = new Point(170, 28) };
-            nudKhoSoLuongXuat.Location = new Point(250, 24);
-            nudKhoSoLuongXuat.Size = new Size(80, 26);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Mã NL"), 0, 0);
+            txtKhoMaNguyenLieuXuat.Dock = DockStyle.Fill;
+            xuatLayout.Controls.Add(txtKhoMaNguyenLieuXuat, 1, 0);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Số lượng"), 2, 0);
+            nudKhoSoLuongXuat.Dock = DockStyle.Fill;
             nudKhoSoLuongXuat.DecimalPlaces = 2;
             nudKhoSoLuongXuat.Minimum = 1;
             nudKhoSoLuongXuat.Maximum = 999999;
             nudKhoSoLuongXuat.Value = 1;
-            grpXuatNhanh.Controls.Add(lblKhoSoLuongXuat);
-            grpXuatNhanh.Controls.Add(nudKhoSoLuongXuat);
-
-            var lblKhoLoaiXuat = new Label { Text = "Loại", AutoSize = true, Location = new Point(340, 28) };
-            cmbKhoLoaiXuat.Location = new Point(385, 24);
-            cmbKhoLoaiXuat.Size = new Size(70, 26);
+            xuatLayout.Controls.Add(nudKhoSoLuongXuat, 3, 0);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Loại"), 4, 0);
+            cmbKhoLoaiXuat.Dock = DockStyle.Fill;
             cmbKhoLoaiXuat.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbKhoLoaiXuat.Items.Add("CheBien");
             cmbKhoLoaiXuat.Items.Add("ThuCong");
             cmbKhoLoaiXuat.SelectedIndex = 0;
-            grpXuatNhanh.Controls.Add(lblKhoLoaiXuat);
-            grpXuatNhanh.Controls.Add(cmbKhoLoaiXuat);
+            xuatLayout.Controls.Add(cmbKhoLoaiXuat, 5, 0);
 
-            var lblKhoMaDonHang = new Label { Text = "Mã ĐH", AutoSize = true, Location = new Point(12, 64) };
-            nudKhoMaChiTietDonHang.Location = new Point(90, 60);
-            nudKhoMaChiTietDonHang.Size = new Size(70, 26);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Mã ĐH"), 0, 1);
+            nudKhoMaChiTietDonHang.Dock = DockStyle.Fill;
             nudKhoMaChiTietDonHang.Minimum = 0;
             nudKhoMaChiTietDonHang.Maximum = 999999;
             nudKhoMaChiTietDonHang.Value = 0;
-            grpXuatNhanh.Controls.Add(lblKhoMaDonHang);
-            grpXuatNhanh.Controls.Add(nudKhoMaChiTietDonHang);
-
-            var lblKhoMaNvXuat = new Label { Text = "Mã NV", AutoSize = true, Location = new Point(170, 64) };
-            nudKhoMaNhanVienXuat.Location = new Point(250, 60);
-            nudKhoMaNhanVienXuat.Size = new Size(70, 26);
+            xuatLayout.Controls.Add(nudKhoMaChiTietDonHang, 1, 1);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Mã NV"), 2, 1);
+            nudKhoMaNhanVienXuat.Dock = DockStyle.Fill;
             nudKhoMaNhanVienXuat.Minimum = 0;
             nudKhoMaNhanVienXuat.Maximum = 999999;
             nudKhoMaNhanVienXuat.Value = 0;
-            grpXuatNhanh.Controls.Add(lblKhoMaNvXuat);
-            grpXuatNhanh.Controls.Add(nudKhoMaNhanVienXuat);
+            xuatLayout.Controls.Add(nudKhoMaNhanVienXuat, 3, 1);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Lý do"), 4, 1);
+            txtKhoLyDoXuat.Dock = DockStyle.Fill;
+            xuatLayout.Controls.Add(txtKhoLyDoXuat, 5, 1);
 
-            var lblKhoLyDoXuat = new Label { Text = "Lý do", AutoSize = true, Location = new Point(330, 64) };
-            txtKhoLyDoXuat.Location = new Point(385, 60);
-            txtKhoLyDoXuat.Size = new Size(70, 26);
-            grpXuatNhanh.Controls.Add(lblKhoLyDoXuat);
-            grpXuatNhanh.Controls.Add(txtKhoLyDoXuat);
-
-            var lblKhoGhiChuXuat = new Label { Text = "Ghi chú", AutoSize = true, Location = new Point(12, 96) };
-            txtKhoGhiChuXuat.Location = new Point(90, 92);
-            txtKhoGhiChuXuat.Size = new Size(220, 26);
-            grpXuatNhanh.Controls.Add(lblKhoGhiChuXuat);
-            grpXuatNhanh.Controls.Add(txtKhoGhiChuXuat);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Ghi chú"), 0, 2);
+            txtKhoGhiChuXuat.Dock = DockStyle.Fill;
+            xuatLayout.Controls.Add(txtKhoGhiChuXuat, 1, 2);
+            xuatLayout.SetColumnSpan(txtKhoGhiChuXuat, 3);
 
             btnKhoXuatNhanh.Text = "Tạo phiếu xuất";
-            btnKhoXuatNhanh.Size = new Size(130, 32);
-            btnKhoXuatNhanh.Location = new Point(320, 88);
+            btnKhoXuatNhanh.AutoSize = true;
+            btnKhoXuatNhanh.Anchor = AnchorStyles.Left;
             btnKhoXuatNhanh.Click += async (_, _) => await CreateQuickIssueReceiptAsync();
-            grpXuatNhanh.Controls.Add(btnKhoXuatNhanh);
+            xuatLayout.Controls.Add(btnKhoXuatNhanh, 4, 2);
+            xuatLayout.SetColumnSpan(btnKhoXuatNhanh, 2);
 
             var lblPhieuKho = new Label
             {
                 Text = "Phiếu nhập/xuất kho gần nhất",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                Location = new Point(12, 155)
+                Location = new Point(12, 205)
             };
             movementPage.Controls.Add(lblPhieuKho);
 
-            dgvKhoPhieu.Location = new Point(12, 183);
+            dgvKhoPhieu.Location = new Point(12, 233);
             dgvKhoPhieu.Size = new Size(930, 150);
             dgvKhoPhieu.ReadOnly = true;
             dgvKhoPhieu.AutoGenerateColumns = false;
@@ -1085,25 +1097,25 @@ namespace Restaurant.Admin
 
             btnKhoXacNhanNhap.Text = "Xác nhận nhập";
             btnKhoXacNhanNhap.Size = new Size(130, 32);
-            btnKhoXacNhanNhap.Location = new Point(12, 345);
+            btnKhoXacNhanNhap.Location = new Point(12, 397);
             btnKhoXacNhanNhap.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: true, confirmed: true);
             movementPage.Controls.Add(btnKhoXacNhanNhap);
 
             btnKhoHuyNhap.Text = "Hủy nhập";
             btnKhoHuyNhap.Size = new Size(120, 32);
-            btnKhoHuyNhap.Location = new Point(150, 345);
+            btnKhoHuyNhap.Location = new Point(150, 397);
             btnKhoHuyNhap.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: true, confirmed: false);
             movementPage.Controls.Add(btnKhoHuyNhap);
 
             btnKhoXacNhanXuat.Text = "Xác nhận xuất";
             btnKhoXacNhanXuat.Size = new Size(130, 32);
-            btnKhoXacNhanXuat.Location = new Point(282, 345);
+            btnKhoXacNhanXuat.Location = new Point(282, 397);
             btnKhoXacNhanXuat.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: false, confirmed: true);
             movementPage.Controls.Add(btnKhoXacNhanXuat);
 
             btnKhoHuyXuat.Text = "Hủy xuất";
             btnKhoHuyXuat.Size = new Size(120, 32);
-            btnKhoHuyXuat.Location = new Point(420, 345);
+            btnKhoHuyXuat.Location = new Point(420, 397);
             btnKhoHuyXuat.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: false, confirmed: false);
             movementPage.Controls.Add(btnKhoHuyXuat);
 
@@ -1128,23 +1140,53 @@ namespace Restaurant.Admin
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
 
-            AddAccountField(editor, "Tên đăng nhập", txtTaiKhoanUsername, 12, 28, 150);
-            AddAccountField(editor, "Mật khẩu", txtTaiKhoanPassword, 185, 28, 150);
+            AddAccountField(editor, "Tên đăng nhập", txtTaiKhoanUsername, 12, 28, 120);
+            AddAccountField(editor, "Mật khẩu", txtTaiKhoanPassword, 270, 28, 120);
             txtTaiKhoanPassword.UseSystemPasswordChar = true;
-            AddAccountField(editor, "Họ tên", txtTaiKhoanHoTen, 358, 28, 190);
-            AddAccountField(editor, "Số điện thoại", txtTaiKhoanSoDienThoai, 556, 28, 130);
-            editor.Controls.Add(new Label { Text = "Ngày sinh", AutoSize = true, Location = new Point(12, 72) });
-            dtpTaiKhoanNgaySinh.Location = new Point(85, 68);
+            AddAccountField(editor, "Họ tên", txtTaiKhoanHoTen, 520, 28, 130);
+            AddAccountField(editor, "Số điện thoại", txtTaiKhoanSoDienThoai, 760, 28, 120);
+            editor.Controls.Add(new Label
+            {
+                Text = "Ngày sinh",
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(12, 68),
+                Size = new Size(72, 30)
+            });
+            dtpTaiKhoanNgaySinh.Location = new Point(90, 68);
             dtpTaiKhoanNgaySinh.Size = new Size(150, 26);
             dtpTaiKhoanNgaySinh.Format = DateTimePickerFormat.Short;
             dtpTaiKhoanNgaySinh.ShowCheckBox = true;
             editor.Controls.Add(dtpTaiKhoanNgaySinh);
+            var lblTaiKhoanVaiTro = new Label
+            {
+                Text = "Vai trò",
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(270, 68),
+                Size = new Size(55, 30)
+            };
+            editor.Controls.Add(lblTaiKhoanVaiTro);
+            cmbTaiKhoanVaiTro.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTaiKhoanVaiTro.Location = new Point(330, 68);
+            cmbTaiKhoanVaiTro.Size = new Size(120, 30);
+            cmbTaiKhoanVaiTro.Items.Clear();
+            cmbTaiKhoanVaiTro.Items.AddRange(["NhanVien", "QuanLy", "Admin"]);
+            cmbTaiKhoanVaiTro.SelectedIndex = 0;
+            editor.Controls.Add(cmbTaiKhoanVaiTro);
             btnTaiKhoanThem.Text = "Tạo tài khoản";
             btnTaiKhoanThem.Size = new Size(140, 32);
-            btnTaiKhoanThem.Location = new Point(255, 66);
+            btnTaiKhoanThem.Location = new Point(470, 66);
             btnTaiKhoanThem.Click += async (_, _) => await CreateEmployeeAccountAsync();
             editor.Controls.Add(btnTaiKhoanThem);
-            editor.Controls.Add(new Label { Text = "Phân quyền mặc định: Nhân viên", AutoSize = true, Location = new Point(410, 74) });
+            editor.Controls.Add(new Label
+            {
+                Text = "Chọn vai trò phù hợp với quyền hạn của tài khoản.",
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(630, 68),
+                Size = new Size(300, 30)
+            });
             panel.Controls.Add(editor);
 
             dgvTaiKhoanNhanVien.Dock = DockStyle.Fill;
@@ -1165,11 +1207,29 @@ namespace Restaurant.Admin
 
         private static void AddAccountField(Control parent, string labelText, TextBox textBox, int x, int y, int width)
         {
-            parent.Controls.Add(new Label { Text = labelText, AutoSize = true, Location = new Point(x, y + 4) });
-            textBox.Location = new Point(x + 78, y);
-            textBox.Size = new Size(width, 26);
+            using var labelFont = new Font("Segoe UI", 10F);
+            var labelWidth = TextRenderer.MeasureText(labelText, labelFont).Width;
+            parent.Controls.Add(new Label
+            {
+                Text = labelText,
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(x, y),
+                Size = new Size(labelWidth, 30)
+            });
+            textBox.Location = new Point(x + labelWidth + 8, y);
+            textBox.Size = new Size(width, 30);
             parent.Controls.Add(textBox);
         }
+
+        private static Label CreateWarehouseLabel(string text) => new()
+        {
+            Text = text,
+            Dock = DockStyle.Fill,
+            TextAlign = ContentAlignment.MiddleLeft,
+            AutoSize = false,
+            Margin = new Padding(0, 0, 6, 0)
+        };
 
         private async Task LoadEmployeeAccountsAsync()
         {
@@ -1203,7 +1263,7 @@ namespace Restaurant.Admin
                     FullName = txtTaiKhoanHoTen.Text.Trim(),
                     PhoneNumber = string.IsNullOrWhiteSpace(txtTaiKhoanSoDienThoai.Text) ? null : txtTaiKhoanSoDienThoai.Text.Trim(),
                     BirthDate = dtpTaiKhoanNgaySinh.Checked ? DateOnly.FromDateTime(dtpTaiKhoanNgaySinh.Value) : null,
-                    RoleName = ApiSession.EmployeeRole
+                    RoleName = cmbTaiKhoanVaiTro.SelectedItem?.ToString() ?? "NhanVien"
                 });
 
                 txtTaiKhoanUsername.Clear();
@@ -1211,6 +1271,7 @@ namespace Restaurant.Admin
                 txtTaiKhoanHoTen.Clear();
                 txtTaiKhoanSoDienThoai.Clear();
                 dtpTaiKhoanNgaySinh.Checked = false;
+                cmbTaiKhoanVaiTro.SelectedIndex = 0;
                 await LoadEmployeeAccountsAsync();
                 MessageBox.Show("Đã tạo tài khoản nhân viên và liên kết hồ sơ nhân viên.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

@@ -31,9 +31,9 @@ namespace Restaurant.Admin
             btnSuaKhuVuc = new Button();
             btnXoaKhuVuc = new Button();
             btnTaiKhuVuc = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvMonAn).BeginInit();
             tabQuanLy.SuspendLayout();
             tabMonAn.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvMonAn).BeginInit();
             tabKhuVuc.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvKhuVuc).BeginInit();
             SuspendLayout();
@@ -46,7 +46,7 @@ namespace Restaurant.Admin
             tabQuanLy.Location = new Point(0, 0);
             tabQuanLy.Name = "tabQuanLy";
             tabQuanLy.SelectedIndex = 0;
-            tabQuanLy.Size = new Size(1000, 650);
+            tabQuanLy.Size = new Size(1440, 900);
             tabQuanLy.TabIndex = 0;
             // 
             // tabMonAn
@@ -56,7 +56,7 @@ namespace Restaurant.Admin
             tabMonAn.Location = new Point(4, 29);
             tabMonAn.Name = "tabMonAn";
             tabMonAn.Padding = new Padding(12);
-            tabMonAn.Size = new Size(992, 617);
+            tabMonAn.Size = new Size(1432, 867);
             tabMonAn.TabIndex = 0;
             tabMonAn.Text = "Món ăn";
             tabMonAn.UseVisualStyleBackColor = true;
@@ -70,13 +70,13 @@ namespace Restaurant.Admin
             dgvMonAn.ReadOnly = true;
             dgvMonAn.RowHeadersWidth = 51;
             dgvMonAn.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvMonAn.Size = new Size(968, 530);
+            dgvMonAn.Size = new Size(1408, 780);
             dgvMonAn.TabIndex = 0;
             // 
             // btnTaiLai
             // 
             btnTaiLai.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnTaiLai.Location = new Point(780, 553);
+            btnTaiLai.Location = new Point(1220, 803);
             btnTaiLai.Name = "btnTaiLai";
             btnTaiLai.Size = new Size(200, 45);
             btnTaiLai.TabIndex = 1;
@@ -100,7 +100,7 @@ namespace Restaurant.Admin
             tabKhuVuc.Location = new Point(4, 29);
             tabKhuVuc.Name = "tabKhuVuc";
             tabKhuVuc.Padding = new Padding(12);
-            tabKhuVuc.Size = new Size(992, 617);
+            tabKhuVuc.Size = new Size(1432, 867);
             tabKhuVuc.TabIndex = 1;
             tabKhuVuc.Text = "Khu vực";
             tabKhuVuc.UseVisualStyleBackColor = true;
@@ -115,7 +115,7 @@ namespace Restaurant.Admin
             dgvKhuVuc.ReadOnly = true;
             dgvKhuVuc.RowHeadersWidth = 51;
             dgvKhuVuc.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvKhuVuc.Size = new Size(952, 405);
+            dgvKhuVuc.Size = new Size(1392, 655);
             dgvKhuVuc.TabIndex = 10;
             // 
             // lblMaKhuVuc
@@ -123,7 +123,7 @@ namespace Restaurant.Admin
             lblMaKhuVuc.AutoSize = true;
             lblMaKhuVuc.Location = new Point(20, 20);
             lblMaKhuVuc.Name = "lblMaKhuVuc";
-            lblMaKhuVuc.Size = new Size(85, 20);
+            lblMaKhuVuc.Size = new Size(84, 20);
             lblMaKhuVuc.TabIndex = 0;
             lblMaKhuVuc.Text = "Mã khu vực";
             // 
@@ -140,7 +140,7 @@ namespace Restaurant.Admin
             lblTenKhuVuc.AutoSize = true;
             lblTenKhuVuc.Location = new Point(165, 20);
             lblTenKhuVuc.Name = "lblTenKhuVuc";
-            lblTenKhuVuc.Size = new Size(92, 20);
+            lblTenKhuVuc.Size = new Size(86, 20);
             lblTenKhuVuc.TabIndex = 2;
             lblTenKhuVuc.Text = "Tên khu vực";
             // 
@@ -150,7 +150,7 @@ namespace Restaurant.Admin
             txtTenKhuVuc.Location = new Point(165, 45);
             txtTenKhuVuc.MaxLength = 100;
             txtTenKhuVuc.Name = "txtTenKhuVuc";
-            txtTenKhuVuc.Size = new Size(807, 27);
+            txtTenKhuVuc.Size = new Size(1247, 27);
             txtTenKhuVuc.TabIndex = 3;
             // 
             // lblMoTaKhuVuc
@@ -158,7 +158,7 @@ namespace Restaurant.Admin
             lblMoTaKhuVuc.AutoSize = true;
             lblMoTaKhuVuc.Location = new Point(20, 83);
             lblMoTaKhuVuc.Name = "lblMoTaKhuVuc";
-            lblMoTaKhuVuc.Size = new Size(47, 20);
+            lblMoTaKhuVuc.Size = new Size(48, 20);
             lblMoTaKhuVuc.TabIndex = 4;
             lblMoTaKhuVuc.Text = "Mô tả";
             // 
@@ -168,7 +168,7 @@ namespace Restaurant.Admin
             txtMoTaKhuVuc.Location = new Point(20, 108);
             txtMoTaKhuVuc.MaxLength = 255;
             txtMoTaKhuVuc.Name = "txtMoTaKhuVuc";
-            txtMoTaKhuVuc.Size = new Size(952, 27);
+            txtMoTaKhuVuc.Size = new Size(1392, 27);
             txtMoTaKhuVuc.TabIndex = 5;
             // 
             // btnThemKhuVuc
@@ -206,7 +206,7 @@ namespace Restaurant.Admin
             // btnTaiKhuVuc
             // 
             btnTaiKhuVuc.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnTaiKhuVuc.Location = new Point(847, 148);
+            btnTaiKhuVuc.Location = new Point(1287, 148);
             btnTaiKhuVuc.Name = "btnTaiKhuVuc";
             btnTaiKhuVuc.Size = new Size(125, 32);
             btnTaiKhuVuc.TabIndex = 9;
@@ -225,9 +225,9 @@ namespace Restaurant.Admin
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Quản lý nhà hàng";
             Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvMonAn).EndInit();
             tabQuanLy.ResumeLayout(false);
             tabMonAn.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvMonAn).EndInit();
             tabKhuVuc.ResumeLayout(false);
             tabKhuVuc.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvKhuVuc).EndInit();
