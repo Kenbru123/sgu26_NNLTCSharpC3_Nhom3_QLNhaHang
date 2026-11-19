@@ -101,14 +101,19 @@ namespace Restaurant.Admin
             InitializeComponent();
 
             btnDangXuat.Text = "Đăng xuất";
-            btnDangXuat.Size = new Size(110, 30);
+            btnDangXuat.Size = new Size(120, 34);
             btnDangXuat.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDangXuat.Location = new Point(ClientSize.Width - btnDangXuat.Width - 12, 6);
+            btnDangXuat.Location = new Point(ClientSize.Width - btnDangXuat.Width - 16, 8);
             btnDangXuat.Click += btnDangXuat_Click;
             Controls.Add(btnDangXuat);
             tabQuanLy.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tabQuanLy.Location = new Point(0, 40);
-            tabQuanLy.Height = ClientSize.Height - 40;
+            tabQuanLy.Location = new Point(8, 48);
+            tabQuanLy.Size = new Size(ClientSize.Width - 16, ClientSize.Height - 56);
+            Resize += (_, _) =>
+            {
+                btnDangXuat.Location = new Point(ClientSize.Width - btnDangXuat.Width - 16, 8);
+                tabQuanLy.Size = new Size(ClientSize.Width - 16, ClientSize.Height - 56);
+            };
             btnDangXuat.BringToFront();
 
             _monAnApiService = new MonAnApiService();
@@ -151,10 +156,10 @@ namespace Restaurant.Admin
             FormBorderStyle = FormBorderStyle.Sizable;
             MaximizeBox = true;
 
-            tabQuanLy.Multiline = true;
+            tabQuanLy.Multiline = false;
             tabQuanLy.SizeMode = TabSizeMode.Fixed;
             tabQuanLy.ItemSize = new Size(132, 36);
-            tabQuanLy.Padding = new Point(12, 4);
+            tabQuanLy.Padding = new Point(8, 4);
 
             foreach (var control in GetAllControls(this))
             {
@@ -162,8 +167,8 @@ namespace Restaurant.Admin
 
                 if (control is Button button)
                 {
-                    button.MinimumSize = new Size(100, 34);
-                    button.Padding = new Padding(10, 4, 10, 4);
+                    button.MinimumSize = new Size(0, 34);
+                    button.Padding = new Padding(10, 5, 10, 5);
                     button.AutoSize = true;
                     button.AutoSizeMode = AutoSizeMode.GrowOnly;
                 }
@@ -174,10 +179,12 @@ namespace Restaurant.Admin
                 else if (control is ComboBox comboBox)
                 {
                     comboBox.MinimumSize = new Size(0, 30);
+                    comboBox.Margin = new Padding(4, 3, 4, 3);
                 }
                 else if (control is NumericUpDown numericUpDown)
                 {
                     numericUpDown.MinimumSize = new Size(0, 30);
+                    numericUpDown.Margin = new Padding(4, 3, 4, 3);
                 }
                 else if (control is DataGridView grid)
                 {
@@ -193,6 +200,14 @@ namespace Restaurant.Admin
                     grid.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
                     grid.DefaultCellStyle.Padding = new Padding(4, 2, 4, 2);
                     grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+                    grid.RowTemplate.Height = 32;
+                    grid.ColumnHeadersHeight = 42;
+                    grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+                    grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    grid.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    grid.DefaultCellStyle.Padding = new Padding(4, 2, 4, 2);
+                    grid.RowHeadersVisible = false;
                     grid.AllowUserToResizeRows = false;
                 }
                 else if (control is GroupBox groupBox)
@@ -223,56 +238,64 @@ namespace Restaurant.Admin
             }
 
             var page = new TabPage("Đơn online") { Padding = new Padding(12) };
-            var panel = new Panel { Dock = DockStyle.Fill };
+            var panel = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 2,
+                Padding = new Padding(0)
+            };
+            panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 46));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            var toolbar = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                WrapContents = false,
+                AutoScroll = true,
+                Padding = new Padding(0, 4, 0, 4)
+            };
             btnTaiLaiDonOnline.Text = "Tải lại đơn online";
-            btnTaiLaiDonOnline.Size = new Size(150, 32);
-            btnTaiLaiDonOnline.Location = new Point(12, 12);
+            btnTaiLaiDonOnline.Size = new Size(150, 34);
             btnTaiLaiDonOnline.Click += async (_, _) => await LoadOnlineOrdersAsync();
-            panel.Controls.Add(btnTaiLaiDonOnline);
+            toolbar.Controls.Add(btnTaiLaiDonOnline);
             btnXacNhanDonOnline.Text = "Xác nhận đơn";
-            btnXacNhanDonOnline.Size = new Size(130, 32);
-            btnXacNhanDonOnline.Location = new Point(175, 12);
+            btnXacNhanDonOnline.Size = new Size(130, 34);
             btnXacNhanDonOnline.Click += async (_, _) => await UpdateOnlineOrderStatusAsync("DangPhucVu");
-            panel.Controls.Add(btnXacNhanDonOnline);
+            toolbar.Controls.Add(btnXacNhanDonOnline);
             btnHuyDonOnline.Text = "Hủy đơn";
-            btnHuyDonOnline.Size = new Size(100, 32);
-            btnHuyDonOnline.Location = new Point(320, 12);
+            btnHuyDonOnline.Size = new Size(100, 34);
             btnHuyDonOnline.Click += async (_, _) => await UpdateOnlineOrderStatusAsync("DaHuy");
-            panel.Controls.Add(btnHuyDonOnline);
+            toolbar.Controls.Add(btnHuyDonOnline);
             btnXemChiTietDonOnline.Text = "Xem chi tiết";
-            btnXemChiTietDonOnline.Size = new Size(120, 32);
-            btnXemChiTietDonOnline.Location = new Point(435, 12);
+            btnXemChiTietDonOnline.Size = new Size(120, 34);
             btnXemChiTietDonOnline.Click += (_, _) => ShowOnlineOrderDetails();
-            panel.Controls.Add(btnXemChiTietDonOnline);
+            toolbar.Controls.Add(btnXemChiTietDonOnline);
 
-            cmbTrangThaiGiao.Location = new Point(570, 12);
-            cmbTrangThaiGiao.Size = new Size(130, 32);
+            cmbTrangThaiGiao.Size = new Size(140, 34);
             cmbTrangThaiGiao.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTrangThaiGiao.Items.AddRange(new object[] { "ChoLayHang", "DangGiao", "DaGiao", "DaNhan", "HoanTat" });
             cmbTrangThaiGiao.SelectedIndex = 0;
-            panel.Controls.Add(cmbTrangThaiGiao);
+            toolbar.Controls.Add(cmbTrangThaiGiao);
             btnCapNhatTrangThaiGiao.Text = "Cập nhật giao hàng";
-            btnCapNhatTrangThaiGiao.Size = new Size(160, 32);
-            btnCapNhatTrangThaiGiao.Location = new Point(710, 12);
+            btnCapNhatTrangThaiGiao.Size = new Size(160, 34);
             btnCapNhatTrangThaiGiao.Click += async (_, _) => await UpdateSelectedOnlineDeliveryStatusAsync();
-            panel.Controls.Add(btnCapNhatTrangThaiGiao);
+            toolbar.Controls.Add(btnCapNhatTrangThaiGiao);
+            panel.Controls.Add(toolbar, 0, 0);
 
-            dgvDonOnline.Location = new Point(12, 55);
-            dgvDonOnline.Size = new Size(930, 500);
-            dgvDonOnline.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvDonOnline.Dock = DockStyle.Fill;
             dgvDonOnline.ReadOnly = true;
             dgvDonOnline.AutoGenerateColumns = false;
             dgvDonOnline.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDonOnline.SelectionChanged += (_, _) => UpdateOnlineOrderActionState();
-            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.MaDonHang), HeaderText = "Mã đơn", Width = 70 });
-            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.LoaiDon), HeaderText = "Loại nhận", Width = 140 });
-            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TenNguoiNhan), HeaderText = "Người nhận", Width = 160 });
-            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.SDTNguoiNhan), HeaderText = "Số điện thoại", Width = 120 });
-            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TrangThaiDon), HeaderText = "Trạng thái", Width = 120 });
-            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TrangThaiGiao), HeaderText = "Giao hàng", Width = 120 });
-            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TongTien), HeaderText = "Tổng tiền", Width = 120, DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" } });
-            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.ThoiGianTao), HeaderText = "Thời gian", Width = 160, DefaultCellStyle = new DataGridViewCellStyle { Format = "g" } });
-            panel.Controls.Add(dgvDonOnline);
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.MaDonHang), HeaderText = "Mã đơn", FillWeight = 45, MinimumWidth = 55 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.LoaiDon), HeaderText = "Loại nhận", FillWeight = 90, MinimumWidth = 100 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TenNguoiNhan), HeaderText = "Người nhận", FillWeight = 100, MinimumWidth = 100 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.SDTNguoiNhan), HeaderText = "Số điện thoại", FillWeight = 90, MinimumWidth = 100 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TrangThaiDon), HeaderText = "Trạng thái đơn", FillWeight = 105, MinimumWidth = 115 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TrangThaiGiao), HeaderText = "Trạng thái giao", FillWeight = 105, MinimumWidth = 115 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TongTien), HeaderText = "Tổng tiền", FillWeight = 75, MinimumWidth = 85, DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" } });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.ThoiGianTao), HeaderText = "Thời gian", FillWeight = 95, MinimumWidth = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "g" } });
+            panel.Controls.Add(dgvDonOnline, 0, 1);
             page.Controls.Add(panel);
             tabQuanLy.Controls.Add(page);
         }
@@ -829,8 +852,8 @@ namespace Restaurant.Admin
             var grpThemNguyenLieu = new GroupBox
             {
                 Text = "Thêm nguyên liệu",
-                Location = new Point(12, 12),
-                Size = new Size(930, 78),
+                Dock = DockStyle.Top,
+                Height = 86,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
             overviewPage.Controls.Add(grpThemNguyenLieu);
@@ -863,12 +886,14 @@ namespace Restaurant.Admin
                 Text = "Tồn kho nguyên liệu",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                Location = new Point(12, 12)
+                Dock = DockStyle.Top,
+                Height = 32,
+                Padding = new Padding(0, 4, 0, 0)
             };
             overviewPage.Controls.Add(lblKho);
 
-            dgvKhoData.Location = new Point(12, 102);
-            dgvKhoData.Size = new Size(930, 190);
+            dgvKhoData.Dock = DockStyle.Top;
+            dgvKhoData.Height = 190;
             dgvKhoData.ReadOnly = true;
             dgvKhoData.AutoGenerateColumns = false;
             dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MaNguyenLieu), HeaderText = "Mã", Width = 60 });
@@ -894,12 +919,14 @@ namespace Restaurant.Admin
                 Text = "Nguyên liệu dưới mức tối thiểu",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                Location = new Point(12, 310)
+                Dock = DockStyle.Top,
+                Height = 32,
+                Padding = new Padding(0, 4, 0, 0)
             };
             overviewPage.Controls.Add(lblTonThap);
 
-            dgvKhoLowStock.Location = new Point(12, 338);
-            dgvKhoLowStock.Size = new Size(930, 175);
+            dgvKhoLowStock.Dock = DockStyle.Top;
+            dgvKhoLowStock.Height = 175;
             dgvKhoLowStock.ReadOnly = true;
             dgvKhoLowStock.AutoGenerateColumns = false;
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MaNguyenLieu), HeaderText = "Mã", Width = 60 });
@@ -1097,7 +1124,7 @@ namespace Restaurant.Admin
             {
                 Text = "Tạo tài khoản nhân viên",
                 Dock = DockStyle.Top,
-                Height = 125,
+                Height = 142,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold)
             };
 
@@ -1124,11 +1151,12 @@ namespace Restaurant.Admin
             dgvTaiKhoanNhanVien.ReadOnly = true;
             dgvTaiKhoanNhanVien.AutoGenerateColumns = false;
             dgvTaiKhoanNhanVien.AllowUserToAddRows = false;
-            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.EmployeeId), HeaderText = "Mã NV", Width = 70 });
-            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.UserName), HeaderText = "Tài khoản", Width = 150 });
-            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.FullName), HeaderText = "Họ tên", Width = 180 });
-            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.RoleName), HeaderText = "Vai trò", Width = 110 });
-            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.IsActive), HeaderText = "Hoạt động", Width = 90 });
+            dgvTaiKhoanNhanVien.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.EmployeeId), HeaderText = "Mã NV", FillWeight = 55, MinimumWidth = 65 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.UserName), HeaderText = "Tài khoản", FillWeight = 100, MinimumWidth = 110 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.FullName), HeaderText = "Họ tên", FillWeight = 135, MinimumWidth = 130 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.RoleName), HeaderText = "Vai trò", FillWeight = 90, MinimumWidth = 100 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.IsActive), HeaderText = "Hoạt động", FillWeight = 80, MinimumWidth = 90 });
             panel.Controls.Add(dgvTaiKhoanNhanVien);
             dgvTaiKhoanNhanVien.BringToFront();
             page.Controls.Add(panel);
@@ -1195,23 +1223,28 @@ namespace Restaurant.Admin
         private void InitializePaymentTab()
         {
             var page = new TabPage("Thanh toán");
-            var panel = new Panel
+            var panel = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                Padding = new Padding(12)
+                Padding = new Padding(12),
+                ColumnCount = 1,
+                RowCount = 3
             };
+            panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
 
             var lblTitle = new Label
             {
                 Text = "Tình trạng hóa đơn và trạng thái thanh toán",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                Location = new Point(12, 12)
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
             };
-            panel.Controls.Add(lblTitle);
+            panel.Controls.Add(lblTitle, 0, 0);
 
-            dgvThanhToan.Location = new Point(12, 44);
-            dgvThanhToan.Size = new Size(930, 470);
+            dgvThanhToan.Dock = DockStyle.Fill;
             dgvThanhToan.ReadOnly = true;
             dgvThanhToan.AutoGenerateColumns = false;
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { Name = "MaDonHang", DataPropertyName = "MaDonHang", HeaderText = "Mã đơn", Width = 80 });
@@ -1221,16 +1254,17 @@ namespace Restaurant.Admin
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "SoMon", HeaderText = "Số món", Width = 80 });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TongTien", HeaderText = "Tổng tiền", Width = 120, DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" } });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "HoaDon", HeaderText = "Hóa đơn", Width = 130 });
-            panel.Controls.Add(dgvThanhToan);
+            panel.Controls.Add(dgvThanhToan, 0, 1);
 
             var btnReload = new Button
             {
                 Text = "Tải lại",
                 Size = new Size(120, 32),
-                Location = new Point(822, 530)
+                Dock = DockStyle.Fill,
+                Anchor = AnchorStyles.Left
             };
             btnReload.Click += async (_, _) => await LoadPaymentAsync();
-            panel.Controls.Add(btnReload);
+            panel.Controls.Add(btnReload, 0, 2);
 
             page.Controls.Add(panel);
             tabQuanLy.Controls.Add(page);
