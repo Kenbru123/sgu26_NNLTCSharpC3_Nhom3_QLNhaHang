@@ -144,7 +144,11 @@ public sealed class AccountController : Controller
             new AuthenticationProperties
             {
                 IsPersistent = false,
-                AllowRefresh = true
+                AllowRefresh = false,
+                ExpiresUtc = new DateTimeOffset(
+                    DateTime.SpecifyKind(
+                        authResponse.ExpiresAtUtc,
+                        DateTimeKind.Utc))
             });
 
         return RedirectToLocal(returnUrl);

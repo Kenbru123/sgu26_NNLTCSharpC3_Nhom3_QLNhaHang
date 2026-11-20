@@ -4,10 +4,11 @@
 	var returnUrl = ViewData["ReturnUrl"] as string;
 }
 
-<div class="row justify-content-center">
-	<div class="col-md-5 col-lg-4">
-		<div class="card shadow-sm mt-4">
+<div class="auth-page row justify-content-center">
+	<div class="col-md-7 col-lg-5">
+		<div class="card auth-card mt-3">
 			<div class="card-body p-4">
+				<p class="eyebrow text-center mb-2"><span></span> CHÀO MỪNG TRỞ LẠI</p>
 				<h1 class="h3 text-center mb-4">Đăng nhập</h1>
 					@if (TempData["SuccessMessage"] is string successMessage)
 					{
@@ -30,7 +31,7 @@
 						<span asp-validation-for="Password" class="text-danger"></span>
 					</div>
 
-					<button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+					<button type="submit" class="btn btn-gold w-100">Đăng nhập</button>
 				</form>
 
 					<div class="text-center mt-3">

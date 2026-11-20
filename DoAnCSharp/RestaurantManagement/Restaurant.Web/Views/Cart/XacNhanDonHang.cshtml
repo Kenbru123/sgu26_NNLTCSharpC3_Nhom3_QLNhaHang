@@ -4,12 +4,13 @@
     ViewData["Title"] = "Đặt món thành công";
 }
 
-<div class="text-center py-5">
-    <div class="display-5 text-success mb-3">Đặt món thành công</div>
+<div class="order-success-card text-center py-5 px-3">
+    <p class="eyebrow justify-content-center"><span></span> BẾP VIỆT <span></span></p>
+    <div class="display-5 mb-3">Đặt món thành công</div>
     <p class="lead">Mã đơn hàng của bạn: <strong>#@Model.MaDonHang</strong></p>
     <p>Trạng thái: @Model.TrangThaiDon</p>
     <p>Cách nhận: @(Model.LoaiDon == "OnlineGiaoHang" ? "Giao hàng" : "Nhận tại quầy")</p>
     <p class="fs-5">Tổng tiền: <strong>@Model.TongTien.ToString("N0") đ</strong></p>
     <p class="text-secondary">Nhân viên sẽ xác nhận đơn hàng. Thanh toán chưa được thực hiện trên website.</p>
-    <a asp-controller="Menu" asp-action="Index" class="btn btn-success">Tiếp tục xem thực đơn</a>
+    <a asp-controller="Menu" asp-action="Index" class="btn btn-gold px-4">Tiếp tục xem thực đơn</a>
 </div>

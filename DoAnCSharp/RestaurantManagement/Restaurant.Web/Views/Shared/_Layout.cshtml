@@ -3,82 +3,101 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Restaurant.Web</title>
+    <meta name="theme-color" content="#111110" />
+    <title>@ViewData["Title"] - Bếp Việt</title>
     <script type="importmap"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Restaurant.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Nhà hàng</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg site-navbar">
+            <div class="container">
+                <a class="navbar-brand site-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span>Bếp</span><span class="site-brand-accent">Việt</span>
+                    <small>HƯƠNG VỊ TỪ TÂM</small>
+                </a>
+                <button class="navbar-toggler site-nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#siteNavigation" aria-controls="siteNavigation"
+                        aria-expanded="false" aria-label="Mở menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse" id="siteNavigation">
+                    <ul class="navbar-nav site-nav-links mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Menu" asp-action="Index">Thực đơn</a>
+                            <a class="nav-link" asp-controller="Menu" asp-action="Index">Thực đơn</a>
                         </li>
                         @if (User.Identity?.IsAuthenticated == true && User.FindFirst("customerId") is not null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="DatBan" asp-action="Index">Đặt bàn</a>
+                                <a class="nav-link" asp-controller="DatBan" asp-action="Index">Đặt bàn</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Cart" asp-action="Index">Giỏ hàng</a>
+                            <a class="nav-link" asp-controller="Cart" asp-action="Index">Giỏ hàng</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Cart" asp-action="Lookup">Tra cứu đơn</a>
+                            <a class="nav-link" asp-controller="Cart" asp-action="Lookup">Tra cứu đơn</a>
                         </li>
                         @if (User.Identity?.IsAuthenticated == true && User.FindFirst("customerId") is not null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Cart" asp-action="History">Đơn đã đặt</a>
+                                <a class="nav-link" asp-controller="Cart" asp-action="History">Đơn đã đặt</a>
                             </li>
                         }
                     </ul>
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav site-account-links align-items-lg-center">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <li class="nav-item d-flex align-items-center me-3">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Profile">
-                                    @User.Identity.Name (@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value)
+                            <li class="nav-item account-menu">
+                                <a class="account-trigger" asp-controller="Account" asp-action="Profile" aria-label="Tài khoản @User.Identity.Name" aria-haspopup="true">
+                                    <span class="account-avatar" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" focusable="false">
+                                            <path d="M12 12a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5Zm0 2c-4.1 0-7.5 2.1-7.5 4.7V21h15v-2.3c0-2.6-3.4-4.7-7.5-4.7Z" />
+                                        </svg>
+                                    </span>
+                                    <span class="account-name">@User.Identity.Name</span>
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <form asp-controller="Account" asp-action="Logout" method="post">
-                                    <button type="submit" class="nav-link btn btn-link text-dark">Đăng xuất</button>
-                                </form>
+                                <div class="account-dropdown">
+                                    <a asp-controller="Account" asp-action="Profile">Thông tin khách hàng</a>
+                                    <a asp-controller="Account" asp-action="ChangePassword">Đổi mật khẩu</a>
+                                    <form asp-controller="Account" asp-action="Logout" method="post">
+                                        <button type="submit">Đăng xuất</button>
+                                    </form>
+                                </div>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Đăng nhập</a>
                             </li>
                         }
+                        <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                            <a class="btn btn-gold btn-sm px-4" asp-controller="Menu" asp-action="Index">Đặt món ngay</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
+    <main role="main" class="site-content">
         <div class="container">
-            &copy; 2026 - Restaurant.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <a class="site-footer-brand" asp-controller="Home" asp-action="Index"><span>Bếp</span><span class="site-brand-accent">Việt</span></a>
+            <p class="mb-0">Món ngon được nấu bằng sự tận tâm, gửi trọn đến bàn ăn của bạn.</p>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Chính sách riêng tư</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
