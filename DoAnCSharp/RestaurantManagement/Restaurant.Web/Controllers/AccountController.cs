@@ -1,8 +1,11 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.Application.DTOs;
 using Restaurant.Application.DTOs.Auth;
+using AuthLoginRequest = Restaurant.Application.DTOs.Auth.LoginRequest;
 using Restaurant.Web.Models;
 using Restaurant.Web.Services;
 
@@ -11,10 +14,14 @@ namespace Restaurant.Web.Controllers;
 public sealed class AccountController : Controller
 {
     private readonly IAuthApiService _authApiService;
+    private readonly ICustomerAccountApiService _customerAccountApiService;
 
-    public AccountController(IAuthApiService authApiService)
+    public AccountController(
+        IAuthApiService authApiService,
+        ICustomerAccountApiService customerAccountApiService)
     {
         _authApiService = authApiService;
+        _customerAccountApiService = customerAccountApiService;
     }
 
     [HttpGet]
@@ -92,7 +99,7 @@ public sealed class AccountController : Controller
 
         // Gọi API để kiểm tra username và password.
         var result = await _authApiService.LoginAsync(
-            new LoginRequest
+            new AuthLoginRequest
             {
                 UserName = model.UserName,
                 Password = model.Password
@@ -109,10 +116,10 @@ public sealed class AccountController : Controller
         var authResponse = result.Response;
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, authResponse.UserName),
-            new(ClaimTypes.Role, authResponse.Role),
-            new("accountId", authResponse.AccountId.ToString()),
-            new("access_token", authResponse.AccessToken)
+            new Claim(ClaimTypes.Name, authResponse.UserName),
+            new Claim(ClaimTypes.Role, authResponse.Role),
+            new Claim("accountId", authResponse.AccountId.ToString()),
+            new Claim("access_token", authResponse.AccessToken)
         };
 
         if (authResponse.CustomerId.HasValue)
@@ -137,10 +144,112 @@ public sealed class AccountController : Controller
             new AuthenticationProperties
             {
                 IsPersistent = false,
-                AllowRefresh = true
+                AllowRefresh = false,
+                ExpiresUtc = new DateTimeOffset(
+                    DateTime.SpecifyKind(
+                        authResponse.ExpiresAtUtc,
+                        DateTimeKind.Utc))
             });
 
         return RedirectToLocal(returnUrl);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Profile(CancellationToken cancellationToken)
+    {
+        try
+        {
+            var profile = await _customerAccountApiService.GetProfileAsync(cancellationToken);
+            if (TempData.TryGetValue("AccountSuccess", out var successMessage))
+            {
+                ViewData["SuccessMessage"] = successMessage;
+            }
+
+            return View(new CustomerProfileViewModel
+            {
+                CustomerId = profile.CustomerId,
+                UserName = profile.UserName,
+                HoTen = profile.HoTen,
+                SDT = profile.SDT,
+                Email = profile.Email
+            });
+        }
+        catch (HttpRequestException exception)
+        {
+            ModelState.AddModelError(string.Empty, exception.Message);
+            return View(new CustomerProfileViewModel());
+        }
+    }
+
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateProfile(
+        CustomerProfileViewModel model,
+        CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View("Profile", model);
+        }
+
+        try
+        {
+            await _customerAccountApiService.UpdateProfileAsync(
+                new UpdateCustomerProfileRequest
+                {
+                    HoTen = model.HoTen,
+                    SDT = model.SDT,
+                    Email = model.Email
+                },
+                cancellationToken);
+            TempData["AccountSuccess"] = "Đã cập nhật thông tin tài khoản.";
+            return RedirectToAction(nameof(Profile));
+        }
+        catch (HttpRequestException exception)
+        {
+            ModelState.AddModelError(string.Empty, exception.Message);
+            return View("Profile", model);
+        }
+    }
+
+    [HttpGet]
+    [Authorize]
+    public IActionResult ChangePassword()
+    {
+        return View(new ChangePasswordViewModel());
+    }
+
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePassword(
+        ChangePasswordViewModel model,
+        CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        try
+        {
+            await _customerAccountApiService.ChangePasswordAsync(
+                new ChangeCustomerPasswordRequest
+                {
+                    MatKhauHienTai = model.MatKhauHienTai,
+                    MatKhauMoi = model.MatKhauMoi
+                },
+                cancellationToken);
+            TempData["AccountSuccess"] = "Đã đổi mật khẩu thành công.";
+            return RedirectToAction(nameof(Profile));
+        }
+        catch (HttpRequestException exception)
+        {
+            ModelState.AddModelError(string.Empty, exception.Message);
+            return View(model);
+        }
     }
 
     [HttpPost]

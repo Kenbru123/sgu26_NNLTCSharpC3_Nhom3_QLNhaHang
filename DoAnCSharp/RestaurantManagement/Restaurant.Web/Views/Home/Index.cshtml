@@ -4,40 +4,66 @@
     ViewData["Title"] = "Trang chủ";
 }
 
-<section class="p-5 mb-5 rounded-4 text-white" style="background: linear-gradient(120deg, #173b2b, #477353);">
-    <div class="row align-items-center">
-        <div class="col-lg-8">
-            <p class="text-uppercase fw-semibold mb-2">Nhà hàng của bạn</p>
-            <h1 class="display-4 fw-bold">Món ngon, đặt thật dễ.</h1>
-            <p class="lead">Khám phá thực đơn, đặt giao tận nơi hoặc chọn nhận món tại quầy.</p>
-            <a class="btn btn-warning btn-lg mt-2" asp-controller="Menu" asp-action="Index">Khám phá thực đơn</a>
+<section class="home-hero mb-5">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-7 home-hero-copy">
+            <p class="eyebrow"><span></span> MÓN NGON MỖI NGÀY</p>
+            <h1>Trọn vị món ngon,<br /><span>ấm lòng bữa Việt.</span></h1>
+            <p class="home-hero-description">Từ nguyên liệu tươi ngon đến từng món ăn chỉn chu, chúng tôi mang hương vị thân quen đến ngay bàn ăn của bạn.</p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a class="btn btn-gold btn-lg px-4" asp-controller="Menu" asp-action="Index">Đặt món ngay</a>
+                <a class="btn btn-outline-gold btn-lg px-4" asp-controller="Menu" asp-action="Index">Khám phá thực đơn</a>
+            </div>
+            <div class="hero-footnote"><span class="hero-footnote-mark">✦</span> Nấu tươi mỗi ngày · Phục vụ tận tâm</div>
+        </div>
+        <div class="col-lg-5">
+            <div class="home-hero-visual" aria-label="Một số món ăn nổi bật">
+                <div class="hero-glow"></div>
+                <div class="hero-food hero-food-main"><img src="~/images/foods/ga-ran.jpg" alt="Gà rán vàng giòn" /></div>
+                <div class="hero-food hero-food-top"><img src="~/images/foods/lau-thai.jpg" alt="Lẩu Thái nóng hổi" /></div>
+                <div class="hero-food hero-food-bottom"><img src="~/images/foods/com-ga-xoi-mo.jpg" alt="Cơm gà xối mỡ" /></div>
+                <div class="hero-food hero-food-side"><img src="~/images/foods/bo-luc-lac.jpg" alt="Bò lúc lắc" /></div>
+                <div class="hero-visual-caption"><span>HƯƠNG VỊ NHÀ LÀM</span><strong>Ngon từ điều giản dị</strong></div>
+            </div>
         </div>
     </div>
 </section>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Món được yêu thích</h2>
-    <a asp-controller="Menu" asp-action="Index">Xem toàn bộ thực đơn</a>
-</div>
-<div class="row g-4">
+<section class="featured-section">
+    <div class="section-heading d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+        <div>
+            <p class="eyebrow mb-2"><span></span> ĐƯỢC YÊU THÍCH</p>
+            <h2 class="mb-0">Món ngon nổi bật</h2>
+        </div>
+        <a class="section-link" asp-controller="Menu" asp-action="Index">Xem toàn bộ thực đơn <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="row g-4">
     @foreach (var food in Model)
     {
         <div class="col-sm-6 col-lg-4">
-            <div class="card h-100 shadow-sm">
+            <article class="card food-card h-100">
                 @if (!string.IsNullOrWhiteSpace(food.HinhAnh))
                 {
-                    <img src="@food.HinhAnh" class="card-img-top" alt="@food.TenMon" style="height: 190px; object-fit: cover;" />
+                    <a class="food-card-image" asp-controller="Menu" asp-action="Details" asp-route-id="@food.MaMon">
+                        <img src="@food.HinhAnh" alt="@food.TenMon" loading="lazy" />
+                        <span class="food-image-arrow" aria-hidden="true">↗</span>
+                    </a>
+                }
+                else
+                {
+                    <div class="food-card-image food-image-placeholder"><span>Bếp Việt</span></div>
                 }
                 <div class="card-body d-flex flex-column">
-                    <div class="text-secondary small">@food.TenDanhMuc</div>
-                    <h5 class="card-title mt-1">@food.TenMon</h5>
-                    <p class="card-text text-secondary flex-grow-1">@food.MoTa</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <strong>@food.DonGia.ToString("N0") đ</strong>
-                        <a class="btn btn-outline-success" asp-controller="Menu" asp-action="Details" asp-route-id="@food.MaMon">Chi tiết</a>
+                    <span class="food-category">@food.TenDanhMuc</span>
+                    <h3 class="food-card-title">@food.TenMon</h3>
+                    <p class="food-card-description flex-grow-1">@food.MoTa</p>
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <strong class="food-price">@food.DonGia.ToString("N0") đ</strong>
+                        <a class="btn btn-outline-gold btn-sm px-3" asp-controller="Menu" asp-action="Details" asp-route-id="@food.MaMon">Chi tiết</a>
                     </div>
                 </div>
-            </div>
+            </article>
         </div>
     }
-</div>
+    </div>
+</section>

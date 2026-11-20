@@ -7,4 +7,11 @@ public interface IOnlineOrderApiService
     Task<OnlineOrderResponse> CreateAsync(
         CreateOnlineOrderRequest request,
         CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<OnlineOrderResponse>> GetMyOrdersAsync(
+        CancellationToken cancellationToken);
+
+    Task<IReadOnlyList<OnlineOrderResponse>?> LookupAsync(
+        GuestOrderLookupRequest request,
+        CancellationToken cancellationToken);
 }

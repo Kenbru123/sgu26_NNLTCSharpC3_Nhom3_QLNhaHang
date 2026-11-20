@@ -4,9 +4,14 @@
     ViewData["Title"] = "Thông tin nhận hàng";
 }
 
-<h1 class="mb-4">Xác nhận đặt món</h1>
+<div class="checkout-page">
+<div class="page-heading mb-4">
+    <p class="eyebrow mb-2"><span></span> HOÀN TẤT ĐƠN HÀNG</p>
+    <h1 class="display-5 mb-2">Thông tin nhận món</h1>
+    <p class="text-secondary mb-0">Cho chúng tôi biết cách bạn muốn nhận món ăn.</p>
+</div>
 <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-<form asp-action="Checkout" method="post" class="row g-3">
+<form asp-action="Checkout" method="post" class="checkout-card row g-3">
     <div class="col-12">
         <label asp-for="LoaiDon" class="form-label">Cách nhận món</label>
         <select asp-for="LoaiDon" class="form-select" id="orderType">
@@ -36,10 +41,11 @@
         <span asp-validation-for="GhiChu" class="text-danger"></span>
     </div>
     <div class="col-12 d-flex gap-2">
-        <a asp-action="Index" class="btn btn-outline-secondary">Quay lại giỏ hàng</a>
-        <button type="submit" class="btn btn-success">Xác nhận đặt món</button>
+        <a asp-action="Index" class="btn btn-outline-gold">Quay lại giỏ hàng</a>
+        <button type="submit" class="btn btn-gold">Xác nhận đặt món</button>
     </div>
 </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

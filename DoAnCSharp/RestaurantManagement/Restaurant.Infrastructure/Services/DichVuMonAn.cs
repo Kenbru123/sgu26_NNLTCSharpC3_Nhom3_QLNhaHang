@@ -71,6 +71,39 @@ public sealed class FoodService : IFoodService
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<FoodCategoryResponse> CreateCategoryAsync(
+        CreateFoodCategoryRequest request,
+        CancellationToken cancellationToken)
+    {
+        var name = request.TenDanhMuc.Trim();
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Tên danh mục không được để trống.");
+        }
+
+        var exists = await _context.DanhMucMons.AnyAsync(
+            category => category.TenDanhMuc == name,
+            cancellationToken);
+        if (exists)
+        {
+            throw new ArgumentException("Tên danh mục đã tồn tại.");
+        }
+
+        var category = new DanhMucMon
+        {
+            TenDanhMuc = name,
+            MoTa = string.IsNullOrWhiteSpace(request.MoTa)
+                ? null
+                : request.MoTa.Trim(),
+            TrangThai = true
+        };
+
+        _context.DanhMucMons.Add(category);
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return new FoodCategoryResponse(category.MaDanhMuc, category.TenDanhMuc);
+    }
+
     public async Task<FoodResponse?> GetByIdAsync(
         int id,
         bool includeInactive,

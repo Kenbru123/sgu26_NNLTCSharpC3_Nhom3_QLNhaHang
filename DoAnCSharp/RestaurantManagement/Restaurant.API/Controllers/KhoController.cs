@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Restaurant.API.Authentication;
 using Restaurant.Application.DTOs;
 using Restaurant.Application.Interfaces;
@@ -99,7 +100,15 @@ public sealed class KhoController : ControllerBase
     {
         try
         {
-            var receipt = await _inventoryService.CreatePurchaseReceiptAsync(request, cancellationToken);
+            var employeeClaim = User.FindFirstValue("employeeId");
+            if (!int.TryParse(employeeClaim, out var employeeId) || employeeId <= 0)
+            {
+                return BadRequest(new ProblemDetails { Title = "Tài khoản hiện tại chưa được liên kết với nhân viên." });
+            }
+
+            var receipt = await _inventoryService.CreatePurchaseReceiptAsync(
+                request with { MaNhanVien = employeeId },
+                cancellationToken);
             return Ok(receipt);
         }
         catch (ArgumentException exception)

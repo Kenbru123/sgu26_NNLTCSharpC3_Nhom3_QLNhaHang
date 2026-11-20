@@ -16,6 +16,16 @@ public sealed record FoodResponse(
 /// <summary>Thông tin danh mục món ăn đang được sử dụng.</summary>
 public sealed record FoodCategoryResponse(int MaDanhMuc, string TenDanhMuc);
 
+/// <summary>Dữ liệu tạo danh mục món ăn mới.</summary>
+public sealed record CreateFoodCategoryRequest
+{
+    [Required, StringLength(100, MinimumLength = 1)]
+    public required string TenDanhMuc { get; init; }
+
+    [StringLength(500)]
+    public string? MoTa { get; init; }
+}
+
 /// <summary>Dữ liệu tạo món ăn mới.</summary>
 public sealed record CreateFoodRequest
 {
@@ -63,6 +73,12 @@ public sealed record OnlineOrderItemRequest(
     [param: Range(1, int.MaxValue)] int MaMon,
     [param: Range(1, 99)] int SoLuong);
 
+public sealed record GuestOrderLookupRequest
+{
+    [Required, Phone, StringLength(20, MinimumLength = 7)]
+    public required string SDTNguoiNhan { get; init; }
+}
+
 /// <summary>Thông tin khách hàng gửi khi đặt món online.</summary>
 public sealed record CreateOnlineOrderRequest
 {
@@ -82,6 +98,8 @@ public sealed record CreateOnlineOrderRequest
     [StringLength(500)]
     public string? GhiChu { get; init; }
 
+    public int? MaKhachHang { get; init; }
+
     [Required, MinLength(1), MaxLength(50)]
     public required IReadOnlyList<OnlineOrderItemRequest> MonAn { get; init; }
 }
@@ -99,6 +117,7 @@ public sealed record OnlineOrderResponse(
     int MaDonHang,
     string LoaiDon,
     string TrangThaiDon,
+    string? TrangThaiGiao,
     string TenNguoiNhan,
     string SDTNguoiNhan,
     string? DiaChiGiao,

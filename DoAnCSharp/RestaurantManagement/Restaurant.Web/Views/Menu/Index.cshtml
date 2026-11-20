@@ -4,12 +4,13 @@
     ViewData["Title"] = "Thực đơn";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="page-heading d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
     <div>
-        <h1 class="mb-1">Thực đơn</h1>
-        <p class="text-secondary mb-0">Chọn món yêu thích và đặt hàng trực tuyến.</p>
+        <p class="eyebrow mb-2"><span></span> TỪ GIAN BẾP ĐẾN BÀN ĂN</p>
+        <h1 class="display-5 mb-2">Thực đơn <span class="heading-accent">Bếp Việt</span></h1>
+        <p class="text-secondary mb-0">Chọn món yêu thích, chúng tôi chuẩn bị thật chu đáo.</p>
     </div>
-    <a class="btn btn-outline-success" asp-controller="Cart" asp-action="Index">Xem giỏ hàng</a>
+    <a class="btn btn-outline-gold px-4" asp-controller="Cart" asp-action="Index">Xem giỏ hàng <span aria-hidden="true">→</span></a>
 </div>
 
 @if (TempData["CartError"] is string error)
@@ -21,9 +22,9 @@
     <div class="alert alert-success">@message</div>
 }
 
-<form asp-action="Index" method="get" class="row g-2 mb-4">
+<form asp-action="Index" method="get" class="menu-tools row g-2 align-items-center mb-4">
     <div class="col-md-6">
-        <input name="search" value="@Model.Search" class="form-control" placeholder="Tìm tên món hoặc mô tả..." />
+        <input name="search" value="@Model.Search" class="form-control" placeholder="Tìm món ăn yêu thích..." aria-label="Tìm tên món hoặc mô tả" />
     </div>
     <div class="col-md-4">
         <select name="categoryId" class="form-select">
@@ -37,13 +38,13 @@
         </select>
     </div>
     <div class="col-md-2 d-grid">
-        <button class="btn btn-success" type="submit">Tìm món</button>
+        <button class="btn btn-gold w-100" type="submit">Tìm món</button>
     </div>
 </form>
 
 @if (Model.Foods.Count == 0)
 {
-    <div class="alert alert-info">Không tìm thấy món ăn phù hợp.</div>
+    <div class="empty-state">Không tìm thấy món ăn phù hợp. Hãy thử từ khóa khác nhé.</div>
 }
 else
 {
@@ -51,25 +52,32 @@ else
         @foreach (var food in Model.Foods)
         {
             <div class="col-sm-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
+                <article class="card food-card h-100">
                     @if (!string.IsNullOrWhiteSpace(food.HinhAnh))
                     {
-                        <img src="@food.HinhAnh" class="card-img-top" alt="@food.TenMon" style="height: 200px; object-fit: cover;" />
+                        <a class="food-card-image" asp-action="Details" asp-route-id="@food.MaMon">
+                            <img src="@food.HinhAnh" alt="@food.TenMon" loading="lazy" />
+                            <span class="food-image-arrow" aria-hidden="true">↗</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="food-card-image food-image-placeholder"><span>Bếp Việt</span></div>
                     }
                     <div class="card-body d-flex flex-column">
-                        <div class="text-secondary small">@food.TenDanhMuc</div>
-                        <h5 class="card-title mt-1">@food.TenMon</h5>
-                        <p class="card-text text-secondary flex-grow-1">@food.MoTa</p>
+                        <span class="food-category">@food.TenDanhMuc</span>
+                        <h2 class="food-card-title">@food.TenMon</h2>
+                        <p class="food-card-description flex-grow-1">@food.MoTa</p>
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <strong class="text-success">@food.DonGia.ToString("N0") đ</strong>
-                            <a asp-action="Details" asp-route-id="@food.MaMon">Chi tiết</a>
+                            <strong class="food-price">@food.DonGia.ToString("N0") đ</strong>
+                            <a class="food-detail-link" asp-action="Details" asp-route-id="@food.MaMon">Xem chi tiết <span aria-hidden="true">→</span></a>
                         </div>
                         <form asp-controller="Cart" asp-action="Add" method="post">
                             <input type="hidden" name="foodId" value="@food.MaMon" />
-                            <button type="submit" class="btn btn-success w-100">Thêm vào giỏ</button>
+                            <button type="submit" class="btn btn-gold w-100">Thêm vào giỏ</button>
                         </form>
                     </div>
-                </div>
+                </article>
             </div>
         }
     </div>

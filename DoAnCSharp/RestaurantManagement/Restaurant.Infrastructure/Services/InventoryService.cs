@@ -305,6 +305,7 @@ public sealed class InventoryService : IInventoryService
         var receipt = new PhieuNhapKho
         {
             ThoiGianNhap = DateTime.UtcNow,
+            MaNhanVien = request.MaNhanVien ?? throw new ArgumentException("Chưa xác định được nhân viên nhập kho."),
             TrangThai = "Nhap",
             GhiChu = string.IsNullOrWhiteSpace(request.GhiChu)
                 ? null

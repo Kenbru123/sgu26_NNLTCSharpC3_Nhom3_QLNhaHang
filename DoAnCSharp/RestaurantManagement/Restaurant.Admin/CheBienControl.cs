@@ -51,8 +51,8 @@ public sealed class CheBienControl : UserControl
             RowCount = 3,
             Padding = new Padding(8)
         };
-        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
-        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 48));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
+        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 56));
         root.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
         root.Controls.Add(new Label
@@ -91,7 +91,15 @@ public sealed class CheBienControl : UserControl
         _dgvMonCho.MultiSelect = false;
         _dgvMonCho.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         _dgvMonCho.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        _dgvMonCho.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+        _dgvMonCho.RowTemplate.Height = 32;
+        _dgvMonCho.ColumnHeadersHeight = 42;
+        _dgvMonCho.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+        _dgvMonCho.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        _dgvMonCho.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+        _dgvMonCho.DefaultCellStyle.Padding = new Padding(4, 2, 4, 2);
         _dgvMonCho.RowHeadersVisible = false;
+        _dgvMonCho.AllowUserToResizeRows = false;
 
         AddTextColumn(nameof(GoiMonCheBienDto.MaDonHang), "Mã phiếu", "N0");
         AddTextColumn(nameof(GoiMonCheBienDto.TenBan), "Bàn");

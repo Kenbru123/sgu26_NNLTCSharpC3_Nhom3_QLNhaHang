@@ -1,5 +1,6 @@
 using Restaurant.Admin.Services;
 using Restaurant.Application.DTOs;
+using Restaurant.Application.DTOs.Account;
 
 namespace Restaurant.Admin
 {
@@ -9,9 +10,11 @@ namespace Restaurant.Admin
         private readonly KhuVucApiService _khuVucApiService;
         private readonly BanAnApiService _banAnApiService;
         private readonly KhoApiService _khoApiService;
+        private readonly AccountApiService _accountApiService;
         private readonly ThanhToanApiService _thanhToanApiService;
         private readonly GoiMonControl _goiMonControl;
         private readonly CheBienControl _cheBienControl;
+        private readonly DashboardControl _dashboardControl;
         private readonly DataGridView dgvBanAn = new();
         private readonly Panel pnlDanhSachBanAn = new();
         private readonly Label lblBanAnKhongCoKetQua = new();
@@ -33,15 +36,28 @@ namespace Restaurant.Admin
         private readonly TextBox txtHinhAnhMon = new();
         private readonly NumericUpDown nudDonGiaMon = new();
         private readonly ComboBox cmbDanhMucMon = new();
+        private readonly TextBox txtTenDanhMuc = new();
+        private readonly TextBox txtMoTaDanhMuc = new();
         private readonly CheckBox chkMonDangBan = new();
         private readonly Button btnThemMon = new();
         private readonly Button btnSuaMon = new();
         private readonly Button btnXoaMon = new();
         private readonly Button btnLamMoiMon = new();
+        private readonly Button btnThemDanhMuc = new();
         private readonly DataGridView dgvKhoData = new();
         private readonly DataGridView dgvKhoLowStock = new();
         private readonly DataGridView dgvKhoPhieu = new();
+        private readonly TextBox txtKhoTenNguyenLieu = new();
+        private readonly TextBox txtKhoDonViTinh = new();
+        private readonly NumericUpDown nudKhoMucTonToiThieu = new();
+        private readonly Button btnKhoThemNguyenLieu = new();
         private readonly DataGridView dgvThanhToan = new();
+        private readonly DataGridView dgvDonOnline = new();
+        private readonly OnlineOrderApiService _onlineOrderApiService = new();
+        private readonly Button btnTaiLaiDonOnline = new();
+        private readonly Button btnXacNhanDonOnline = new();
+        private readonly Button btnHuyDonOnline = new();
+        private readonly Button btnXemChiTietDonOnline = new();
         private readonly TextBox txtKhoMaNguyenLieuNhap = new();
         private readonly NumericUpDown nudKhoSoLuongNhap = new();
         private readonly NumericUpDown nudKhoDonGiaNhap = new();
@@ -61,6 +77,24 @@ namespace Restaurant.Admin
         private readonly Button btnKhoHuyNhap = new();
         private readonly Button btnKhoXacNhanXuat = new();
         private readonly Button btnKhoHuyXuat = new();
+        private readonly Button btnDangXuat = new();
+        private readonly DatBanApiService _datBanApiService;
+        private readonly DataGridView dgvDatBan = new();
+        private readonly ComboBox cmbLocTrangThaiDatBan = new();
+        private readonly Button btnTaiLaiDatBan = new();
+        private readonly Button btnXacNhanDatBan = new();
+        private readonly Button btnHuyDatBan = new();
+        private readonly Button btnDaDenDatBan = new();
+        private readonly Button btnHoanTatDatBan = new();
+        private readonly Button btnKhongDenDatBan = new();
+        private readonly DataGridView dgvTaiKhoanNhanVien = new();
+        private readonly TextBox txtTaiKhoanUsername = new();
+        private readonly TextBox txtTaiKhoanPassword = new();
+        private readonly TextBox txtTaiKhoanHoTen = new();
+        private readonly TextBox txtTaiKhoanSoDienThoai = new();
+        private readonly DateTimePicker dtpTaiKhoanNgaySinh = new();
+        private readonly ComboBox cmbTaiKhoanVaiTro = new();
+        private readonly Button btnTaiKhoanThem = new();
         private bool _loadingBanAn;
         private bool _loadingBanFilters;
 
@@ -68,18 +102,39 @@ namespace Restaurant.Admin
         {
             InitializeComponent();
 
+            btnDangXuat.Text = "Đăng xuất";
+            btnDangXuat.Size = new Size(120, 34);
+            btnDangXuat.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnDangXuat.Location = new Point(ClientSize.Width - btnDangXuat.Width - 16, 8);
+            btnDangXuat.Click += btnDangXuat_Click;
+            Controls.Add(btnDangXuat);
+            tabQuanLy.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabQuanLy.Location = new Point(8, 48);
+            tabQuanLy.Size = new Size(ClientSize.Width - 16, ClientSize.Height - 56);
+            Resize += (_, _) =>
+            {
+                btnDangXuat.Location = new Point(ClientSize.Width - btnDangXuat.Width - 16, 8);
+                tabQuanLy.Size = new Size(ClientSize.Width - 16, ClientSize.Height - 56);
+            };
+            btnDangXuat.BringToFront();
+
             _monAnApiService = new MonAnApiService();
             _khuVucApiService = new KhuVucApiService();
             _banAnApiService = new BanAnApiService();
             _khoApiService = new KhoApiService();
+            _accountApiService = new AccountApiService();
             _thanhToanApiService = new ThanhToanApiService();
+            _datBanApiService = new DatBanApiService();
             _goiMonControl = new GoiMonControl();
             _cheBienControl = new CheBienControl();
+            _dashboardControl = new DashboardControl();
             InitializeMonAnTab();
             InitializeKhoTab();
             InitializePaymentTab();
+            InitializeOnlineOrdersTab();
             ConfigureKhuVucGrid();
             InitializeBanAnTab();
+            InitializeDatBanTab();
             var tabGoiMon = new TabPage("Gọi món")
             {
                 Padding = new Padding(8)
@@ -93,17 +148,529 @@ namespace Restaurant.Admin
             tabCheBien.Controls.Add(_cheBienControl);
             tabQuanLy.Controls.Add(tabCheBien);
             btnThemKhuVuc.Enabled = ApiSession.IsManager;
+            InitializeAccountTab();
+            InitializeDashboardTab();
+            ConfigureReadableLayout();
+        }
+
+        private void InitializeDashboardTab()
+        {
+            var page = new TabPage("Dashboard")
+            {
+                Padding = new Padding(8)
+            };
+            page.Controls.Add(_dashboardControl);
+            tabQuanLy.TabPages.Insert(0, page);
+            tabQuanLy.SelectedIndex = 0;
+        }
+
+        private void ConfigureReadableLayout()
+        {
+            Font = new Font("Segoe UI", 10F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            FormBorderStyle = FormBorderStyle.Sizable;
+            MaximizeBox = true;
+
+            tabQuanLy.Multiline = false;
+            tabQuanLy.SizeMode = TabSizeMode.Fixed;
+            tabQuanLy.ItemSize = new Size(132, 36);
+            tabQuanLy.Padding = new Point(8, 4);
+
+            foreach (var control in GetAllControls(this))
+            {
+                control.Font = new Font("Segoe UI", 10F);
+
+                if (control is Button button)
+                {
+                    button.MinimumSize = new Size(0, 34);
+                    button.Padding = new Padding(10, 5, 10, 5);
+                    button.AutoSize = true;
+                    button.AutoSizeMode = AutoSizeMode.GrowOnly;
+                }
+                else if (control is TextBox textBox)
+                {
+                    textBox.MinimumSize = new Size(0, 30);
+                }
+                else if (control is ComboBox comboBox)
+                {
+                    comboBox.MinimumSize = new Size(0, 30);
+                    comboBox.Margin = new Padding(4, 3, 4, 3);
+                }
+                else if (control is NumericUpDown numericUpDown)
+                {
+                    numericUpDown.MinimumSize = new Size(0, 30);
+                    numericUpDown.Margin = new Padding(4, 3, 4, 3);
+                }
+                else if (control is DataGridView grid)
+                {
+                    grid.BackgroundColor = SystemColors.Window;
+                    grid.BorderStyle = BorderStyle.FixedSingle;
+                    grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+                    grid.RowTemplate.Height = 32;
+                    grid.ColumnHeadersHeight = 42;
+                    grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+                    grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+                    grid.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    grid.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+                    grid.DefaultCellStyle.Padding = new Padding(4, 2, 4, 2);
+                    grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+                    grid.RowTemplate.Height = 32;
+                    grid.ColumnHeadersHeight = 42;
+                    grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+                    grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    grid.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    grid.DefaultCellStyle.Padding = new Padding(4, 2, 4, 2);
+                    grid.RowHeadersVisible = false;
+                    grid.AllowUserToResizeRows = false;
+                }
+                else if (control is GroupBox groupBox)
+                {
+                    groupBox.Padding = new Padding(10, 24, 10, 10);
+                }
+            }
+        }
+
+        private static IEnumerable<Control> GetAllControls(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                yield return control;
+
+                foreach (var child in GetAllControls(control))
+                {
+                    yield return child;
+                }
+            }
+        }
+
+        private void InitializeOnlineOrdersTab()
+        {
+            if (!ApiSession.IsManager)
+            {
+                return;
+            }
+
+            var page = new TabPage("Đơn online") { Padding = new Padding(12) };
+            var panel = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 2,
+                Padding = new Padding(0)
+            };
+            panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 46));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            var toolbar = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                WrapContents = false,
+                AutoScroll = true,
+                Padding = new Padding(0, 4, 0, 4)
+            };
+            btnTaiLaiDonOnline.Text = "Tải lại đơn online";
+            btnTaiLaiDonOnline.Size = new Size(150, 34);
+            btnTaiLaiDonOnline.Click += async (_, _) => await LoadOnlineOrdersAsync();
+            toolbar.Controls.Add(btnTaiLaiDonOnline);
+            btnXacNhanDonOnline.Text = "Xác nhận đơn";
+            btnXacNhanDonOnline.Size = new Size(130, 34);
+            btnXacNhanDonOnline.Click += async (_, _) => await UpdateOnlineOrderStatusAsync("DangPhucVu");
+            toolbar.Controls.Add(btnXacNhanDonOnline);
+            btnHuyDonOnline.Text = "Hủy đơn";
+            btnHuyDonOnline.Size = new Size(100, 34);
+            btnHuyDonOnline.Click += async (_, _) => await UpdateOnlineOrderStatusAsync("DaHuy");
+            toolbar.Controls.Add(btnHuyDonOnline);
+            btnXemChiTietDonOnline.Text = "Xem chi tiết";
+            btnXemChiTietDonOnline.Size = new Size(120, 34);
+            btnXemChiTietDonOnline.Click += (_, _) => ShowOnlineOrderDetails();
+            toolbar.Controls.Add(btnXemChiTietDonOnline);
+
+            cmbTrangThaiGiao.Size = new Size(140, 34);
+            cmbTrangThaiGiao.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTrangThaiGiao.Items.AddRange(new object[] { "ChoLayHang", "DangGiao", "DaGiao", "DaNhan", "HoanTat" });
+            cmbTrangThaiGiao.SelectedIndex = 0;
+            toolbar.Controls.Add(cmbTrangThaiGiao);
+            btnCapNhatTrangThaiGiao.Text = "Cập nhật giao hàng";
+            btnCapNhatTrangThaiGiao.Size = new Size(160, 34);
+            btnCapNhatTrangThaiGiao.Click += async (_, _) => await UpdateSelectedOnlineDeliveryStatusAsync();
+            toolbar.Controls.Add(btnCapNhatTrangThaiGiao);
+            panel.Controls.Add(toolbar, 0, 0);
+
+            dgvDonOnline.Dock = DockStyle.Fill;
+            dgvDonOnline.ReadOnly = true;
+            dgvDonOnline.AutoGenerateColumns = false;
+            dgvDonOnline.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDonOnline.SelectionChanged += (_, _) => UpdateOnlineOrderActionState();
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.MaDonHang), HeaderText = "Mã đơn", FillWeight = 45, MinimumWidth = 55 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.LoaiDon), HeaderText = "Loại nhận", FillWeight = 90, MinimumWidth = 100 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TenNguoiNhan), HeaderText = "Người nhận", FillWeight = 100, MinimumWidth = 100 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.SDTNguoiNhan), HeaderText = "Số điện thoại", FillWeight = 90, MinimumWidth = 100 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TrangThaiDon), HeaderText = "Trạng thái đơn", FillWeight = 105, MinimumWidth = 115 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TrangThaiGiao), HeaderText = "Trạng thái giao", FillWeight = 105, MinimumWidth = 115 });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.TongTien), HeaderText = "Tổng tiền", FillWeight = 75, MinimumWidth = 85, DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" } });
+            dgvDonOnline.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(OnlineOrderResponse.ThoiGianTao), HeaderText = "Thời gian", FillWeight = 95, MinimumWidth = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "g" } });
+            panel.Controls.Add(dgvDonOnline, 0, 1);
+            page.Controls.Add(panel);
+            tabQuanLy.Controls.Add(page);
+        }
+
+        private void InitializeDatBanTab()
+        {
+            var page = new TabPage("Đặt bàn")
+            {
+                Padding = new Padding(12)
+            };
+            var filters = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                Height = 48,
+                WrapContents = false,
+                AutoScroll = true,
+                Padding = new Padding(0, 4, 0, 4)
+            };
+            filters.Controls.Add(new Label
+            {
+                Text = "Trạng thái",
+                AutoSize = true,
+                Anchor = AnchorStyles.Left,
+                Margin = new Padding(0, 8, 8, 0)
+            });
+            cmbLocTrangThaiDatBan.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbLocTrangThaiDatBan.Width = 180;
+            cmbLocTrangThaiDatBan.DataSource = new[]
+            {
+                new { Text = "Tất cả", Value = "TatCa" },
+                new { Text = "Chờ xác nhận", Value = "ChoXacNhan" },
+                new { Text = "Đã xác nhận", Value = "DaXacNhan" },
+                new { Text = "Đã đến", Value = "DaDen" },
+                new { Text = "Hoàn tất", Value = "HoanTat" },
+                new { Text = "Đã hủy", Value = "DaHuy" },
+                new { Text = "Không đến", Value = "KhongDen" }
+            };
+            cmbLocTrangThaiDatBan.DisplayMember = "Text";
+            cmbLocTrangThaiDatBan.ValueMember = "Value";
+            cmbLocTrangThaiDatBan.SelectedIndexChanged += async (_, _) =>
+                await LoadDatBanAsync();
+            filters.Controls.Add(cmbLocTrangThaiDatBan);
+
+            btnTaiLaiDatBan.Text = "Tải lại danh sách";
+            btnTaiLaiDatBan.Click += async (_, _) => await LoadDatBanAsync();
+            filters.Controls.Add(btnTaiLaiDatBan);
+
+            var actions = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                Height = 52,
+                WrapContents = false,
+                AutoScroll = true,
+                Padding = new Padding(0, 4, 0, 4)
+            };
+            btnXacNhanDatBan.Text = "Xác nhận đặt bàn";
+            btnHuyDatBan.Text = "Hủy đặt bàn";
+            btnDaDenDatBan.Text = "Khách đã đến";
+            btnHoanTatDatBan.Text = "Hoàn tất";
+            btnKhongDenDatBan.Text = "Không đến";
+            btnXacNhanDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("DaXacNhan");
+            btnHuyDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("DaHuy");
+            btnDaDenDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("DaDen");
+            btnHoanTatDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("HoanTat");
+            btnKhongDenDatBan.Click += async (_, _) => await UpdateDatBanStatusAsync("KhongDen");
+            actions.Controls.AddRange(
+            [
+                btnXacNhanDatBan,
+                btnHuyDatBan,
+                btnDaDenDatBan,
+                btnHoanTatDatBan,
+                btnKhongDenDatBan
+            ]);
+
+            dgvDatBan.Dock = DockStyle.Fill;
+            dgvDatBan.ReadOnly = true;
+            dgvDatBan.AllowUserToAddRows = false;
+            dgvDatBan.MultiSelect = false;
+            dgvDatBan.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDatBan.AutoGenerateColumns = false;
+            dgvDatBan.Columns.AddRange(
+            [
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.MaDatBan),
+                    HeaderText = "Mã đặt bàn",
+                    Width = 90
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.HoTenKhachHang),
+                    HeaderText = "Khách hàng",
+                    Width = 170
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.SoDienThoaiKhachHang),
+                    HeaderText = "Số điện thoại",
+                    Width = 130
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.TenBan),
+                    HeaderText = "Bàn",
+                    Width = 100
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.TenKhuVuc),
+                    HeaderText = "Khu vực",
+                    Width = 120
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.ThoiGianDen),
+                    HeaderText = "Thời gian đến",
+                    Width = 150,
+                    DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy HH:mm" }
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.SoLuongKhach),
+                    HeaderText = "Số khách",
+                    Width = 90
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.TrangThai),
+                    HeaderText = "Trạng thái",
+                    Width = 130
+                },
+                new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = nameof(DatBanManagementResponse.GhiChu),
+                    HeaderText = "Ghi chú",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                }
+            ]);
+            dgvDatBan.CellFormatting += (_, e) =>
+            {
+                if (e.RowIndex >= 0 &&
+                    dgvDatBan.Columns[e.ColumnIndex].DataPropertyName ==
+                    nameof(DatBanManagementResponse.TrangThai) &&
+                    e.Value is string status)
+                {
+                    e.Value = DatBanStatusLabel(status);
+                    e.FormattingApplied = true;
+                }
+            };
+            dgvDatBan.SelectionChanged += (_, _) => UpdateDatBanActionStates();
+
+            page.Controls.Add(dgvDatBan);
+            page.Controls.Add(actions);
+            page.Controls.Add(filters);
+            tabQuanLy.Controls.Add(page);
+        }
+
+        private async Task LoadDatBanAsync()
+        {
+            try
+            {
+                var status = cmbLocTrangThaiDatBan.SelectedValue?.ToString();
+                dgvDatBan.DataSource = await _datBanApiService.GetAllAsync(status);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(
+                    this,
+                    exception.Message,
+                    "Không thể tải danh sách đặt bàn",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                UpdateDatBanActionStates();
+            }
+        }
+
+        private async Task UpdateDatBanStatusAsync(string status)
+        {
+            if (dgvDatBan.CurrentRow?.DataBoundItem is not DatBanManagementResponse reservation)
+            {
+                MessageBox.Show(
+                    this,
+                    "Hãy chọn một yêu cầu đặt bàn.",
+                    "Chưa chọn đặt bàn",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _datBanApiService.UpdateStatusAsync(reservation.MaDatBan, status);
+                await LoadDatBanAsync();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(
+                    this,
+                    exception.Message,
+                    "Không thể cập nhật đặt bàn",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateDatBanActionStates()
+        {
+            var status = (dgvDatBan.CurrentRow?.DataBoundItem as DatBanManagementResponse)?.TrangThai;
+            btnXacNhanDatBan.Enabled = status == "ChoXacNhan";
+            btnHuyDatBan.Enabled = status is "ChoXacNhan" or "DaXacNhan";
+            btnDaDenDatBan.Enabled = status == "DaXacNhan";
+            btnHoanTatDatBan.Enabled = status == "DaDen";
+            btnKhongDenDatBan.Enabled = status == "DaDen";
+        }
+
+        private static string DatBanStatusLabel(string status) => status switch
+        {
+            "ChoXacNhan" => "Chờ xác nhận",
+            "DaXacNhan" => "Đã xác nhận",
+            "DaDen" => "Đã đến",
+            "HoanTat" => "Hoàn tất",
+            "DaHuy" => "Đã hủy",
+            "KhongDen" => "Không đến",
+            _ => status
+        };
+
+        private async Task UpdateSelectedOnlineDeliveryStatusAsync()
+        {
+            if (dgvDonOnline.CurrentRow?.DataBoundItem is not OnlineOrderResponse order ||
+                cmbTrangThaiGiao.SelectedItem?.ToString() is not { Length: > 0 } status)
+            {
+                MessageBox.Show("Vui lòng chọn đơn giao hàng và trạng thái.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (order.LoaiDon != "OnlineGiaoHang")
+            {
+                MessageBox.Show(
+                    "Chỉ đơn giao tận nơi mới có trạng thái giao hàng.",
+                    "Không áp dụng",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _onlineOrderApiService.UpdateDeliveryStatusAsync(order.MaDonHang, status);
+                await LoadOnlineOrdersAsync();
+                MessageBox.Show("Đã cập nhật trạng thái giao hàng.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể cập nhật giao hàng", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ShowOnlineOrderDetails()
+        {
+            if (dgvDonOnline.CurrentRow?.DataBoundItem is not OnlineOrderResponse order)
+            {
+                MessageBox.Show("Vui lòng chọn một đơn online.", "Chưa chọn đơn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var items = string.Join(Environment.NewLine, order.MonAn.Select(item =>
+                $"- {item.TenMon} x{item.SoLuong}: {item.ThanhTien:N0} đ"));
+            MessageBox.Show(
+                $"Mã đơn: {order.MaDonHang}\n" +
+                $"Người nhận: {order.TenNguoiNhan}\n" +
+                $"Số điện thoại: {order.SDTNguoiNhan}\n" +
+                $"Địa chỉ: {order.DiaChiGiao ?? "Nhận tại quầy"}\n" +
+                $"Trạng thái đơn: {order.TrangThaiDon}\n" +
+                $"Trạng thái giao: {order.TrangThaiGiao ?? "Không áp dụng"}\n" +
+                $"Tổng tiền: {order.TongTien:N0} đ\n\nMón ăn:\n{items}",
+                "Chi tiết đơn online", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private async Task UpdateOnlineOrderStatusAsync(string status)
+        {
+            if (dgvDonOnline.CurrentRow?.DataBoundItem is not OnlineOrderResponse order)
+            {
+                MessageBox.Show("Vui lòng chọn một đơn online.", "Chưa chọn đơn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _onlineOrderApiService.UpdateStatusAsync(order.MaDonHang, status);
+                await LoadOnlineOrdersAsync();
+                MessageBox.Show(status == "DangPhucVu" ? "Đã xác nhận đơn và chuyển sang chế biến." : "Đã hủy đơn online.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể cập nhật đơn online", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task LoadOnlineOrdersAsync()
+        {
+            try
+            {
+                dgvDonOnline.DataSource = await _onlineOrderApiService.GetAllAsync();
+                dgvDonOnline.ClearSelection();
+                UpdateOnlineOrderActionState();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể tải đơn online", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateOnlineOrderActionState()
+        {
+            var order = dgvDonOnline.CurrentRow?.DataBoundItem as OnlineOrderResponse;
+            var canProcess = order?.TrangThaiDon == "ChoXacNhan";
+            var canUpdateDelivery = order?.LoaiDon == "OnlineGiaoHang";
+            btnXacNhanDonOnline.Enabled = canProcess;
+            btnHuyDonOnline.Enabled = canProcess;
+            cmbTrangThaiGiao.Enabled = canUpdateDelivery;
+            btnCapNhatTrangThaiGiao.Enabled = canUpdateDelivery;
+        }
+        private void btnDangXuat_Click(object? sender, EventArgs e)
+        {
+            var result = MessageBox.Show(
+                "Bạn có chắc muốn đăng xuất không?",
+                "Đăng xuất",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            ApiSession.Clear();
+            Close();
         }
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            await _dashboardControl.LoadAsync();
             await LoadMonAnAsync();
             await LoadKhuVucAsync();
             await LoadBanAnAsync();
+            await LoadDatBanAsync();
             await LoadKhoAsync();
             await LoadPaymentAsync();
+            if (ApiSession.IsManager)
+            {
+                await LoadOnlineOrdersAsync();
+            }
             await _goiMonControl.LoadAsync();
             await _cheBienControl.LoadAsync();
+            if (ApiSession.IsManager)
+            {
+                await LoadEmployeeAccountsAsync();
+            }
         }
 
         private async void btnTaiLai_Click(object sender, EventArgs e)
@@ -202,6 +769,38 @@ namespace Restaurant.Admin
             }
         }
 
+        private async Task CreateIngredientAsync()
+        {
+            var name = txtKhoTenNguyenLieu.Text.Trim();
+            var unit = txtKhoDonViTinh.Text.Trim();
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(unit))
+            {
+                MessageBox.Show("Vui lòng nhập tên nguyên liệu và đơn vị tính.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _khoApiService.CreateIngredientAsync(new CreateNguyenLieuRequest
+                {
+                    TenNguyenLieu = name,
+                    DonViTinh = unit,
+                    MucTonToiThieu = nudKhoMucTonToiThieu.Value,
+                    TrangThai = true
+                });
+
+                txtKhoTenNguyenLieu.Clear();
+                txtKhoDonViTinh.Clear();
+                nudKhoMucTonToiThieu.Value = 0;
+                await LoadKhoAsync();
+                MessageBox.Show("Đã thêm nguyên liệu.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể thêm nguyên liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private async Task LoadPaymentAsync()
         {
             try
@@ -250,17 +849,67 @@ namespace Restaurant.Admin
                 Padding = new Padding(12)
             };
 
+            var khoTabs = new TabControl
+            {
+                Dock = DockStyle.Fill
+            };
+            var overviewPage = new TabPage("Tổng quan tồn kho")
+            {
+                Padding = new Padding(12)
+            };
+            var movementPage = new TabPage("Nhập / xuất kho")
+            {
+                Padding = new Padding(12)
+            };
+            khoTabs.TabPages.Add(overviewPage);
+            khoTabs.TabPages.Add(movementPage);
+            panel.Controls.Add(khoTabs);
+
+            var grpThemNguyenLieu = new GroupBox
+            {
+                Text = "Thêm nguyên liệu",
+                Dock = DockStyle.Top,
+                Height = 86,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+            overviewPage.Controls.Add(grpThemNguyenLieu);
+
+            grpThemNguyenLieu.Controls.Add(new Label { Text = "Tên nguyên liệu", AutoSize = true, Location = new Point(12, 30) });
+            txtKhoTenNguyenLieu.Location = new Point(115, 26);
+            txtKhoTenNguyenLieu.Size = new Size(220, 26);
+            grpThemNguyenLieu.Controls.Add(txtKhoTenNguyenLieu);
+
+            grpThemNguyenLieu.Controls.Add(new Label { Text = "ĐVT", AutoSize = true, Location = new Point(355, 30) });
+            txtKhoDonViTinh.Location = new Point(395, 26);
+            txtKhoDonViTinh.Size = new Size(90, 26);
+            grpThemNguyenLieu.Controls.Add(txtKhoDonViTinh);
+
+            grpThemNguyenLieu.Controls.Add(new Label { Text = "Tồn tối thiểu", AutoSize = true, Location = new Point(505, 30) });
+            nudKhoMucTonToiThieu.Location = new Point(595, 26);
+            nudKhoMucTonToiThieu.Size = new Size(100, 26);
+            nudKhoMucTonToiThieu.DecimalPlaces = 2;
+            nudKhoMucTonToiThieu.Maximum = 999999999;
+            grpThemNguyenLieu.Controls.Add(nudKhoMucTonToiThieu);
+
+            btnKhoThemNguyenLieu.Text = "Thêm nguyên liệu";
+            btnKhoThemNguyenLieu.Size = new Size(145, 32);
+            btnKhoThemNguyenLieu.Location = new Point(720, 24);
+            btnKhoThemNguyenLieu.Click += async (_, _) => await CreateIngredientAsync();
+            grpThemNguyenLieu.Controls.Add(btnKhoThemNguyenLieu);
+
             var lblKho = new Label
             {
                 Text = "Tồn kho nguyên liệu",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                Location = new Point(12, 12)
+                Dock = DockStyle.Top,
+                Height = 32,
+                Padding = new Padding(0, 4, 0, 0)
             };
-            panel.Controls.Add(lblKho);
+            overviewPage.Controls.Add(lblKho);
 
-            dgvKhoData.Location = new Point(12, 44);
-            dgvKhoData.Size = new Size(930, 230);
+            dgvKhoData.Dock = DockStyle.Top;
+            dgvKhoData.Height = 190;
             dgvKhoData.ReadOnly = true;
             dgvKhoData.AutoGenerateColumns = false;
             dgvKhoData.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MaNguyenLieu), HeaderText = "Mã", Width = 60 });
@@ -279,19 +928,21 @@ namespace Restaurant.Admin
                 txtKhoMaNguyenLieuNhap.Text = ingredient.MaNguyenLieu.ToString();
                 txtKhoMaNguyenLieuXuat.Text = ingredient.MaNguyenLieu.ToString();
             };
-            panel.Controls.Add(dgvKhoData);
+            overviewPage.Controls.Add(dgvKhoData);
 
             var lblTonThap = new Label
             {
                 Text = "Nguyên liệu dưới mức tối thiểu",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                Location = new Point(12, 292)
+                Dock = DockStyle.Top,
+                Height = 32,
+                Padding = new Padding(0, 4, 0, 0)
             };
-            panel.Controls.Add(lblTonThap);
+            overviewPage.Controls.Add(lblTonThap);
 
-            dgvKhoLowStock.Location = new Point(12, 320);
-            dgvKhoLowStock.Size = new Size(930, 200);
+            dgvKhoLowStock.Dock = DockStyle.Top;
+            dgvKhoLowStock.Height = 175;
             dgvKhoLowStock.ReadOnly = true;
             dgvKhoLowStock.AutoGenerateColumns = false;
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MaNguyenLieu), HeaderText = "Mã", Width = 60 });
@@ -299,145 +950,156 @@ namespace Restaurant.Admin
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.DonViTinh), HeaderText = "ĐVT", Width = 80 });
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.MucTonToiThieu), HeaderText = "Tối thiểu", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
             dgvKhoLowStock.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(NguyenLieuDto.TonKho), HeaderText = "Tồn kho", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "N2" } });
-            panel.Controls.Add(dgvKhoLowStock);
+            overviewPage.Controls.Add(dgvKhoLowStock);
 
             var grpNhapNhanh = new GroupBox
             {
                 Text = "Nhập kho nhanh",
-                Location = new Point(12, 540),
-                Size = new Size(450, 120),
-                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+                Location = new Point(12, 12),
+                Size = new Size(450, 180),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Padding = new Padding(12, 28, 12, 10)
             };
-            panel.Controls.Add(grpNhapNhanh);
+            movementPage.Controls.Add(grpNhapNhanh);
 
-            var lblKhoMaNhap = new Label { Text = "Mã NL", AutoSize = true, Location = new Point(12, 28) };
-            txtKhoMaNguyenLieuNhap.Location = new Point(90, 24);
-            txtKhoMaNguyenLieuNhap.Size = new Size(80, 26);
-            grpNhapNhanh.Controls.Add(lblKhoMaNhap);
-            grpNhapNhanh.Controls.Add(txtKhoMaNguyenLieuNhap);
+            var nhapLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 4,
+                RowCount = 3,
+                Padding = new Padding(0)
+            };
+            nhapLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 68));
+            nhapLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            nhapLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 76));
+            nhapLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            nhapLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            nhapLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            nhapLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            grpNhapNhanh.Controls.Add(nhapLayout);
 
-            var lblKhoSoLuongNhap = new Label { Text = "Số lượng", AutoSize = true, Location = new Point(180, 28) };
-            nudKhoSoLuongNhap.Location = new Point(260, 24);
-            nudKhoSoLuongNhap.Size = new Size(80, 26);
+            nhapLayout.Controls.Add(CreateWarehouseLabel("Mã NL"), 0, 0);
+            txtKhoMaNguyenLieuNhap.Dock = DockStyle.Fill;
+            nhapLayout.Controls.Add(txtKhoMaNguyenLieuNhap, 1, 0);
+            nhapLayout.Controls.Add(CreateWarehouseLabel("Số lượng"), 2, 0);
+            nudKhoSoLuongNhap.Dock = DockStyle.Fill;
             nudKhoSoLuongNhap.DecimalPlaces = 2;
             nudKhoSoLuongNhap.Minimum = 1;
             nudKhoSoLuongNhap.Maximum = 999999;
             nudKhoSoLuongNhap.Value = 1;
-            grpNhapNhanh.Controls.Add(lblKhoSoLuongNhap);
-            grpNhapNhanh.Controls.Add(nudKhoSoLuongNhap);
+            nhapLayout.Controls.Add(nudKhoSoLuongNhap, 3, 0);
 
-            var lblKhoDonGiaNhap = new Label { Text = "Đơn giá", AutoSize = true, Location = new Point(12, 64) };
-            nudKhoDonGiaNhap.Location = new Point(90, 60);
-            nudKhoDonGiaNhap.Size = new Size(120, 26);
+            nhapLayout.Controls.Add(CreateWarehouseLabel("Đơn giá"), 0, 1);
+            nudKhoDonGiaNhap.Dock = DockStyle.Fill;
             nudKhoDonGiaNhap.DecimalPlaces = 2;
             nudKhoDonGiaNhap.Minimum = 0;
             nudKhoDonGiaNhap.Maximum = 999999999;
             nudKhoDonGiaNhap.Value = 0;
-            grpNhapNhanh.Controls.Add(lblKhoDonGiaNhap);
-            grpNhapNhanh.Controls.Add(nudKhoDonGiaNhap);
-
-            var lblKhoGhiChuNhap = new Label { Text = "Ghi chú", AutoSize = true, Location = new Point(220, 64) };
-            txtKhoGhiChuNhap.Location = new Point(285, 60);
-            txtKhoGhiChuNhap.Size = new Size(150, 26);
-            grpNhapNhanh.Controls.Add(lblKhoGhiChuNhap);
-            grpNhapNhanh.Controls.Add(txtKhoGhiChuNhap);
+            nhapLayout.Controls.Add(nudKhoDonGiaNhap, 1, 1);
+            nhapLayout.Controls.Add(CreateWarehouseLabel("Ghi chú"), 2, 1);
+            txtKhoGhiChuNhap.Dock = DockStyle.Fill;
+            nhapLayout.Controls.Add(txtKhoGhiChuNhap, 3, 1);
 
             var btnKhoRefresh = new Button
             {
                 Text = "Làm mới",
-                Size = new Size(90, 32),
-                Location = new Point(305, 88)
+                AutoSize = true,
+                Anchor = AnchorStyles.Left
             };
             btnKhoRefresh.Click += async (_, _) => await LoadKhoAsync();
-            grpNhapNhanh.Controls.Add(btnKhoRefresh);
+            nhapLayout.Controls.Add(btnKhoRefresh, 2, 2);
 
             btnKhoNhapNhanh.Text = "Tạo phiếu nhập";
-            btnKhoNhapNhanh.Size = new Size(130, 32);
-            btnKhoNhapNhanh.Location = new Point(305, 48);
+            btnKhoNhapNhanh.AutoSize = true;
+            btnKhoNhapNhanh.Anchor = AnchorStyles.Left;
             btnKhoNhapNhanh.Click += async (_, _) => await CreateQuickPurchaseReceiptAsync();
-            grpNhapNhanh.Controls.Add(btnKhoNhapNhanh);
+            nhapLayout.Controls.Add(btnKhoNhapNhanh, 3, 2);
 
             var grpXuatNhanh = new GroupBox
             {
                 Text = "Xuất kho nhanh",
-                Location = new Point(474, 540),
-                Size = new Size(468, 120),
-                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+                Location = new Point(474, 12),
+                Size = new Size(468, 180),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Padding = new Padding(12, 28, 12, 10)
             };
-            panel.Controls.Add(grpXuatNhanh);
+            movementPage.Controls.Add(grpXuatNhanh);
 
-            var lblKhoMaXuat = new Label { Text = "Mã NL", AutoSize = true, Location = new Point(12, 28) };
-            txtKhoMaNguyenLieuXuat.Location = new Point(90, 24);
-            txtKhoMaNguyenLieuXuat.Size = new Size(70, 26);
-            grpXuatNhanh.Controls.Add(lblKhoMaXuat);
-            grpXuatNhanh.Controls.Add(txtKhoMaNguyenLieuXuat);
+            var xuatLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 6,
+                RowCount = 4,
+                Padding = new Padding(0)
+            };
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 58));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 64));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 42));
+            xuatLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34));
+            xuatLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            xuatLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            xuatLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 36));
+            xuatLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            grpXuatNhanh.Controls.Add(xuatLayout);
 
-            var lblKhoSoLuongXuat = new Label { Text = "Số lượng", AutoSize = true, Location = new Point(170, 28) };
-            nudKhoSoLuongXuat.Location = new Point(250, 24);
-            nudKhoSoLuongXuat.Size = new Size(80, 26);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Mã NL"), 0, 0);
+            txtKhoMaNguyenLieuXuat.Dock = DockStyle.Fill;
+            xuatLayout.Controls.Add(txtKhoMaNguyenLieuXuat, 1, 0);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Số lượng"), 2, 0);
+            nudKhoSoLuongXuat.Dock = DockStyle.Fill;
             nudKhoSoLuongXuat.DecimalPlaces = 2;
             nudKhoSoLuongXuat.Minimum = 1;
             nudKhoSoLuongXuat.Maximum = 999999;
             nudKhoSoLuongXuat.Value = 1;
-            grpXuatNhanh.Controls.Add(lblKhoSoLuongXuat);
-            grpXuatNhanh.Controls.Add(nudKhoSoLuongXuat);
-
-            var lblKhoLoaiXuat = new Label { Text = "Loại", AutoSize = true, Location = new Point(340, 28) };
-            cmbKhoLoaiXuat.Location = new Point(385, 24);
-            cmbKhoLoaiXuat.Size = new Size(70, 26);
+            xuatLayout.Controls.Add(nudKhoSoLuongXuat, 3, 0);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Loại"), 4, 0);
+            cmbKhoLoaiXuat.Dock = DockStyle.Fill;
             cmbKhoLoaiXuat.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbKhoLoaiXuat.Items.Add("CheBien");
             cmbKhoLoaiXuat.Items.Add("ThuCong");
             cmbKhoLoaiXuat.SelectedIndex = 0;
-            grpXuatNhanh.Controls.Add(lblKhoLoaiXuat);
-            grpXuatNhanh.Controls.Add(cmbKhoLoaiXuat);
+            xuatLayout.Controls.Add(cmbKhoLoaiXuat, 5, 0);
 
-            var lblKhoMaDonHang = new Label { Text = "Mã ĐH", AutoSize = true, Location = new Point(12, 64) };
-            nudKhoMaChiTietDonHang.Location = new Point(90, 60);
-            nudKhoMaChiTietDonHang.Size = new Size(70, 26);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Mã ĐH"), 0, 1);
+            nudKhoMaChiTietDonHang.Dock = DockStyle.Fill;
             nudKhoMaChiTietDonHang.Minimum = 0;
             nudKhoMaChiTietDonHang.Maximum = 999999;
             nudKhoMaChiTietDonHang.Value = 0;
-            grpXuatNhanh.Controls.Add(lblKhoMaDonHang);
-            grpXuatNhanh.Controls.Add(nudKhoMaChiTietDonHang);
-
-            var lblKhoMaNvXuat = new Label { Text = "Mã NV", AutoSize = true, Location = new Point(170, 64) };
-            nudKhoMaNhanVienXuat.Location = new Point(250, 60);
-            nudKhoMaNhanVienXuat.Size = new Size(70, 26);
+            xuatLayout.Controls.Add(nudKhoMaChiTietDonHang, 1, 1);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Mã NV"), 2, 1);
+            nudKhoMaNhanVienXuat.Dock = DockStyle.Fill;
             nudKhoMaNhanVienXuat.Minimum = 0;
             nudKhoMaNhanVienXuat.Maximum = 999999;
             nudKhoMaNhanVienXuat.Value = 0;
-            grpXuatNhanh.Controls.Add(lblKhoMaNvXuat);
-            grpXuatNhanh.Controls.Add(nudKhoMaNhanVienXuat);
+            xuatLayout.Controls.Add(nudKhoMaNhanVienXuat, 3, 1);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Lý do"), 4, 1);
+            txtKhoLyDoXuat.Dock = DockStyle.Fill;
+            xuatLayout.Controls.Add(txtKhoLyDoXuat, 5, 1);
 
-            var lblKhoLyDoXuat = new Label { Text = "Lý do", AutoSize = true, Location = new Point(330, 64) };
-            txtKhoLyDoXuat.Location = new Point(385, 60);
-            txtKhoLyDoXuat.Size = new Size(70, 26);
-            grpXuatNhanh.Controls.Add(lblKhoLyDoXuat);
-            grpXuatNhanh.Controls.Add(txtKhoLyDoXuat);
-
-            var lblKhoGhiChuXuat = new Label { Text = "Ghi chú", AutoSize = true, Location = new Point(12, 96) };
-            txtKhoGhiChuXuat.Location = new Point(90, 92);
-            txtKhoGhiChuXuat.Size = new Size(220, 26);
-            grpXuatNhanh.Controls.Add(lblKhoGhiChuXuat);
-            grpXuatNhanh.Controls.Add(txtKhoGhiChuXuat);
+            xuatLayout.Controls.Add(CreateWarehouseLabel("Ghi chú"), 0, 2);
+            txtKhoGhiChuXuat.Dock = DockStyle.Fill;
+            xuatLayout.Controls.Add(txtKhoGhiChuXuat, 1, 2);
+            xuatLayout.SetColumnSpan(txtKhoGhiChuXuat, 3);
 
             btnKhoXuatNhanh.Text = "Tạo phiếu xuất";
-            btnKhoXuatNhanh.Size = new Size(130, 32);
-            btnKhoXuatNhanh.Location = new Point(320, 88);
+            btnKhoXuatNhanh.AutoSize = true;
+            btnKhoXuatNhanh.Anchor = AnchorStyles.Left;
             btnKhoXuatNhanh.Click += async (_, _) => await CreateQuickIssueReceiptAsync();
-            grpXuatNhanh.Controls.Add(btnKhoXuatNhanh);
+            xuatLayout.Controls.Add(btnKhoXuatNhanh, 4, 2);
+            xuatLayout.SetColumnSpan(btnKhoXuatNhanh, 2);
 
             var lblPhieuKho = new Label
             {
                 Text = "Phiếu nhập/xuất kho gần nhất",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                Location = new Point(12, 680)
+                Location = new Point(12, 205)
             };
-            panel.Controls.Add(lblPhieuKho);
+            movementPage.Controls.Add(lblPhieuKho);
 
-            dgvKhoPhieu.Location = new Point(12, 680);
+            dgvKhoPhieu.Location = new Point(12, 233);
             dgvKhoPhieu.Size = new Size(930, 150);
             dgvKhoPhieu.ReadOnly = true;
             dgvKhoPhieu.AutoGenerateColumns = false;
@@ -446,97 +1108,239 @@ namespace Restaurant.Admin
             dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TrangThai", HeaderText = "Trạng thái", Width = 130 });
             dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ThoiGian", HeaderText = "Thời gian", Width = 180, DefaultCellStyle = new DataGridViewCellStyle { Format = "g" } });
             dgvKhoPhieu.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "GhiChu", HeaderText = "Ghi chú", Width = 320 });
-            panel.Controls.Add(dgvKhoPhieu);
+            movementPage.Controls.Add(dgvKhoPhieu);
 
             btnKhoXacNhanNhap.Text = "Xác nhận nhập";
             btnKhoXacNhanNhap.Size = new Size(130, 32);
-            btnKhoXacNhanNhap.Location = new Point(12, 750);
+            btnKhoXacNhanNhap.Location = new Point(12, 397);
             btnKhoXacNhanNhap.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: true, confirmed: true);
-            panel.Controls.Add(btnKhoXacNhanNhap);
+            movementPage.Controls.Add(btnKhoXacNhanNhap);
 
             btnKhoHuyNhap.Text = "Hủy nhập";
             btnKhoHuyNhap.Size = new Size(120, 32);
-            btnKhoHuyNhap.Location = new Point(150, 750);
+            btnKhoHuyNhap.Location = new Point(150, 397);
             btnKhoHuyNhap.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: true, confirmed: false);
-            panel.Controls.Add(btnKhoHuyNhap);
+            movementPage.Controls.Add(btnKhoHuyNhap);
 
             btnKhoXacNhanXuat.Text = "Xác nhận xuất";
             btnKhoXacNhanXuat.Size = new Size(130, 32);
-            btnKhoXacNhanXuat.Location = new Point(282, 750);
+            btnKhoXacNhanXuat.Location = new Point(282, 397);
             btnKhoXacNhanXuat.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: false, confirmed: true);
-            panel.Controls.Add(btnKhoXacNhanXuat);
+            movementPage.Controls.Add(btnKhoXacNhanXuat);
 
             btnKhoHuyXuat.Text = "Hủy xuất";
             btnKhoHuyXuat.Size = new Size(120, 32);
-            btnKhoHuyXuat.Location = new Point(420, 750);
+            btnKhoHuyXuat.Location = new Point(420, 397);
             btnKhoHuyXuat.Click += async (_, _) => await UpdateSelectedWarehouseReceiptAsync(isPurchase: false, confirmed: false);
-            panel.Controls.Add(btnKhoHuyXuat);
+            movementPage.Controls.Add(btnKhoHuyXuat);
 
             page.Controls.Add(panel);
             tabQuanLy.Controls.Add(page);
         }
 
+        private void InitializeAccountTab()
+        {
+            if (!ApiSession.IsManager)
+            {
+                return;
+            }
+
+            var page = new TabPage("Tài khoản nhân viên") { Padding = new Padding(12) };
+            var panel = new Panel { Dock = DockStyle.Fill };
+            var editor = new GroupBox
+            {
+                Text = "Tạo tài khoản nhân viên",
+                Dock = DockStyle.Top,
+                Height = 142,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+            };
+
+            AddAccountField(editor, "Tên đăng nhập", txtTaiKhoanUsername, 12, 28, 120);
+            AddAccountField(editor, "Mật khẩu", txtTaiKhoanPassword, 270, 28, 120);
+            txtTaiKhoanPassword.UseSystemPasswordChar = true;
+            AddAccountField(editor, "Họ tên", txtTaiKhoanHoTen, 520, 28, 130);
+            AddAccountField(editor, "Số điện thoại", txtTaiKhoanSoDienThoai, 760, 28, 120);
+            editor.Controls.Add(new Label
+            {
+                Text = "Ngày sinh",
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(12, 68),
+                Size = new Size(72, 30)
+            });
+            dtpTaiKhoanNgaySinh.Location = new Point(90, 68);
+            dtpTaiKhoanNgaySinh.Size = new Size(150, 26);
+            dtpTaiKhoanNgaySinh.Format = DateTimePickerFormat.Short;
+            dtpTaiKhoanNgaySinh.ShowCheckBox = true;
+            editor.Controls.Add(dtpTaiKhoanNgaySinh);
+            var lblTaiKhoanVaiTro = new Label
+            {
+                Text = "Vai trò",
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(270, 68),
+                Size = new Size(55, 30)
+            };
+            editor.Controls.Add(lblTaiKhoanVaiTro);
+            cmbTaiKhoanVaiTro.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTaiKhoanVaiTro.Location = new Point(330, 68);
+            cmbTaiKhoanVaiTro.Size = new Size(120, 30);
+            cmbTaiKhoanVaiTro.Items.Clear();
+            cmbTaiKhoanVaiTro.Items.AddRange(["NhanVien", "QuanLy", "Admin"]);
+            cmbTaiKhoanVaiTro.SelectedIndex = 0;
+            editor.Controls.Add(cmbTaiKhoanVaiTro);
+            btnTaiKhoanThem.Text = "Tạo tài khoản";
+            btnTaiKhoanThem.Size = new Size(140, 32);
+            btnTaiKhoanThem.Location = new Point(470, 66);
+            btnTaiKhoanThem.Click += async (_, _) => await CreateEmployeeAccountAsync();
+            editor.Controls.Add(btnTaiKhoanThem);
+            editor.Controls.Add(new Label
+            {
+                Text = "Chọn vai trò phù hợp với quyền hạn của tài khoản.",
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(630, 68),
+                Size = new Size(300, 30)
+            });
+            panel.Controls.Add(editor);
+
+            dgvTaiKhoanNhanVien.Dock = DockStyle.Fill;
+            dgvTaiKhoanNhanVien.ReadOnly = true;
+            dgvTaiKhoanNhanVien.AutoGenerateColumns = false;
+            dgvTaiKhoanNhanVien.AllowUserToAddRows = false;
+            dgvTaiKhoanNhanVien.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.EmployeeId), HeaderText = "Mã NV", FillWeight = 55, MinimumWidth = 65 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.UserName), HeaderText = "Tài khoản", FillWeight = 100, MinimumWidth = 110 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.FullName), HeaderText = "Họ tên", FillWeight = 135, MinimumWidth = 130 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.RoleName), HeaderText = "Vai trò", FillWeight = 90, MinimumWidth = 100 });
+            dgvTaiKhoanNhanVien.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = nameof(EmployeeAccountResponse.IsActive), HeaderText = "Hoạt động", FillWeight = 80, MinimumWidth = 90 });
+            panel.Controls.Add(dgvTaiKhoanNhanVien);
+            dgvTaiKhoanNhanVien.BringToFront();
+            page.Controls.Add(panel);
+            tabQuanLy.Controls.Add(page);
+        }
+
+        private static void AddAccountField(Control parent, string labelText, TextBox textBox, int x, int y, int width)
+        {
+            using var labelFont = new Font("Segoe UI", 10F);
+            var labelWidth = TextRenderer.MeasureText(labelText, labelFont).Width;
+            parent.Controls.Add(new Label
+            {
+                Text = labelText,
+                AutoSize = false,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Location = new Point(x, y),
+                Size = new Size(labelWidth, 30)
+            });
+            textBox.Location = new Point(x + labelWidth + 8, y);
+            textBox.Size = new Size(width, 30);
+            parent.Controls.Add(textBox);
+        }
+
+        private static Label CreateWarehouseLabel(string text) => new()
+        {
+            Text = text,
+            Dock = DockStyle.Fill,
+            TextAlign = ContentAlignment.MiddleLeft,
+            AutoSize = false,
+            Margin = new Padding(0, 0, 6, 0)
+        };
+
+        private async Task LoadEmployeeAccountsAsync()
+        {
+            try
+            {
+                dgvTaiKhoanNhanVien.DataSource = await _accountApiService.GetEmployeesAsync();
+                dgvTaiKhoanNhanVien.ClearSelection();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể tải tài khoản nhân viên", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task CreateEmployeeAccountAsync()
+        {
+            if (string.IsNullOrWhiteSpace(txtTaiKhoanUsername.Text) ||
+                string.IsNullOrWhiteSpace(txtTaiKhoanPassword.Text) ||
+                string.IsNullOrWhiteSpace(txtTaiKhoanHoTen.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên đăng nhập, mật khẩu và họ tên.", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _accountApiService.CreateEmployeeAsync(new CreateEmployeeAccountRequest
+                {
+                    UserName = txtTaiKhoanUsername.Text.Trim(),
+                    Password = txtTaiKhoanPassword.Text,
+                    FullName = txtTaiKhoanHoTen.Text.Trim(),
+                    PhoneNumber = string.IsNullOrWhiteSpace(txtTaiKhoanSoDienThoai.Text) ? null : txtTaiKhoanSoDienThoai.Text.Trim(),
+                    BirthDate = dtpTaiKhoanNgaySinh.Checked ? DateOnly.FromDateTime(dtpTaiKhoanNgaySinh.Value) : null,
+                    RoleName = cmbTaiKhoanVaiTro.SelectedItem?.ToString() ?? "NhanVien"
+                });
+
+                txtTaiKhoanUsername.Clear();
+                txtTaiKhoanPassword.Clear();
+                txtTaiKhoanHoTen.Clear();
+                txtTaiKhoanSoDienThoai.Clear();
+                dtpTaiKhoanNgaySinh.Checked = false;
+                cmbTaiKhoanVaiTro.SelectedIndex = 0;
+                await LoadEmployeeAccountsAsync();
+                MessageBox.Show("Đã tạo tài khoản nhân viên và liên kết hồ sơ nhân viên.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Không thể tạo tài khoản nhân viên", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void InitializePaymentTab()
         {
             var page = new TabPage("Thanh toán");
-            var panel = new Panel
+            var panel = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                Padding = new Padding(12)
+                Padding = new Padding(12),
+                ColumnCount = 1,
+                RowCount = 3
             };
+            panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 34));
+            panel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            panel.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
 
             var lblTitle = new Label
             {
                 Text = "Tình trạng hóa đơn và trạng thái thanh toán",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                Location = new Point(12, 12)
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
             };
-            panel.Controls.Add(lblTitle);
+            panel.Controls.Add(lblTitle, 0, 0);
 
-            dgvThanhToan.Location = new Point(12, 44);
-            dgvThanhToan.Size = new Size(930, 470);
+            dgvThanhToan.Dock = DockStyle.Fill;
             dgvThanhToan.ReadOnly = true;
             dgvThanhToan.AutoGenerateColumns = false;
-            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MaDonHang", HeaderText = "Mã đơn", Width = 80 });
+            dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { Name = "MaDonHang", DataPropertyName = "MaDonHang", HeaderText = "Mã đơn", Width = 80 });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MaBan", HeaderText = "Mã bàn", Width = 80 });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TenBan", HeaderText = "Tên bàn", Width = 150 });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TrangThaiDon", HeaderText = "Trạng thái đơn", Width = 160 });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "SoMon", HeaderText = "Số món", Width = 80 });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TongTien", HeaderText = "Tổng tiền", Width = 120, DefaultCellStyle = new DataGridViewCellStyle { Format = "N0" } });
             dgvThanhToan.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "HoaDon", HeaderText = "Hóa đơn", Width = 130 });
-            panel.Controls.Add(dgvThanhToan);
-
-            var lblTrangThaiGiao = new Label
-            {
-                Text = "Trạng thái giao hàng",
-                AutoSize = true,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                Location = new Point(12, 530)
-            };
-            panel.Controls.Add(lblTrangThaiGiao);
-
-            cmbTrangThaiGiao.Location = new Point(160, 526);
-            cmbTrangThaiGiao.Size = new Size(180, 32);
-            cmbTrangThaiGiao.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbTrangThaiGiao.Items.AddRange(new object[] { "ChoLayHang", "DangGiao", "DaGiao", "DaNhan", "HoanTat" });
-            cmbTrangThaiGiao.SelectedIndex = 0;
-            panel.Controls.Add(cmbTrangThaiGiao);
-
-            btnCapNhatTrangThaiGiao.Text = "Cập nhật giao hàng";
-            btnCapNhatTrangThaiGiao.Size = new Size(170, 32);
-            btnCapNhatTrangThaiGiao.Location = new Point(360, 526);
-            btnCapNhatTrangThaiGiao.Click += async (_, _) => await UpdateSelectedOrderDeliveryStatusAsync();
-            panel.Controls.Add(btnCapNhatTrangThaiGiao);
+            panel.Controls.Add(dgvThanhToan, 0, 1);
 
             var btnReload = new Button
             {
                 Text = "Tải lại",
                 Size = new Size(120, 32),
-                Location = new Point(822, 530)
+                Dock = DockStyle.Fill,
+                Anchor = AnchorStyles.Left
             };
             btnReload.Click += async (_, _) => await LoadPaymentAsync();
-            panel.Controls.Add(btnReload);
+            panel.Controls.Add(btnReload, 0, 2);
 
             page.Controls.Add(panel);
             tabQuanLy.Controls.Add(page);
@@ -656,6 +1460,18 @@ namespace Restaurant.Admin
 
             var item = dgvKhoPhieu.CurrentRow.DataBoundItem;
             var id = (int)item.GetType().GetProperty("MaPhieu")!.GetValue(item)!;
+            var receiptType = item.GetType().GetProperty("Loai")?.GetValue(item)?.ToString();
+            var expectedType = isPurchase ? "Nhập kho" : "Xuất kho";
+            if (!string.Equals(receiptType, expectedType, StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show(
+                    $"Bạn đang chọn {receiptType ?? "phiếu không xác định"}. Hãy chọn phiếu {expectedType} để thực hiện thao tác này.",
+                    "Sai loại phiếu",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
             var status = confirmed ? "XacNhan" : "Huy";
 
             try
@@ -765,6 +1581,25 @@ namespace Restaurant.Admin
             chkMonDangBan.Checked = true;
             editor.Controls.Add(chkMonDangBan);
 
+            AddFoodLabel(editor, "Danh mục mới", 8, 112);
+            txtTenDanhMuc.Location = new Point(105, 109);
+            txtTenDanhMuc.Size = new Size(190, 27);
+            txtTenDanhMuc.MaxLength = 100;
+            editor.Controls.Add(txtTenDanhMuc);
+
+            AddFoodLabel(editor, "Mô tả danh mục", 310, 112);
+            txtMoTaDanhMuc.Location = new Point(415, 109);
+            txtMoTaDanhMuc.Size = new Size(300, 27);
+            txtMoTaDanhMuc.MaxLength = 500;
+            editor.Controls.Add(txtMoTaDanhMuc);
+
+            btnThemDanhMuc.Location = new Point(735, 107);
+            btnThemDanhMuc.Size = new Size(125, 32);
+            btnThemDanhMuc.Text = "Thêm danh mục";
+            btnThemDanhMuc.Click += async (_, _) => await btnThemDanhMuc_Click();
+            btnThemDanhMuc.Enabled = ApiSession.IsManager;
+            editor.Controls.Add(btnThemDanhMuc);
+
             ConfigureFoodButton(btnThemMon, "Thêm món", 220);
             btnThemMon.Click += btnThemMon_Click;
             editor.Controls.Add(btnThemMon);
@@ -826,6 +1661,48 @@ namespace Restaurant.Admin
             btnSuaMon.Enabled = ApiSession.IsManager;
             btnXoaMon.Enabled = ApiSession.IsManager;
             btnThemMon.Enabled = ApiSession.IsManager;
+        }
+
+        private async Task btnThemDanhMuc_Click()
+        {
+            var name = txtTenDanhMuc.Text.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show(
+                    "Vui lòng nhập tên danh mục.",
+                    "Thiếu thông tin",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                await _monAnApiService.CreateCategoryAsync(new CreateFoodCategoryRequest
+                {
+                    TenDanhMuc = name,
+                    MoTa = string.IsNullOrWhiteSpace(txtMoTaDanhMuc.Text)
+                        ? null
+                        : txtMoTaDanhMuc.Text.Trim()
+                });
+
+                txtTenDanhMuc.Clear();
+                txtMoTaDanhMuc.Clear();
+                await LoadMonAnAsync();
+                MessageBox.Show(
+                    "Đã thêm danh mục.",
+                    "Thành công",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(
+                    exception.Message,
+                    "Không thể thêm danh mục",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         private static void AddFoodLabel(Control parent, string text, int x, int y)

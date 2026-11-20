@@ -17,26 +17,37 @@ public sealed class LoginForm : Form
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
         MinimizeBox = false;
-        ClientSize = new Size(420, 220);
+        ClientSize = new Size(480, 260);
+
+        var layout = new TableLayoutPanel
+        {
+            Dock = DockStyle.Fill,
+            Padding = new Padding(24),
+            ColumnCount = 2,
+            RowCount = 3
+        };
+        layout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 130));
+        layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 42));
+        layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 42));
+        layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
         var lblUsername = new Label
         {
             AutoSize = true,
-            Location = new Point(24, 28),
+            Anchor = AnchorStyles.Left,
             Text = "Tên đăng nhập"
         };
-        _txtUsername.Location = new Point(160, 24);
-        _txtUsername.Size = new Size(230, 27);
+        _txtUsername.Dock = DockStyle.Fill;
         _txtUsername.MaxLength = 80;
 
         var lblPassword = new Label
         {
             AutoSize = true,
-            Location = new Point(24, 76),
+            Anchor = AnchorStyles.Left,
             Text = "Mật khẩu"
         };
-        _txtPassword.Location = new Point(160, 72);
-        _txtPassword.Size = new Size(230, 27);
+        _txtPassword.Dock = DockStyle.Fill;
         _txtPassword.MaxLength = 200;
         _txtPassword.UseSystemPasswordChar = true;
         _txtPassword.KeyDown += (_, e) =>
@@ -48,12 +59,19 @@ public sealed class LoginForm : Form
             }
         };
 
-        _btnLogin.Location = new Point(160, 125);
-        _btnLogin.Size = new Size(120, 36);
+        _btnLogin.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+        _btnLogin.AutoSize = true;
+        _btnLogin.MinimumSize = new Size(130, 36);
+        _btnLogin.Padding = new Padding(12, 4, 12, 4);
         _btnLogin.Text = "Đăng nhập";
         _btnLogin.Click += async (_, _) => await LoginAsync();
 
-        Controls.AddRange([lblUsername, _txtUsername, lblPassword, _txtPassword, _btnLogin]);
+        layout.Controls.Add(lblUsername, 0, 0);
+        layout.Controls.Add(_txtUsername, 1, 0);
+        layout.Controls.Add(lblPassword, 0, 1);
+        layout.Controls.Add(_txtPassword, 1, 1);
+        layout.Controls.Add(_btnLogin, 1, 2);
+        Controls.Add(layout);
         AcceptButton = _btnLogin;
     }
 

@@ -1,0 +1,125 @@
+@model Restaurant.Web.Models.DatBanViewModel
+@{
+	ViewData["Title"] = "Đặt bàn";
+}
+
+<div class="reservation-page">
+	<div class="reservation-hero mb-4">
+		<div>
+			<p class="eyebrow mb-2">Trải nghiệm tại nhà hàng</p>
+			<h1 class="display-6 fw-bold mb-2">Đặt bàn</h1>
+			<p class="mb-0">Chọn thời gian và số lượng khách. Nhà hàng sẽ tự sắp xếp bàn phù hợp và xác nhận yêu cầu của bạn.</p>
+		</div>
+	</div>
+
+	@if (ViewData["SuccessMessage"] is string successMessage)
+	{
+		<div class="alert alert-success" role="alert">@successMessage</div>
+	}
+
+	<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+	<div class="row g-4">
+		<div class="col-lg-5">
+			<div class="card reservation-card shadow-sm h-100">
+				<div class="card-body p-4">
+					<h2 class="h4 mb-3">Thông tin đặt bàn</h2>
+					<form asp-action="Index" method="post">
+						<div class="mb-3">
+							<label asp-for="ThoiGianDen" class="form-label"></label>
+							<input asp-for="ThoiGianDen" type="datetime-local" class="form-control" />
+							<div class="form-text">Thời gian sử dụng bàn dự kiến là 2 giờ.</div>
+							<span asp-validation-for="ThoiGianDen" class="text-danger"></span>
+						</div>
+						<div class="mb-3">
+							<label asp-for="SoLuongKhach" class="form-label"></label>
+							<input asp-for="SoLuongKhach" class="form-control" min="1" max="100" />
+							<span asp-validation-for="SoLuongKhach" class="text-danger"></span>
+						</div>
+						<div class="mb-4">
+							<label asp-for="GhiChu" class="form-label"></label>
+							<textarea asp-for="GhiChu" class="form-control" rows="4" placeholder="Ví dụ: cần ghế trẻ em, tổ chức sinh nhật..."></textarea>
+							<span asp-validation-for="GhiChu" class="text-danger"></span>
+						</div>
+						<button type="submit" class="btn btn-success w-100">Gửi yêu cầu đặt bàn</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-7">
+			<div class="card reservation-card shadow-sm h-100">
+				<div class="card-body p-4">
+					<div class="d-flex justify-content-between align-items-center mb-3">
+						<h2 class="h4 mb-0">Lịch sử đặt bàn</h2>
+						<span class="badge text-bg-light">@Model.LichSu.Count yêu cầu</span>
+					</div>
+					@if (Model.LichSu.Count == 0)
+					{
+						<div class="empty-state">Bạn chưa có yêu cầu đặt bàn nào.</div>
+					}
+					else
+					{
+						<div class="table-responsive">
+							<table class="table align-middle reservation-table">
+								<thead>
+									<tr>
+										<th>Thời gian</th>
+										<th>Bàn</th>
+										<th>Khách</th>
+										<th>Trạng thái</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var reservation in Model.LichSu)
+									{
+										<tr>
+											<td>
+												<strong>@reservation.ThoiGianDen.ToString("dd/MM/yyyy")</strong><br />
+												<span class="text-muted">@reservation.ThoiGianDen.ToString("HH:mm")</span>
+											</td>
+											<td>
+												@(reservation.TenBan ?? "Chờ sắp xếp")<br />
+												<small class="text-muted">@(reservation.TenKhuVuc ?? "")</small>
+											</td>
+											<td>@reservation.SoLuongKhach</td>
+											<td>
+												<span class="badge @GetStatusClass(reservation.TrangThai)">
+													@GetStatusText(reservation.TrangThai)
+												</span>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@functions {
+	private static string GetStatusText(string status) => status switch
+	{
+		"ChoXacNhan" => "Chờ xác nhận",
+		"DaXacNhan" => "Đã xác nhận",
+		"DaDen" => "Đã đến",
+		"HoanTat" => "Hoàn tất",
+		"DaHuy" => "Đã hủy",
+		"KhongDen" => "Không đến",
+		_ => status
+	};
+
+	private static string GetStatusClass(string status) => status switch
+	{
+		"DaXacNhan" or "DaDen" or "HoanTat" => "text-bg-success",
+		"DaHuy" or "KhongDen" => "text-bg-secondary",
+		_ => "text-bg-warning"
+	};
+}
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

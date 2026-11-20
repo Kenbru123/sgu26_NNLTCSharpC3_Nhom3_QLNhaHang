@@ -147,11 +147,11 @@ public sealed class GoiMonService : IGoiMonService
             from detail in _context.ChiTietDonHangs.AsNoTracking()
             join order in _context.DonHangs.AsNoTracking()
                 on detail.MaDonHang equals order.MaDonHang
-            join table in _context.BanAns.AsNoTracking()
-                on order.MaBan equals table.MaBan
             join food in _context.MonAns.AsNoTracking()
                 on detail.MaMon equals food.MaMon
-            where order.LoaiDon == "TaiBan" &&
+            where (order.LoaiDon == "TaiBan" ||
+                   order.LoaiDon == "OnlineGiaoHang" ||
+                   order.LoaiDon == "OnlineNhanTaiQuay") &&
                   order.TrangThaiDon != "HoanThanh" &&
                   order.TrangThaiDon != "DaThanhToan" &&
                   order.TrangThaiDon != "DaHuy" &&
@@ -161,7 +161,12 @@ public sealed class GoiMonService : IGoiMonService
             select new GoiMonCheBienDto(
                 order.MaDonHang,
                 detail.MaChiTietDonHang,
-                table.TenBan,
+                order.LoaiDon == "TaiBan"
+                    ? _context.BanAns
+                        .Where(table => table.MaBan == order.MaBan)
+                        .Select(table => table.TenBan)
+                        .FirstOrDefault() ?? "(Bàn đã xóa)"
+                    : "Đơn online",
                 order.ThoiGianTao,
                 food.TenMon,
                 detail.SoLuong,
@@ -180,11 +185,14 @@ public sealed class GoiMonService : IGoiMonService
             .AsNoTracking()
             .Where(order =>
                 order.MaDonHang == id &&
-                order.LoaiDon == "TaiBan")
+                (order.LoaiDon == "TaiBan" ||
+                 order.LoaiDon == "OnlineGiaoHang" ||
+                 order.LoaiDon == "OnlineNhanTaiQuay"))
             .Select(order => new
             {
                 order.MaDonHang,
                 MaBan = order.MaBan ?? 0,
+                order.LoaiDon,
                 order.ThoiGianTao,
                 order.TrangThaiDon,
                 order.GhiChu
@@ -196,11 +204,13 @@ public sealed class GoiMonService : IGoiMonService
             return null;
         }
 
-        var tableName = await _context.BanAns
-            .AsNoTracking()
-            .Where(table => table.MaBan == order.MaBan)
-            .Select(table => table.TenBan)
-            .SingleOrDefaultAsync(cancellationToken) ?? "(Bàn đã xóa)";
+        var tableName = order.LoaiDon == "TaiBan"
+            ? await _context.BanAns
+                .AsNoTracking()
+                .Where(table => table.MaBan == order.MaBan)
+                .Select(table => table.TenBan)
+                .SingleOrDefaultAsync(cancellationToken) ?? "(Bàn đã xóa)"
+            : "Đơn online";
 
         var details = await (
             from detail in _context.ChiTietDonHangs.AsNoTracking()
@@ -721,7 +731,7 @@ public sealed class GoiMonService : IGoiMonService
                 "Trạng thái món hợp lệ là Đang chế biến hoặc Đã chế biến.");
         }
 
-        var order = await FindOrderAsync(id, cancellationToken);
+        var order = await FindKitchenOrderAsync(id, cancellationToken);
         EnsureOrderOpen(order);
 
         var detail = await _context.ChiTietDonHangs
@@ -755,6 +765,21 @@ public sealed class GoiMonService : IGoiMonService
         }
 
         await _context.SaveChangesAsync(cancellationToken);
+
+        var hasUnfinishedItems = await _context.ChiTietDonHangs
+            .AsNoTracking()
+            .AnyAsync(
+                candidate => candidate.MaDonHang == id &&
+                            candidate.TrangThaiCheBien != "HoanThanh" &&
+                            candidate.TrangThaiCheBien != "DaHuy",
+                cancellationToken);
+
+        if (!hasUnfinishedItems && order.TrangThaiDon != "HoanThanh")
+        {
+            order.TrangThaiDon = "HoanThanh";
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
         return await GetOrderByIdAsync(id, cancellationToken);
     }
 
@@ -771,6 +796,23 @@ public sealed class GoiMonService : IGoiMonService
 
         return order ?? throw new GoiMonNotFoundException(
             "Không tìm thấy phiếu gọi món.");
+    }
+
+    private async Task<Domain.Entities.DonHang> FindKitchenOrderAsync(
+        int id,
+        CancellationToken cancellationToken)
+    {
+        var order = await _context.DonHangs
+            .SingleOrDefaultAsync(
+                candidate =>
+                    candidate.MaDonHang == id &&
+                    (candidate.LoaiDon == "TaiBan" ||
+                     candidate.LoaiDon == "OnlineGiaoHang" ||
+                     candidate.LoaiDon == "OnlineNhanTaiQuay"),
+                cancellationToken);
+
+        return order ?? throw new GoiMonNotFoundException(
+            "Không tìm thấy đơn hàng cần chế biến.");
     }
 
     private static void EnsureOrderOpen(Domain.Entities.DonHang order)

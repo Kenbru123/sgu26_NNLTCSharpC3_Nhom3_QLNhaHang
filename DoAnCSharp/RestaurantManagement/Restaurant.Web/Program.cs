@@ -31,7 +31,18 @@ builder.Services.AddHttpClient<IMonAnApiService, MonAnApiService>(client =>
 builder.Services.AddHttpClient<IOnlineOrderApiService, OnlineOrderApiService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
-});
+})
+    .AddHttpMessageHandler<JwtAuthorizationHandler>();
+builder.Services.AddHttpClient<IDatBanApiService, DatBanApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+})
+    .AddHttpMessageHandler<JwtAuthorizationHandler>();
+builder.Services.AddHttpClient<ICustomerAccountApiService, CustomerAccountApiService>(client =>
+{
+    client.BaseAddress = new Uri(apiBaseUrl);
+})
+    .AddHttpMessageHandler<JwtAuthorizationHandler>();
 builder.Services.AddHttpClient<IAuthApiService, AuthApiService>(client =>
 {
     client.BaseAddress = new Uri(apiBaseUrl);
@@ -41,10 +52,11 @@ builder.Services.AddHttpClient<IAuthApiService, AuthApiService>(client =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
+        options.Cookie.Name = ".Restaurant.Web.Auth.v2";
         options.LoginPath = "/Account/Login";
         options.AccessDeniedPath = "/Account/AccessDenied";
-        options.ExpireTimeSpan = TimeSpan.FromHours(8);
-        options.SlidingExpiration = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+        options.SlidingExpiration = false;
     });
 
 var app = builder.Build();

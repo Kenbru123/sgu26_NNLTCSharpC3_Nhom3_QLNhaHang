@@ -27,6 +27,13 @@ public sealed class MonAnApiService
                 ? "api/foods/admin/categories"
                 : "api/foods/categories");
 
+    public Task<FoodCategoryResponse> CreateCategoryAsync(
+        CreateFoodCategoryRequest request) =>
+        SendAsync<FoodCategoryResponse>(
+            HttpMethod.Post,
+            "api/foods/categories",
+            request);
+
     public Task<MonAnDto> CreateAsync(CreateFoodRequest request) =>
         SendAsync<MonAnDto>(HttpMethod.Post, "api/foods", request);
 

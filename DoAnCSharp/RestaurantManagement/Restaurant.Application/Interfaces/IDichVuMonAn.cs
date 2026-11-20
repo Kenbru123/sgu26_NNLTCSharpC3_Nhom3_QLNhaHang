@@ -16,6 +16,10 @@ public interface IFoodService
         bool includeInactive,
         CancellationToken cancellationToken);
 
+    Task<FoodCategoryResponse> CreateCategoryAsync(
+        CreateFoodCategoryRequest request,
+        CancellationToken cancellationToken);
+
     Task<FoodResponse?> GetByIdAsync(
         int id,
         bool includeInactive,

@@ -81,6 +81,32 @@ public sealed class FoodsController : ControllerBase
             cancellationToken));
     }
 
+    [HttpPost("categories")]
+    [Authorize(Policy = "ManagementOnly")]
+    [EndpointSummary("Tạo danh mục món ăn")]
+    [ProducesResponseType(typeof(FoodCategoryResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<FoodCategoryResponse>> CreateCategory(
+        CreateFoodCategoryRequest request,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var category = await _foodService.CreateCategoryAsync(
+                request,
+                cancellationToken);
+            return StatusCode(StatusCodes.Status201Created, category);
+        }
+        catch (ArgumentException exception)
+        {
+            return BadRequest(new ProblemDetails
+            {
+                Title = "Thông tin danh mục không hợp lệ.",
+                Detail = exception.Message
+            });
+        }
+    }
+
     [HttpGet("admin/{id:int}")]
     [Authorize(Policy = "ManagementOnly")]
     [EndpointSummary("Xem món ăn trong màn hình quản lý")]

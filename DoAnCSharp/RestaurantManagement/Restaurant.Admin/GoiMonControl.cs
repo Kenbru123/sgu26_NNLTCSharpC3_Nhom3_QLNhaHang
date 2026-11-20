@@ -50,7 +50,7 @@ public sealed class GoiMonControl : UserControl
             RowCount = 2,
             Padding = new Padding(8)
         };
-        root.RowStyles.Add(new RowStyle(SizeType.Absolute, 90));
+         root.RowStyles.Add(new RowStyle(SizeType.Absolute, 76));
         root.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         Controls.Add(root);
 
@@ -62,13 +62,13 @@ public sealed class GoiMonControl : UserControl
             Padding = new Padding(0, 4, 0, 4)
         };
         orderActions.Controls.Add(CreateLabel("Bàn ăn"));
-        _cmbBan.Width = 240;
+         _cmbBan.Width = 210;
         _cmbBan.DropDownStyle = ComboBoxStyle.DropDownList;
         orderActions.Controls.Add(_cmbBan);
         _btnTaoPhieu.Text = "Tạo phiếu gọi món";
         orderActions.Controls.Add(_btnTaoPhieu);
         orderActions.Controls.Add(CreateLabel("Ghi chú phiếu"));
-        _txtGhiChu.Width = 270;
+         _txtGhiChu.Width = 220;
         _txtGhiChu.MaxLength = 500;
         orderActions.Controls.Add(_txtGhiChu);
         _btnCapNhatPhieu.Text = "Lưu ghi chú";
@@ -89,8 +89,8 @@ public sealed class GoiMonControl : UserControl
             RowCount = 1,
             Padding = new Padding(0, 4, 0, 0)
         };
-        body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 38));
-        body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 62));
+         body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34));
+         body.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 66));
         body.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
         var orderPanel = new TableLayoutPanel
@@ -114,8 +114,8 @@ public sealed class GoiMonControl : UserControl
             ColumnCount = 1,
             RowCount = 2
         };
-        workPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 52));
-        workPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 48));
+         workPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 56));
+         workPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 44));
 
         var menuPanel = new TableLayoutPanel
         {
@@ -123,7 +123,7 @@ public sealed class GoiMonControl : UserControl
             ColumnCount = 1,
             RowCount = 2
         };
-        menuPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 44));
+         menuPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
         menuPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         var searchPanel = new FlowLayoutPanel
         {
@@ -132,10 +132,10 @@ public sealed class GoiMonControl : UserControl
             AutoScroll = true
         };
         searchPanel.Controls.Add(CreateLabel("Tìm món"));
-        _txtTimMon.Width = 200;
+         _txtTimMon.Width = 180;
         _txtTimMon.PlaceholderText = "Tên món hoặc danh mục";
         searchPanel.Controls.Add(_txtTimMon);
-        _cmbDanhMuc.Width = 180;
+         _cmbDanhMuc.Width = 160;
         _cmbDanhMuc.DropDownStyle = ComboBoxStyle.DropDownList;
         searchPanel.Controls.Add(_cmbDanhMuc);
         var btnTimMon = new Button { Text = "Tìm kiếm" };
@@ -151,7 +151,7 @@ public sealed class GoiMonControl : UserControl
             ColumnCount = 1,
             RowCount = 2
         };
-        detailsPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 72));
+         detailsPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
         detailsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         var detailActions = new FlowLayoutPanel
         {
@@ -163,7 +163,7 @@ public sealed class GoiMonControl : UserControl
         _numSoLuong.Minimum = 1;
         _numSoLuong.Maximum = int.MaxValue;
         _numSoLuong.Value = 1;
-        _numSoLuong.Width = 90;
+         _numSoLuong.Width = 78;
         detailActions.Controls.Add(_numSoLuong);
         _btnThemMon.Text = "Thêm món";
         detailActions.Controls.Add(_btnThemMon);
@@ -690,6 +690,13 @@ public sealed class GoiMonControl : UserControl
         grid.MultiSelect = false;
         grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+         grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+         grid.RowTemplate.Height = 32;
+         grid.ColumnHeadersHeight = 42;
+         grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+         grid.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+         grid.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
+         grid.DefaultCellStyle.Padding = new Padding(4, 2, 4, 2);
         grid.RowHeadersVisible = false;
     }
 
@@ -727,7 +734,8 @@ public sealed class GoiMonControl : UserControl
     {
         Text = text,
         AutoSize = true,
-        Margin = new Padding(8, 8, 4, 4)
+        Margin = new Padding(8, 8, 8, 4),
+        TextAlign = ContentAlignment.MiddleLeft
     };
 
     private static Label CreateSectionHeader(string text) => new()

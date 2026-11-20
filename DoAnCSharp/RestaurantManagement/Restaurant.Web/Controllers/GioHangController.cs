@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Restaurant.Application.DTOs;
 using Restaurant.Web.Models;
 using Restaurant.Web.Services;
@@ -19,6 +20,43 @@ public sealed class CartController : Controller
         _cartService = cartService;
         _foodApiService = foodApiService;
         _orderApiService = orderApiService;
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> History(CancellationToken cancellationToken)
+    {
+        var orders = await _orderApiService.GetMyOrdersAsync(cancellationToken);
+        return View("~/Views/Cart/LichSuDonHang.cshtml", orders);
+    }
+
+    [HttpGet]
+    public IActionResult Lookup()
+    {
+        return View(
+            "~/Views/Cart/TraCuuDonHang.cshtml",
+            new GuestOrderLookupRequest { SDTNguoiNhan = string.Empty });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Lookup(
+        GuestOrderLookupRequest model,
+        CancellationToken cancellationToken)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View("~/Views/Cart/TraCuuDonHang.cshtml", model);
+        }
+
+        var orders = await _orderApiService.LookupAsync(model, cancellationToken);
+        if (orders is null || orders.Count == 0)
+        {
+            ModelState.AddModelError(string.Empty, "Không tìm thấy đơn hàng phù hợp với số điện thoại.");
+            return View("~/Views/Cart/TraCuuDonHang.cshtml", model);
+        }
+
+        return View("~/Views/Cart/KetQuaTraCuuDonHang.cshtml", orders);
     }
 
     [HttpGet]
