@@ -1,11 +1,14 @@
 
-name: Restaurant CI
+name: Restaurant CI/CD
 
 on:
   push:
   pull_request:
 
 jobs:
+  # ==============================
+  # CI - BUILD SOLUTION C#
+  # ==============================
   build:
     runs-on: windows-latest
 
@@ -27,3 +30,49 @@ jobs:
 
       - name: Build
         run: dotnet build --no-restore --configuration Release
+
+  # ==============================
+  # CD - PUBLISH DOCKER IMAGES
+  # ==============================
+  publish:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Prepare image names
+        shell: bash
+        run: |
+          REPO_LOWER=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
+          echo "API_IMAGE=ghcr.io/$REPO_LOWER/restaurant-api" >> "$GITHUB_ENV"
+          echo "WEB_IMAGE=ghcr.io/$REPO_LOWER/restaurant-web" >> "$GITHUB_ENV"
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push API
+        uses: docker/build-push-action@v6
+        with:
+          context: ./DoAnCSharp/RestaurantManagement
+          file: ./DoAnCSharp/RestaurantManagement/Restaurant.API/Dockerfile
+          push: true
+          tags: ${{ env.API_IMAGE }}:latest
+
+      - name: Build and push Website
+        uses: docker/build-push-action@v6
+        with:
+          context: ./DoAnCSharp/RestaurantManagement
+          file: ./DoAnCSharp/RestaurantManagement/Restaurant.Web/Dockerfile
+          push: true
+          tags: ${{ env.WEB_IMAGE }}:latest
